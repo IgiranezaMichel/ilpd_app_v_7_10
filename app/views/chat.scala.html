@@ -1,0 +1,11 @@
+@( chats : List[ChatMessage] , mrMe : Users )
+
+@for( c <- chats ) {
+  @person(c.sendFrom,mrMe.ourChat(c.sendFrom),mrMe.SpecificUnread(c.sendFrom))
+}
+
+  <script>
+
+new Slider( "UNiqueID" , true , 4 );
+
+</script>

@@ -1,0 +1,11 @@
+@(anounceRoles : List[AnounceRole], userType : String, us:Users , anns : List[Announce] )
+@main("VRAC Page",""){
+    @header(anounceRoles, userType, true  , us )
+    @(us.role="VRAC")
+    @leftMenu("VRAC",us)
+    <div class="content-wrapper">
+        @admininistrator.adminContent.render(us)
+        @communication.render(anns)
+    </div>
+    @footer(us)
+}

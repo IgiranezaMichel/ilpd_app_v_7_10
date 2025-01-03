@@ -1,0 +1,79 @@
+@(items:List[models.stock.Item],string: String)
+@import scala.Predef;var inc=1;var depDate=new Date();var remain = 0;
+@main(string,"") {
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="invoice">
+                    <div class="row">
+                        <div class="row no-print">
+                            <div class="col-xs-12">
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 table-responsive">
+                            <h4 class="text-blue">
+                                @string
+                                <small class="pull-right">Date: @(new Date().format("dd-MM,yyyy"))</small>
+                            </h4>
+                            <table class="table table-hover table-striped" id="example">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Category</th>
+                                        <th width="200">Type</th>
+                                        <th>Unit measure</th>
+                                        <th>Remain Qty</th>
+                                        <th>Entry date</th>
+                                        <th>Status</th>
+                                        <th>Defective</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @for(g <- items) {
+                                    @(depDate=Counts.dateAddMonth(g.date,g.depleciationMinMonths))
+                                    @(remain = g.remainQty())
+                                    @if(remain > 0 && !g.removed.equalsIgnoreCase("approved") && g.removed.equalsIgnoreCase("") || g.removed.equalsIgnoreCase("pending")) {
+                                        <tr>
+                                            <td>@inc</td>
+                                            <td>@g.name</td>
+                                            <td width="200">@g.category.name</td>
+                                            <td>@(g.iType)</td>
+                                            <td>@g.unitMeasure</td>
+                                            <td>@Counts.formatAmount(remain)</td>
+                                            <td>@depDate.format("dd-MM,yyyy")</td>
+                                            <td>
+                                            @if(g.status.equalsIgnoreCase("defective")) {
+                                                <span class="text-danger">@g.defQnty Defective</span>
+                                            } else {
+                                                <span class="text-success">Good</span>
+                                            }
+                                            </td>
+                                            @if(g.removed.equalsIgnoreCase("")) {
+                                                <td><button class="btn btn-info btn-sm btn-circle" href="@routes.Application.updateAll(g.id, "remove-defe")" onclick="return createModal(this, self.event);"><i class="fa fa-minus-circle"></i></button></td>
+                                            }
+                                            @if(g.removed.equalsIgnoreCase("pending")) {
+                                                <td>
+                                                    <small class="label bg-black">Pending</small>
+                                                </td>
+                                            }
+                                        </tr>
+                                    }
+                                    @(inc=inc+1)
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+

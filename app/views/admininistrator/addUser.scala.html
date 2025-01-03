@@ -1,0 +1,118 @@
+@(users : List[Users])
+@import scala.Predef;var code = 250;var selected = false;var color = ""
+<div align="right" class="left-form">
+     <button id="meBut" class="btn btn-primary" onclick="addNew(this,event)"><i class="fa fa-plus"></i> Add new user</button>
+    <div class="loginForm" id="form1" no-prop="true">
+        <form action="@routes.Registration.saveSystemUser()" method="POST" onsubmit="return allForms(this)" enctype="multipart/form-data">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-envelope"></i>
+                    <h3 class="box-title">Add new system user</h3>
+                </div>
+                <div class="box-body">
+                    @countryForm()
+                    <div class="form-group has-feedback">
+                        <input class="form-control" name="names" max="3000" placeholder="Enter full name"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input class="form-control left-pad" name="phone" id="MphoneNumber" max="3000" number="true" placeholder="Enter phone number"/>
+                        <span class="phone-label">+@code</span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <select class="form-control" name="role" id="MfirstName" max="3000">
+                            <option value="">-- Select user role --</option>
+                            <option value="admin">Administrator</option>
+                            <option value="registrar">Registrar</option>
+                            <option value="Coordinator">Coordinator</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Library">Library</option>
+                            <option value="Logistic">Logistic</option>
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input class="form-control" name="email" id="Memail" max="3000" email="true" placeholder="Enter User Email"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="password" class="form-control" name="password" id="Mpassword" max="3000" placeholder="Enter password"/>
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default">Save
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<br>
+<div class="box box-ilpd" style="margin-top: 50px">
+    <div class="box-header with-border">Available system users</div>
+    <div class="box-body">
+        <div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Full name</th>
+                        <th>Phone number</th>
+                        <th>User email</th>
+                        <th>User phone number</th>
+                        <th>Add || remove roles</th>
+                        <th>Change password</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for(i <- users) {
+                    @if(i.role == "student") {
+                        @(color = "background-color: #dff0d8;")
+                    } else {
+                        @(color = "")
+                    }
+                    <tr style="@color">
+                        <td>
+                        @if(i.employee != null) {
+                            @i.employee.print()
+                        } else {
+                            @if(i.role == "student") {
+
+                                @if(Applied.getApplied(i)!=null){
+                                    @Applied.getApplied(i).applicant.toString
+                                }else{
+                                    Not available
+                                }
+                            } else {
+                                @i.names
+                            }
+                        }
+                        </td>
+                        <td>@i.phone</td>
+                        <td>@i.email</td>
+                        <td>@("+" + i.code + " " + i.phone)</td>
+                        <td>
+                        @if(i.role != "student") {
+                            <button class="btn btn-default btn-sm" href="@routes.Application.setUserRoles(i.id)" onclick="return createModal(this, event);"><i class="glyphicon glyphicon-transfer"></i>
+                                Manage roles</button>
+                        } else {
+                            <small class="label bg-red">Student</small>
+                        }
+                        </td>
+                        <td>
+                            <button class="btn btn-info btn-sm btn-circle" href="@routes.Application.updateAll(i.id, "updateUser")" onclick="return createModal(this, self.event);">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger btn-sm btn-circle" href="@routes.Application.updateAll(i.id, "deleteUser")" onclick="return createModal(this, self.event);">
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

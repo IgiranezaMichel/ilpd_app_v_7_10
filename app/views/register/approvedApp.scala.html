@@ -1,0 +1,22 @@
+@( l1 : List[Applied] )
+@import scala.Predef;var q = 0;
+<ul class="timeline">
+@for(ip <- l1 ) {
+    <li>
+        <span class="fa hideOver"><img src="@routes.Assets.at("uploads/" + ip.applicant.profile)"></span>
+        <div class="timeline-item">
+            <label class="time"></label>
+            <h3 class="timeline-header no-border">
+                <a href="@routes.ApplicantController.applicantDetails(ip.applicant.id)" class="auto-click" onclick="return manageView(this)">@ip.applicant.firstName @ip.applicant.familyName
+                </a> <label class="time pull-right">@ip.applicationStatus</label>
+            </h3>
+        </div>
+    </li>
+    @( q = q + 1 )
+}
+</ul>
+<script>
+        var ip = I(".auto-click");
+        if( ip ) manageView(ip);
+</script>
+

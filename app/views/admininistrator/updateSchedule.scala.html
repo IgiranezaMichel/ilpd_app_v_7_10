@@ -1,0 +1,168 @@
+@( schedule: Schedule , lect : List[Lecture] , room : List[Room] , comps : List[Component] , dateRanges : List[DateRange] ,training: List[Training])
+@if( schedule != null ) {
+  <div class="s">
+    <form action="@routes.UpdateForm.updateSchedule(schedule.id)" method="POST" onsubmit="return allForms(this)">
+      <div class="box box-info">
+        <div class="box-header text-left resp-width with-border">
+          <i class="glyphicon glyphicon-edit"></i>
+          <h3 class="box-title">Update timetable</h3>
+        </div>
+        <div class="box-body">
+          <div class="box-body">
+            <div class="form-group has-feedback">
+              <select name="lect" class="form-control">
+                <option value="">-- Choose lecture --</option>
+                @for( i <- lect ){
+                  <option value="@i.id" @if(schedule.lecture.id.equals(i.id)){selected}>@i.fName @i.lName</option>
+                }
+              </select>
+            </div>
+            <div class="form-group has-feedback">
+              <select name="comp" class="form-control" id="componentID">
+                <option value="">-- Choose Component --</option>
+                @for( c <- comps ){
+                  <option value="@c.id" @if(schedule.component.id.equals(c.id)){selected}>@c.compName</option>
+                }
+              </select>
+            </div>
+            <div class="form-group has-feedback">
+              <select name="rooms" class="form-control" data-t="targeting(this,'#componentID','compName')" href="/Administrator/roomComping/">
+                <option value="">-- Choose Room --</option>
+                @for( i <- room ){
+                  <option value="@i.id" @if(schedule.room.id.equals(i.id)){selected}>@i.roomName (@i.roomCode -> @i.campus.campusName )</option>
+                }
+              </select>
+            </div>
+            <div class="form-group has-feedback">
+              <label for="component">Choose component type</label>
+              <select name="componentType" class="form-control" required>
+                @if(schedule.componentType.equalsIgnoreCase("Component")) {
+                  <option value="Component">Component</option>
+                  <option value="Moot coot">Moot coot</option>
+                  <option value="Internship">Internship</option>
+                  <option value="Research paper">Research paper</option>
+                }
+                @if(schedule.componentType.equalsIgnoreCase("Moot coot")) {
+                  <option value="Moot coot">Moot coot</option>
+                  <option value="Component">Component</option>
+                  <option value="Internship">Internship</option>
+                  <option value="Research paper">Research paper</option>
+                }
+                @if(schedule.componentType.equalsIgnoreCase("Internship")) {
+                  <option value="Internship">Internship</option>
+                  <option value="Moot coot">Moot coot</option>
+                  <option value="Component">Component</option>
+                  <option value="Research paper">Research paper</option>
+                }
+                @if(schedule.componentType.equalsIgnoreCase("Research paper")) {
+                  <option value="Research paper">Research paper</option>
+                  <option value="Internship">Internship</option>
+                  <option value="Moot coot">Moot coot</option>
+                  <option value="Component">Component</option>
+                }
+              </select>
+            </div>
+            <div class="form-group has-feedback others">
+              <label style="display: block;">Will component have assignment/research ?</label>
+              @if(schedule.assignment.equalsIgnoreCase("yes") || (!schedule.assignment.equalsIgnoreCase("yes") && !schedule.assignment.equalsIgnoreCase("no"))){
+              <div class="myRadio">
+                <span class="t-radio"><input type="radio" name="assignment" value="yes" checked>
+                  <label for="radioMale">YES</label>
+                </span>
+                <span class="t-radio"><input type="radio" name="assignment" value="no">
+                  <label for="radioFemale">NO</label>
+                </span>
+              </div>
+              }
+              @if(schedule.assignment.equalsIgnoreCase("no")){
+              <div class="myRadio">
+                <span class="t-radio"><input type="radio" name="assignment" value="yes">
+                  <label for="radioMale">YES</label>
+                </span>
+                <span class="t-radio"><input type="radio" name="assignment" value="no" checked>
+                  <label for="radioFemale">NO</label>
+                </span>
+              </div>
+              }
+            </div>
+            <div class="form-group has-feedback others">
+              <label style="display: block;">Will component have exam ?</label>
+              @if(schedule.exam.equalsIgnoreCase("yes") || (!schedule.exam.equalsIgnoreCase("yes") && !schedule.exam.equalsIgnoreCase("no"))){
+              <div class="myRadio">
+                <span class="t-radio"><input type="radio" name="exam" value="yes" checked>
+                  <label for="radioMale">YES</label>
+                </span>
+                <span class="t-radio"><input type="radio" name="exam" value="no">
+                  <label for="radioFemale">NO</label>
+                </span>
+              </div>
+              }
+              @if(schedule.exam.equalsIgnoreCase("no")){
+              <div class="myRadio">
+                <span class="t-radio"><input type="radio" name="exam" value="yes">
+                  <label for="radioMale">YES</label>
+                </span>
+                <span class="t-radio"><input type="radio" name="exam" value="no" checked>
+                  <label for="radioFemale">NO</label>
+                </span>
+              </div>
+              }
+            </div>
+            <div class="form-group has-feedback">
+              <select name="train" class="form-control" id="trainingID">
+                <option value="">-- Choose period --</option>
+                @for( ip <- training ){
+                  <option value="@ip.id" @if(schedule.training.id.equals(ip.id)){selected}>@ip.tNames()</option>
+                }
+              </select>
+            </div>
+
+            <div class="form-group has-feedback">
+              <select name="dateRange" class="form-control" id="dateRange">
+                <option value="">-- Choose date range --</option>
+                @for(d <- dateRanges) {
+                  <option value="@schedule.dateRange.id" @if(schedule.dateRange.id.equals(d.id)){selected}> @schedule.dateRange.toString</option>
+                }
+              </select>
+            </div>
+
+
+            <div class="form-group has-feedback">
+              <label for="date">Choose date</label>
+              <input type="text" value="@schedule.date.format("yyyy/MM/dd")" id="date" name="date" class="form-control datepicker">
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Starting hour:</label>
+                  <input value="@schedule.startHour" type="time" name="startHour" class="form-control timepicker">
+                </div>
+
+                <div class="col-md-6">
+                  <label>Stopage hour:</label>
+                  <input value="@schedule.endHour"  type="time" name="endHour" class="form-control timepicker">
+                </div>
+              </div>
+                <!-- /.input group -->
+            </div>
+          </div>
+
+        </div>
+        <div class="box-footer clearfix">
+          <button type="submit" class="pull-right btn btn-default"> Update
+            <i class="fa fa-check-circle"></i></button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+}
+
+<script >
+        $('.datepicker').datepicker({
+          autoclose: true,
+          format:'yyyy/mm/dd',
+          todayHighlight:true
+        });
+</script>

@@ -1,0 +1,279 @@
+@(anounceRoles : List[AnounceRole], userType: String, loged: Boolean, user: Users)
+@import scala.Predef;var cle = React.isCleManager();
+@if(user != null && user.resetRequired) {
+    <div class="modal fade in" id="modal-default" style="display: block;
+        padding-right: 17px;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Update password before continue</h4>
+                </div>
+                <form action="@routes.UpdateForm.updatePassword(user.id)" method="POST" onsubmit="return allForms(this, true)">
+                    <div class="modal-body box-body">
+
+                        <div class="form-group has-feedback">
+                            <p>Enter old password</p>
+                            <input type="password" class="form-control" name="oldPassword">
+                        </div>
+                        <div class="form-group has-feedback">
+                            <p>Enter new password</p>
+                            <input type="password" class="form-control" name="password" min="6">
+                        </div>
+                        <div class="form-group has-feedback">
+                            <p>Confirm new password</p>
+                            <input type="password" class="form-control" name="password">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">
+                            Save changes <i class="fa fa-arrow-circle-o-right"></i></button>
+                    </div>
+                </form>
+            </div>
+                <!-- /.modal-content -->
+        </div>
+            <!-- /.modal-dialog -->
+    </div>
+}
+<header class="main-header light-shadow">
+        <!-- Logo -->
+    <a href="#" class="logo hidden-xs">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><img src="@routes.Assets.at("images/smLogo.png")" width="40"></span>
+            <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg"><img src="@routes.Assets.at("images/smLogo.png")" width="40"></span>
+    </a>
+        <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+        @if(user != null) {
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+        }
+
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+
+                @if(user != null && React.checkReg() ) {
+                    <li class="dropdown notifications-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                            <i class="fa fa-bell-o"></i> <span class="hidden-xs"> Notifications</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header text-center">You have notifications here</li>
+                            <li>
+                                    <!-- inner menu: contains the actual data -->
+                                <ul class="menu">
+                                    <li>
+                                        <a href="@routes.Application.sortPage("new")" class="dropdown-toggle clicker" data-toggle="dropdown">
+                                            <span class="pull-left">New applicants</span>
+                                            <span class="badge bg-yellow-active pull-right">@Applied.countable("",cle)</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="@routes.Application.sortPage("derefered")" class="dropdown-toggle clicker" data-toggle="dropdown">
+                                            <span class="pull-left">Deffered applicants</span>
+                                            <span class="badge bg-yellow-active pull-right">@Applied.countable("derefered",cle)</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="@routes.Application.sortPage("accepted")" class="dropdown-toggle clicker" data-toggle="dropdown">
+                                            <span class="pull-left">Pending applicants</span>
+                                            <span class="badge bg-yellow-active pull-right">@Applied.countable("accepted",cle)</span>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </li>
+                            <li class="footer"><a href="#">View all</a></li>
+                        </ul>
+                    </li>
+                    <li class="droping dropdown tasks-menu">
+                        <a href="@routes.Application.sortPage(":all")" class="dropdown-toggle clicker" data-toggle="dropdown" title="All Applications">
+                            <i class="ion-android-people"></i>
+                            <span class="label label-warning">@Applied.countable(":all",cle)</span>
+                            <span class="hidden-xs">Applicants</span>
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                    <!-- inner menu: contains the actual data -->
+                                <ul class="menu">
+                                    @for(i <- React.getTrainings() ) {
+                                        <li>
+                                            <a href="@routes.Application.sortIntake(i.intakeId())" class="dropdown-toggle clicker" data-toggle="dropdown">
+                                                <i class="fa fa-check"></i> @i.printIntake()
+                                            </a>
+                                        </li>
+                                    }
+                                    <li style="padding: 13px;" class="text-center">programs</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="droping dropdown tasks-menu">
+                        <a href="@routes.Application.allStudents()" class="dropdown-toggle clicker" data-toggle="dropdown">
+                            <i class="ion-ios-people"></i>
+                            <span class="label label-warning">@Student.count(cle)</span>
+                            <span class="hidden-xs">Students </span>
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                    <!-- inner menu: contains the actual data -->
+                                <ul style="width: 400px;" class="menu">
+                                @for(i: Training <- Training.cleAbout(cle) )  {
+                                    <li>
+                                        <a href="@routes.Application.studentByIntake(i.intakeId())" class="dropdown-toggle clicker" data-toggle="dropdown">
+                                            <i class="fa fa-check"></i> @i.printIntake()
+                                            <span class="label label-warning pull-right">@Student.countIntake(i.intakeId(),cle)</span>
+                                        </a>
+                                    </li>
+                                }
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                @if(user == null) {
+                    <li class="dropdown tasks-menu">
+                        <a href="@routes.Assets.at("guide/guide.pdf")" target="_blank">
+                            <i class="fa fa-language"></i>
+                            <span class="hidden-xs">User manual</span>
+                        </a>
+                    </li>
+                } else {
+                    <li>
+                        <a href="@routes.Application.academicPages("chat", "")" onclick="return chatData(this.href)" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class=""><i class="ion-android-chat"></i> <span class="hidden-xs hidden-sm">
+                                Forums</span></span>
+                            <span class="badge bg-yellow-active pull-right">@user.unread()</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#modal-default" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class=""><i class="ion-speakerphone"></i> <span class="hidden-xs hidden-sm">
+                                Announcements</span></span>
+                            <span class="badge bg-yellow-active pull-right"> @Counts.myAnnouncements(userType)</span>
+                        </a>
+                    </li>
+
+                }
+                @if(user != null) {
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="@routes.Assets.at(if(!user.profile.equals("")) {
+                                "uploads/" + user.profile
+                            } else {
+                                "images/boys.jpg"
+                            })" class="user-image" alt="User Image">
+                            <span class="hidden-xs  hidden-sm">@if(user != null) {@user.email}</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                                <!-- User image -->
+                            <div id="wig"><img src="@routes.Assets.at("images/loader2.gif")"></div>
+                            <li class="user-header" onclick="self.event.stopPropagation();
+                            I('#proImage').click()" style="cursor: pointer;">
+                                <img src="@routes.Assets.at(if(!user.profile.equals("")) {
+                                    "uploads/" + user.profile
+                                } else {
+                                    "images/boys.jpg"
+                                })" class="img-circle hover-opacity" alt="User Image">
+                                <p>
+                                    @if(user != null) { @user.email } <br>
+                                    <small>@if(user != null) {@user.role}</small>
+                                </p>
+                                <form action="@routes.Registration.changePhoto()" method="POST" style="display: none" enctype="multipart/form-data">
+                                    <input type="file" id="proImage" name="photo" onchange="show(I('#wig'));
+                                    this.parentNode.submit()"/>
+                                </form>
+                            </li>
+                                <!-- Menu Body -->
+
+                                <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div>
+                                    <a href="@routes.Application.renderRoles()"
+                                    class="btn btn-ilpd  btn-block text-left btn-flat" onclick="return changePro(this, event)">
+                                        Switch account
+                                        <i class="fa fa-chain pull-right"></i>
+                                    </a>
+                                    <a href="@routes.Application.updateUserProfile()"
+                                    onclick="return changePro(this, event)" class="btn btn-primary btn-block text-left btn-flat">
+                                        Profile
+                                        <i class="fa fa-user pull-right"></i></a>
+                                    <a href="@routes.Application.getOut" class="btn btn-primary btn-block text-left btn-flat">
+                                        Sign out
+                                        <i class="fa fa-sign-out pull-right"></i>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                    <!-- Control Sidebar Toggle Button -->
+
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<div class="new-message"></div>
+@if(user != null) {
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">List of announcements</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Deadline</th>
+                                    <th>Announcement title</th>
+                                    <th>Announcement body</th>
+                                    <th>Download</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @for(i : AnounceRole <- AnounceRole.allByUserRole(userType)) {
+                                    <tr>
+                                        <td width="90">
+                                            @if(i.announce.pubDate.format("yyyy-MM-dd") > (new Date().format("yyyy-MM-dd"))) {
+                                                <label style="color: green;">@i.announce.pubDate.format("yyyy-MM-dd")</label>
+                                            }
+                                            @if(i.announce.pubDate.format("yyyy-MM-dd") <= (new Date().format("yyyy-MM-dd"))) {
+                                                <label style="color: red;">@i.announce.pubDate.format("yyyy-MM-dd")</label>
+                                            }
+                                        </td>
+                                        <td>@i.announce.title</td>
+                                        <td>@i.announce.content</td>
+                                        <td>
+                                        @if(i.announce.attachment != null && !i.announce.attachment.equals("")) {
+                                            <a title="Download" href="@routes.Application.downloadAnnounce(i.announce.id)" data-id="@i.announce.id" class="btn btn-default btn-flat"><i class="fa fa-download"></i>
+                                            </a>
+                                        } else {
+                                            No file
+                                        }
+                                        </td>
+                                    </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+                <!-- /.modal-content -->
+        </div>
+            <!-- /.modal-dialog -->
+    </div>
+}

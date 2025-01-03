@@ -1,0 +1,63 @@
+@( stuList : List[Student] , train : Training , comps : models.Component,lecture: Lecture )
+@import scala.Predef;var compMax=ComponentMax.componentMax(comps.id,lecture.id, train.id);var reMax=0.0;var exMax=0.0; var inc =1;
+<h4>&nbsp; @train.tNames()</h4>
+<script>
+        (function (res) {
+          var table = I(".marks-table");
+          manageEditing( table );
+        })(1);
+</script>
+@if(compMax!=null){
+  @(reMax=compMax.researchMax)
+  @(exMax=compMax.examMax)
+}
+  <div style="padding-bottom: 50px">
+    <table class="table table-bordered marks-table text-center">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Student <b>/</b> Comp</th>
+          <th class="text-center" colspan="3">@comps.compName</th>
+        </tr>
+        <tr>
+          <th>#</th>
+          <th>Reg Numbers</th>
+          <th>CAT (@Student.rounding(comps.module.catMax))</th>
+          <th>Re-Ex (@Student.rounding(comps.module.reMax))- <strong class="text-info">@reMax</strong> </th>
+          <th>EXAM (@Student.rounding(comps.module.examMax)) - <strong class="text-info">@exMax</strong> </th>
+        </tr>
+      </thead>
+      <tbody>
+      @for( i <- stuList ){
+        <tr class="text-center">
+          <td>@inc</td>
+          <td style="vertical-align: middle" class="text-left">@i.regNo
+          @if(i.status.equalsIgnoreCase("RETAKE-MODULES")){
+            <span class="label bg-red">R</span>
+          }
+          </td>
+          <td>
+            <div class="has-feedback">
+              <span>
+              @Student.rounding(Counts.getStudentCatMarksComponent(i.id, comps.id))
+              </span>
+            </div>
+          </td>
+          <td>
+            <div class="has-feedback">
+              <span>
+              @Student.rounding(Counts.getStudentResearchMarks(i.id, comps.id))
+              </span>
+            </div>
+          </td>
+          <td>
+            <div class="has-feedback">
+              <div class="editable" data-stu="@i.id" data-comp="@comps.id" data-type="EXAM" max="@exMax">@i.isMyMarks(comps.id,"EX")</div>
+            </div>
+          </td>
+        </tr>
+        @(inc = inc +1)
+      }
+      </tbody>
+    </table>
+  </div>

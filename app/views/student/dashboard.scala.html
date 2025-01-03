@@ -1,0 +1,139 @@
+@(schedules: List[Schedule], training: Training)
+
+<section class="content-header">
+    <h1>
+        Dashboard<small>upcoming programs calendar </small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+        <li class="active">Dashboard  </li>
+    </ol>
+</section>
+<section class="content">
+    @if(schedules == null || training == null) {
+        <div class="alert alert-info">
+            <h4><i class="fa fa-warning"></i>
+                    Nothing to show right now. Note, if your application process is not completely finished please finish it first and wait instution to approve you.</h4>
+        </div>
+    } else {
+        <div class="row">
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="small-box bg-aqua">
+                            <div class="inner">
+                                <h3>@Counts.getTotalModules(training)</h3>
+
+                                <p>Modules</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-ios-list-outline"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">
+                                <span class="handle ui-sortable-handle">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                    <i class="fa fa-ellipsis-v"></i>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="small-box bg-aqua">
+                            <div class="inner">
+                                <h3>@Counts.getTotalComponents(training)</h3>
+                                <p>Components</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-android-list"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">
+                                <span class="handle ui-sortable-handle">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                    <i class="fa fa-ellipsis-v"></i>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="box box-primary">
+                    <div class="box-header ui-sortable-handle with-border" style="cursor: move;">
+                        <i class="ion ion-clipboard"></i>
+                        <h3 class="box-title">Up coming class schedule</h3>
+                    </div>
+                    <div class="box-body">
+                        <ul class="todo-list ui-sortable">
+                        @for(s <- schedules) {
+                            <li>
+                                <span>
+                                        <!-- todo text -->
+                                    <span class="text">@s.component.compName
+                                    <span class=" text-info"><small> by @s.lecture.hisNames()</small></span>
+                                    </span>
+                                </span>
+                                <span class="label label-default pull-right" style="font-size: x-small">
+                                    <small>
+                                        <i class="ion-android-alarm-clock"></i>
+                                        @s.date.format("EEEE , dd-MMMM-yyyy") : @s.getHour
+                                    </small>
+                                </span>
+                            </li>
+                        }
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header ui-sortable-handle with-border" style="cursor: move;">
+                        <i class="ion ion-clipboard"></i>
+                        <h3 class="box-title">List of our modules</h3>
+                    </div>
+                    <div class="box-body">
+                        <ul class="todo-list ui-sortable">
+                        @for(m <- Counts.getModulesList(training)) {
+                            <li>
+                                <span class="handle ui-sortable-handle">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                    <i class="fa fa-ellipsis-v"></i>
+                                </span>
+                                    <!-- todo text -->
+                                <span class="text">@m.getString("name")</span>
+                            </li>
+                        }
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header ui-sortable-handle with-border" style="cursor: move;">
+                        <i class="ion ion-clipboard"></i>
+                        <h3 class="box-title">List of our components</h3>
+                    </div>
+                    <div class="box-body">
+                        <ul class="todo-list ui-sortable">
+                        @for(m <- Counts.getComponentsList(training)) {
+                            <li>
+                                <span class="handle ui-sortable-handle">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                    <i class="fa fa-ellipsis-v"></i>
+                                </span>
+                                    <!-- todo text -->
+                                <span class="text">@m.getString("name")</span>
+                            </li>
+                        }
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</section>

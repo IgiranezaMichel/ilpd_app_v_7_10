@@ -1,0 +1,82 @@
+@(internships:List[Internship])
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-ilpd">
+            <div class="box-header with-border">
+                <h3 class="box-title">List of uploaded internships</h3>
+                <div class="box-tools">
+                    <div align="right" class="left-form">
+                        <button id="meBut" class="btn btn-primary" onclick="addNew(this, event)">
+                            <i class="fa fa-plus-circle"></i> Add new</button>
+                        <div class="loginForm" id="form1" no-prop="true">
+
+                            <form action="@routes.StudentController.saveInternship()" method="POST" onsubmit="return allForms(this)">
+                                <div class="box box-info">
+                                    <div class="box-header text-left resp-width with-border">
+                                        <i class="fa fa-plus-circle"></i>
+                                        <h3 class="box-title">New internship</h3>
+                                    </div>
+                                    <div class="box-body text-left">
+
+                                        <div class="form-group has-feedback">
+                                            <label for="description">Description</label>
+                                            <textarea class="form-control" id="description" name="description"></textarea>
+                                        </div>
+                                        <div class="form-group has-feedback">
+                                            <label for="photo">Attachment</label>
+                                            <br>
+                                            <input type="file" class="hide" name="attachment" id="image-upload"/>
+                                            <button type="button" class="btn btn-info btn-block" onclick="I('#image-upload').click()">
+                                                Add attachment </button>
+                                            <span id="error" class="text-red"></span>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="box-footer clearfix">
+                                        <button  id="btnConfirm"
+                                        type="submit" class="pull-right btn btn-primary">
+                                            Upload <i class="fa fa-check-circle"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <!-- /.box-header -->
+            <div class="box-body">
+                <div class="">
+                    <table class="table table table-hover table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>File</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for(m <- internships) {
+                                <tr>
+                                    <td>@m.description</td>
+                                    <td>
+                                        <a target="_blank" href="@routes.Application.updateAll(m.id,"downloadInternship")"
+                                        class="btn btn-ilpd" title="Download">
+                                            <i class="fa fa-download"></i>
+                                            Download
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

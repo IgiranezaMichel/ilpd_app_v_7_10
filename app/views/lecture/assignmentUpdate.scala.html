@@ -1,0 +1,125 @@
+@( assignment: Assignment , myAssign : List[Component] , trains : List[Training])
+
+
+<div class="loginForm">
+  <form action="@routes.Registration.updateAssignment(assignment.id)"method="POST" onsubmit="return allForms(this)">
+    <div class="box box-info">
+      <div class="box-header text-left resp-width">
+        <i class="fa fa-envelope"></i>
+        <h3 class="box-title">Update assignments</h3>
+      </div>
+      <div class="box-body">
+        <div style="size: 12px;" class="form-group has-feedback pull-left">
+          @if(assignment.types.equalsIgnoreCase("assignment")){
+          <div class="col-md-6">
+            <span class="t-radio"><input type="radio" id="radioMale" name="types" value="assignment" checked>
+              <label for="radioMale">Assignment</label>
+            </span>
+          </div>
+          <div class="col-md-6">
+            <span class="t-radio"><input type="radio" id="radioFemale" name="types" value="research">
+              <label for="radioFemale">Research</label>
+            </span>
+          </div>
+
+          }
+        <input type="hidden" name=attachment" value="@assignment.attachment">
+          @if(assignment.types.equalsIgnoreCase("research")){
+          <div class="col-md-6">
+            <span class="t-radio"><input type="radio" id="radioMale" name="types" value="assignment">
+              <label for="radioMale">Assignment</label>
+            </span>
+          </div>
+          <div class="col-md-6">
+            <span class="t-radio"><input type="radio" id="radioFemale" name="types" value="research" checked>
+              <label for="radioFemale">Research</label>
+            </span>
+          </div>
+          }
+          @if(!assignment.types.equalsIgnoreCase("research") && !assignment.types.equalsIgnoreCase("assignment")){
+          <div class="col-md-6">
+            <span class="t-radio"><input type="radio" id="radioMale" name="types" value="assignment">
+              <label for="radioMale">Assignment</label>
+            </span>
+          </div>
+          <div class="col-md-6">
+            <span class="t-radio"><input type="radio" id="radioFemale" name="types" value="research">
+              <label for="radioFemale">Research</label>
+            </span>
+          </div>
+          }
+        </div>
+        <div class="form-group has-feedback">
+          <p>Choose Component</p>
+          <select class="form-control" name="comp">
+            <option value="">-- Choose Component --</option>
+            @for( i <- myAssign ){
+              <option value="@i.id" @if(assignment.component.id.equals(i.id)){ selected="selected" }>@i.compName (@i.module.program.programAcronym)</option>
+            }
+          </select>
+        </div>
+        <div class="form-group has-feedback">
+          <p>Choose period class </p>
+          <select class="form-control" name="trainings" id="trainingsID">
+            <option value="">-- Choose period class --</option>
+            @for( i <- trains ){
+              <option value="@i.id" @if(assignment.training.id.equals(i.id)){ selected="selected" }>@i.tNames()</option>
+            }
+          </select>
+        </div>
+        <div class="form-group has-feedback">
+          <p>Assignment title</p>
+          <input type="text" class="form-control" name="assignmentTitle" autocomplete="off" placeholder="Update assignment title" value="@assignment.assignmentTitle"/>
+        </div>
+        <div class="form-group has-feedback">
+          <p>Assignment description</p>
+          <input type="text" class="form-control" name="description" autocomplete="off" placeholder="Update assignment details" value="@assignment.description"/>
+        </div>
+        <input type="hidden" name="attachment" value="@assignment.attachment">
+        <div class="form-group has-feedback">
+          <p>Start date</p>
+          <input type="text" class="form-control" name="startDate" placeholder="Enter startDate" id="start@assignment.id" autocomplete="off" value="@assignment.startDate.format("yyyy-MM-dd")" />
+        </div>
+        <script >
+                birthPicker = new Pikaday({
+                  field: document.getElementById('date@assignment.id'),
+                  minDate: new Date(1680,12,31),
+                  formatStrict: true,
+                  yearRange:200,
+                });
+                birthPicker = new Pikaday({
+                  field: document.getElementById('start@assignment.id'),
+                  minDate: new Date(1680,12,31),
+                  formatStrict: true,
+                  yearRange:200,
+                })
+        </script>
+        <div class="form-group has-feedback">
+          <p>End date</p>
+          <input type="text" class="form-control" name="endDate" placeholder="Enter endDate" id="date@assignment.id" autocomplete="off" value="@assignment.endDate.format("yyyy-MM-dd")" />
+        </div>
+        <div class="form-group has-feedback">
+          <p>Choose assignment type</p>
+          <select class="form-control" name="grouped">
+            @if(assignment.grouped){
+              <option value="true">Group work</option>
+              <option value="false">Individual</option>
+            }
+            @if(!assignment.grouped){
+              <option value="false">Individual</option>
+              <option value="true">Group work</option>
+            }
+          </select>
+        </div>
+        <div class="form-group has-feedback">
+          <label for="">Assignment Max</label>
+          <input type="text" name="max" id="max" value="@assignment.max" class="form-control" placeholder="Assignment max marks">
+        </div>
+      </div>
+      <div class="box-footer clearfix">
+        <button type="submit" class="pull-right btn btn-default">Update
+          <i class="fa fa-arrow-circle-right"></i></button>
+      </div>
+    </div>
+  </form>
+</div>

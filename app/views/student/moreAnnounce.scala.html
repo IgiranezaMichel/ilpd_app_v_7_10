@@ -1,0 +1,11 @@
+@( announce: Announce)
+
+<div class="has-feedback">
+  <div class="">
+    @announce.content
+  </div>
+  <div style="margin:25px;">
+    <div><a class="btn btn-primary btn-block super-radius" href="@routes.Application.downloadAnnounce(announce.id)"><i class="fa fa-download"></i> Download attachment</a></div>
+  </div>
+  <div class="date-cell">@announce.date.format("dd-MM-yyyy h:m:s")</div> [@announce.id]
+</div>

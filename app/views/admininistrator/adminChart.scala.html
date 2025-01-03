@@ -1,0 +1,1653 @@
+@(allProgram: List[Program] , cle : Boolean )
+@import scala.Predef;
+<section class="content-header">
+    <h1>
+        Dashboard<small>Summary of institution</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+        <li class="active">Dashboard</li>
+    </ol>
+</section>
+<script >
+        $('.count').each(function () {
+            var $this = $(this);
+            jQuery({ Counter: 0 }).animate({ Counter: $this.text() }, {
+                duration: 1000,
+                easing: 'swing',
+                step: function () {
+                    $this.text(Math.ceil(this.Counter));
+                }
+            });
+        });
+</script>
+<section class="content">
+    @if(session().containsKey("admin") && !session().containsKey("VRAC")) {
+        <div class="row">
+            <div class="col-md-3 col-sm-6">
+                <div class="info-box">
+                    <span class="info-box-icon bg-aqua">
+                        <i class="ion ion-ios-gear-outline"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">System users</span>
+                        <span class="info-box-number count">@Counts.getTotalSystemUsers </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="info-box">
+                    <span class="info-box-icon bg-blue-gradient">
+                        <i class="ion ion-ios-home-outline"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Campuses</span>
+                        <span class="info-box-number count"> @Counts.getTotalBranches</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="info-box">
+                    <span class="info-box-icon bg-green-gradient">
+                        <i class="ion ion-ios-people"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Instructors</span>
+                        <span class="info-box-number count">@Counts.getTotalInstructors</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="info-box">
+                    <span class="info-box-icon bg-red-gradient">
+                        <i class="ion ion-android-alarm-clock"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total sessions</span>
+                        <span class="info-box-number count">@Session.finder.where().eq("delete_status", false).findRowCount()</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="info-box">
+                    <span class="info-box-icon bg-aqua-gradient">
+                        <i class="ion ion-ios-paper-outline"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Programs</span>
+                        <span class="info-box-number count">@Counts.getTotalPrograms</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="info-box">
+                    <span class="info-box-icon bg-blue-gradient">
+                        <i class="ion ion-ios-book-outline"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Study modes</span>
+                        <span class="info-box-number count">@StudyMode.find.where().eq("delete_status", false).findRowCount()</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-green-active">
+                        <i class="ion ion-ios-calendar-outline"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Years</span>
+                        <span class="info-box-number">
+                            <span class="label label-default count">@AcademicYear.find.where().eq("delete_status", false).findRowCount()</span>
+                            <small> <label class="label label-success">Active: <span class=" count">@AcademicYear.activeTotal()</span> </label>
+                            </small>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-red-active">
+                        <i class="ion ion-ios-clock-outline"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Periods</span>
+                        <span class="info-box-number count">@Training.find.where().eq("delete_status", false).findRowCount() <small></small></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if( React.checkReg()  || session().containsKey("Planning")) {
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-aqua-gradient">
+                        <i class="ion ion-ios-checkmark-outline"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text text-aqua">Approved students</span>
+                        <hr>
+                        <span class="info-box-number">
+                            <label class="label label-info count">@Student.number(cle)</label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-red-gradient">
+                        <i class="ion ion-android-cancel"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text text-red">Rejected applicants</span>
+                        <hr>
+                        <span class="info-box-number">
+                            <label class="label label-danger count"> @Applied.rejectedNbr(cle)</label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-green-gradient">
+                        <i class="ion ion-ios-people-outline"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text text-green">New Applicants</span>
+                        <hr>
+                        <span class="info-box-number">
+                            <label class="label label-success count">@Applied.number(cle,"")</label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-red-gradient">
+                        <i class="ion ion-ios-close-outline"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text text-red">Defered</span>
+                        <hr>
+                        <span class="info-box-number">
+                            <label class="label label-danger count"> @Applied.deferredNbr(cle)</label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if(session().containsKey("Rector") || session().containsKey("VRAC")) {
+        <section class="content">
+            @if(!session().containsKey("VRAC")) {
+                <div class="row">
+                    <div class="col-md-3 col-sm-6">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-aqua">
+                                <i class="ion ion-ios-gear-outline"></i>
+                            </span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">System users</span>
+                                <span class="info-box-number count">@Counts.getTotalSystemUsers </span>
+                            </div>
+                                <!-- /.info-box-content -->
+                        </div>
+                            <!-- /.info-box -->
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-blue-gradient">
+                                <i class="ion ion-ios-home-outline"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Campuses</span>
+                                <span class="info-box-number count"> @Counts.getTotalBranches</span>
+                            </div>
+                                <!-- /.info-box-content -->
+                        </div>
+                            <!-- /.info-box -->
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-green-gradient">
+                                <i class="ion ion-ios-people"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">Instructors</span>
+                                <span class="info-box-number count">@Counts.getTotalInstructors</span>
+                            </div>
+                                <!-- /.info-box-content -->
+                        </div>
+                            <!-- /.info-box -->
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-red-gradient">
+                                <i class="ion ion-android-alarm-clock"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">Total sessions</span>
+                                <span class="info-box-number count">@Session.finder.where().eq("delete_status", false).findRowCount()</span>
+                            </div>
+                                <!-- /.info-box-content -->
+                        </div>
+                            <!-- /.info-box -->
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-aqua-gradient">
+                                <i class="ion ion-ios-paper-outline"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Programs</span>
+                                <span class="info-box-number count">@Counts.getTotalPrograms</span>
+                            </div>
+                                <!-- /.info-box-content -->
+                        </div>
+                            <!-- /.info-box -->
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-blue-gradient">
+                                <i class="ion ion-ios-book-outline"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Study modes</span>
+                                <span class="info-box-number count">@StudyMode.find.where().eq("delete_status", false).findRowCount()</span>
+                            </div>
+                                <!-- /.info-box-content -->
+                        </div>
+                            <!-- /.info-box -->
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-green-active">
+                                <i class="ion ion-ios-calendar-outline"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">Years</span>
+                                <span class="info-box-number">
+                                    <span class="label label-default count">@AcademicYear.find.where().eq("delete_status", false).findRowCount()</span>
+                                    <small> <label class="label label-success">
+                                        Active: <span class=" count">@AcademicYear.activeTotal()</span> </label>
+                                    </small>
+                                </span>
+                            </div>
+                                <!-- /.info-box-content -->
+                        </div>
+                            <!-- /.info-box -->
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-red-active">
+                                <i class="ion ion-ios-clock-outline"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">Periods</span>
+                                <span class="info-box-number count">@Training.find.where().eq("delete_status", false).findRowCount() <small></small></span>
+                            </div>
+                                <!-- /.info-box-content -->
+                        </div>
+                            <!-- /.info-box -->
+                    </div>
+                </div>
+            }
+            <div class="row">
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-aqua-gradient">
+                            <i class="ion ion-ios-checkmark-outline"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text text-aqua">Provisionally accepted</span>
+                            <hr>
+                            <span class="info-box-number">
+                                <label class="label label-info count">@Applied.countable("accepted")</label>
+                            </span>
+                        </div>
+                            <!-- /.info-box-content -->
+                    </div>
+                        <!-- /.info-box -->
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-red-gradient">
+                            <i class="ion ion-android-cancel"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text text-red">Rejected applicants</span>
+                            <hr>
+                            <span class="info-box-number">
+                                <label class="label label-danger count"> @Applied.finder.where().eq("delete_status", false).eq("application_status", "rejected").findRowCount()</label>
+                            </span>
+                        </div>
+                            <!-- /.info-box-content -->
+                    </div>
+                        <!-- /.info-box -->
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-green-gradient">
+                            <i class="ion ion-ios-people-outline"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text text-green">New Applicants</span>
+                            <hr>
+                            <span class="info-box-number">
+                                <label class="label label-success count">@Applied.countable("")</label>
+                            </span>
+                        </div>
+                            <!-- /.info-box-content -->
+                    </div>
+                        <!-- /.info-box -->
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-red-gradient">
+                            <i class="ion ion-ios-close-outline"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text text-red">Defered</span>
+                            <hr>
+                            <span class="info-box-number">
+                                <label class="label label-danger count"> @Applied.finder.where().eq("delete_status", false).eq("application_status", "defered").findRowCount()</label>
+                            </span>
+                        </div>
+                            <!-- /.info-box-content -->
+                    </div>
+                        <!-- /.info-box -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-sm-6">
+                        <!-- small box -->
+                    <div class="small-box bg-yellow">
+                        <div class="inner">
+                            <h3>
+                            @models.stock.Item.finder.where().eq("deleteStatus",false).findRowCount()
+                            </h3>
+                            <p>Items</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-bag"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                    <!-- ./col -->
+                <div class="col-lg-3 col-sm-6">
+                        <!-- small box -->
+                    <div class="small-box bg-aqua">
+                        <div class="inner">
+                            <h3>@models.stock.Item.finder.where().eq("deleteStatus",false).eq("iType","Consumable").findRowCount()</h3>
+                            <p>Consumable items</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-bag"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                    <!-- ./col -->
+                <div class="col-lg-3 col-sm-6">
+                        <!-- small box -->
+                    <div class="small-box bg-blue">
+                        <div class="inner">
+                            <h3>@models.stock.Item.finder.where().eq("deleteStatus",false).eq("iType","Non-consumable").findRowCount()</h3>
+                            <p>Non-Consumable items</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-bag"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                    <!-- ./col -->
+                <div class="col-lg-3 col-sm-6">
+                        <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h3>@models.stock.Category.finder.where().eq("deleteStatus",false).findRowCount()</h3>
+                            <p>Items categories</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                    <!-- ./col -->
+                <div class="col-lg-3 col-sm-6">
+                        <!-- small box -->
+                    <div class="small-box bg-yellow-gradient">
+                        <div class="inner">
+                            <h3>@models.stock.Group.finder.where().eq("deleteStatus",false).findRowCount()</h3>
+                            <p>Category groups</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-person-add"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                    <!-- ./col -->
+                <div class="col-lg-3 col-sm-6">
+                        <!-- small box -->
+                    <div class="small-box bg-aqua-gradient">
+                        <div class="inner">
+                            <h3>@models.stock.Supplier.finder.where().eq("deleteStatus",false).findRowCount()</h3>
+                            <p>Suppliers</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-pie-graph"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                    <!-- ./col -->
+                    <!-- ./col -->
+                <div class="col-lg-3 col-sm-6">
+                        <!-- small box -->
+                    <div class="small-box bg-blue-gradient">
+                        <div class="inner">
+                            <h3>@models.stock.Position.finder.where().eq("deleteStatus",false).findRowCount()</h3>
+                            <p>Positions</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-pie-graph"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                    <!-- ./col --
+            ./col -->
+                <div class="col-lg-3 col-sm-6">
+                        <!-- small box -->
+                    <div class="small-box bg-green-gradient">
+                        <div class="inner">
+                            <h3>@models.stock.Unit.finder.where().eq("deleteStatus",false).findRowCount()</h3>
+                            <p>Units</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-erlenmeyer-flask"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                    <!-- ./col -->
+                    <!-- ./col -->
+                <div class="col-lg-3 col-sm-6">
+                        <!-- small box -->
+                    <div class="small-box bg-red">
+                        <div class="inner">
+                            <h3>@models.stock.Item.finder.where().eq("deleteStatus",false).lt("balanceQty",10).findRowCount()</h3>
+                            <p>Low stock items (i.e: < 10)</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                    <!-- ./col -->
+                    <!-- ./col -->
+                <div class="col-lg-3 col-sm-6">
+                        <!-- small box -->
+                    <div class="small-box bg-red">
+                        <div class="inner">
+                            <h3>@Counts.formatAmount(Counts.currentStockValue())</h3>
+                            <p>Current stock value</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-pie-graph"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                    <!-- ./col -->
+                    <!-- ./col -->
+                <div class="col-lg-3 col-sm-6">
+                        <!-- small box -->
+                    <div class="small-box bg-red">
+                        <div class="inner">
+                            <h3>@Counts.formatAmount(Counts.thisMonthStockOutItems())</h3>
+                            <p>This month stock out items</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-pie-graph"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                    <!-- ./col -->
+                    <!-- ./col -->
+                <div class="col-lg-3 col-sm-6">
+                        <!-- small box -->
+                    <div class="small-box bg-red">
+                        <div class="inner">
+                            <h3>@Counts.formatAmount(Counts.thisMonthStockInItems())</h3>
+                            <p>This Month stock in items</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-pie-graph"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                    <!-- ./col -->
+            </div>
+        </section>
+    }
+    @if( React.checkReg() || session().containsKey("admin") || session().containsKey("Rector") || session().containsKey("VRAC")  || session().containsKey("Planning")) {
+        <script>
+
+                $(function () {
+                    //Float Line chart data
+                    $.getJSON("/action/applicant/gender/male/@cle/", function (results) {
+                        console.log(results);
+                        var barOptions = {
+                            series: {
+                                lines: {
+                                    show: true,
+                                    lineWidth: 1,
+                                    fill: true,
+                                    fillColor: {
+                                        colors: [{
+                                            opacity: 0.0
+                                        }, {
+                                            opacity: 0.0
+                                        }]
+                                    }
+                                }
+                            },
+                            points: {
+                                radius: 1
+                            }
+                            , yaxis: {
+                                tickDecimals: 0
+                            },
+                            xaxis: {
+                                tickDecimals: 0
+                            },
+                            colors: ["#0080CC"],
+                            grid: {
+                                color: "#999999",
+                                hoverable: true,
+                                clickable: true,
+                                tickColor: "#D4D4D4",
+                                borderWidth: 0
+                            },
+                            legend: {
+                                show: false
+                            },
+                            tooltip: true,
+                            tooltipOpts: {
+                                content: "Month: %x, Students: %y"
+                            }
+                        };
+                        var barData = {
+                            label: "bar",
+                            data: results
+                        };
+                        $.plot($("#lineChart1"), [barData], barOptions);
+                    });
+
+                    // Float Line chart data
+                    $.getJSON("/action/applicant/gender/female/@cle/", function (results) {
+                        console.log(results);
+                        var barOptions = {
+                            series: {
+                                lines: {
+                                    show: true,
+                                    lineWidth: 1,
+                                    fill: true,
+                                    fillColor: {
+                                        colors: [{
+                                            opacity: 0.0
+                                        }, {
+                                            opacity: 0.0
+                                        }]
+                                    }
+                                }
+                            }, points: {
+                                radius: 1
+                            }, yaxis: {
+                                tickDecimals: 0
+                            },
+                            xaxis: {
+                                tickDecimals: 0
+                            },
+                            colors: ["#DD4B39"],
+                            grid: {
+                                color: "#999999",
+                                hoverable: true,
+                                clickable: true,
+                                tickColor: "#D4D4D4",
+                                borderWidth: 0
+                            },
+                            legend: {
+                                show: false
+                            },
+                            tooltip: true,
+                            tooltipOpts: {
+                                content: "Month: %x, Students: %y"
+                            }
+                        };
+                        var barData = {
+                            label: "bar",
+                            data: results
+                        };
+                        $.plot($("#lineChart2"), [barData], barOptions);
+                    });
+
+                    /** BAR CHART**/
+
+                    $.getJSON("/dashboard/chart/program", function (results) {
+                        console.log(results);
+                        var bar_data = {
+                            data: results,
+                            color: '#3c8dbc'
+                        };
+                        $.plot('#bar-chart', [bar_data], {
+                            grid: {
+                                borderWidth: 1,
+                                borderColor: '#f3f3f3',
+                                tickColor: '#f3f3f3'
+                            },
+                            series: {
+                                bars: {
+                                    show: true,
+                                    barWidth: 0.5,
+                                    align: 'center'
+                                }
+                            },
+                            yaxis: {
+                                tickDecimals: 0
+                            },
+                            xaxis: {
+                                mode: 'categories',
+                                tickLength: 0
+                            }
+                        });
+                    });
+                    /* END BAR CHART */
+
+                    //                donut chart
+                    var data = $("#donut-chart2");
+                    var donutData = [
+                        {label: 'Male', data: data.attr("data-male"), color: '#00C0EF'},
+                        {label: 'Female', data: data.attr("data-female"), color: '#0073B7'}
+                    ];
+                    $.plot(data, donutData, {
+                        grid: {
+                            borderWidth: 1,
+                            borderColor: '#f3f3f3',
+                            tickColor: '#f3f3f3',
+                            hoverable: true,
+                            clickable: true
+                        },
+                        series: {
+                            pie: {
+                                show: true,
+                                radius: 1,
+                                innerRadius: 0.5,
+                                label: {
+                                    show: true,
+                                    radius: 2 / 3,
+                                    formatter: labelFormatter,
+                                    threshold: 0.1
+                                }
+                            }
+                        },
+                        legend: {
+                            show: true
+                        }
+                    });
+
+                    function labelFormatter(label, series) {
+                        return '<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">' + label + '<br>' + Math.round(series.percent) + '%</div>'
+                    }
+                });
+        </script>
+        <div class="row">
+            <div class="col-md-3 col-sm-6">
+                <div class="ibox float-e-margins box-shadow-normal">
+                    <div class="ibox-title">
+                        <span class="label label-info pull-right count">@Counts.getTotalModules(cle)</span>
+                        <h5><i class="fa fa-book"></i> Total modules</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="ibox float-e-margins box-shadow-normal">
+                    <div class="ibox-title">
+                        <span class="label label-primary pull-right count">@Counts.getTotalComponents(cle)</span>
+                        <h5><i class="fa fa-codepen"></i> Total components</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="ibox float-e-margins box-shadow-normal">
+                    <div class="ibox-title">
+                        <span class="label label-success pull-right count">@Counts.getTotalRooms</span>
+                        <h5><i class="fa fa-home"></i> Total rooms</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="ibox float-e-margins box-shadow-normal">
+                    <div class="ibox-title">
+                        <span class="label label-danger pull-right count">@Intake.finder.where().eq("delete_status", false).findRowCount()</span>
+                        <h5><i class="fa fa-calendar"></i> Total intakes</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="small-box bg-aqua-gradient">
+                    <div class="inner">
+                        <h3 class="count">@(Applied.countable("accepted") + Applied.rejectedNbr(cle) + Applied.number(cle,"") + Applied.deferredNbr(cle) + Student.number(cle))</h3>
+                        <p>Total applicants </p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-android-people"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="small-box bg-blue-gradient">
+                    <div class="inner">
+                        <h3 class="count">@Student.number(cle)</h3>
+                        <p>Total students </p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-android-contacts"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="small-box bg-green-gradient">
+                    <div class="inner">
+                        <h3 class="count">@Student.numberMale(cle)</h3>
+                        <p>Total male student </p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-male"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="small-box bg-red-gradient">
+                    <div class="inner">
+                        <h3 class="count">@Student.numberFemale(cle)</h3>
+                        <p>Total female student</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-female"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary  box-shadow-normal">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-male"></i> Students registration distribution by Gender</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove">
+                                <i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <p class="text-center text-blue">
+                                    <strong>Male</strong>
+                                </p>
+                                <div class="chart">
+                                    <div id="lineChart1" style="min-height: 250px"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <p class="text-center text-red">
+                                    <strong>Female</strong>
+                                </p>
+                                <div class="chart">
+                                    <div id="lineChart2" style="min-height: 250px"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <p class="text-center">
+                                    <strong>Gender statistics</strong>
+                                </p>
+                                <div class="progress-group">
+                                    <span class="progress-text">Male</span>
+                                    <span class="progress-number">
+                                        <b>@Counts.getMalePercentage(cle)</b>
+                                        <small>%</small>
+                                    </span>
+                                    <div class="progress sm">
+                                        <div class="progress-bar progress-bar-light-blue" style="width: @Counts.getMalePercentage(cle)%"></div>
+                                    </div>
+                                </div>
+                                <div class="progress-group">
+                                    <span class="progress-text">Female</span>
+                                    <span class="progress-number"><b>@Counts.getFemalePercentage(cle)</b>
+                                        <small>%</small></span>
+                                    <div class="progress sm">
+                                        <div class="progress-bar progress-bar-red" style="width: @Counts.getFemalePercentage(cle)%"></div>
+                                    </div>
+                                </div>
+                                <div class="progress-group">
+                                    <span class="progress-text">Total</span>
+                                    <span class="progress-number"><b>100</b>
+                                        <small>%</small></span>
+                                    <div class="progress sm">
+                                        <div class="progress-bar progress-bar-info" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+        @if( false ){
+            <section class="col-lg-7">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box box-primary  box-shadow-normal">
+                            <div class="box-header with-border">
+                                <i class="fa fa-bar-chart-o"></i>
+
+                                <h3 class="box-title"> Student distribution by Program</h3>
+
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div id="bar-chart" style="height: 300px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="box box-primary  box-shadow-normal">
+                            <div class="box-header with-border">
+                                <i class="ion ion-android-people"></i>
+                                <h3 class="box-title">5 Last registered students</h3>
+                            </div>
+                            <div class="box-body" style="padding-bottom: 20px;">
+                                <ul class="todo-list">
+                                @for(i:Student <- Student.all(5)) {
+                                    <li>
+                                            <!-- drag handle -->
+                                        <!-- todo text -->
+                                        <span class="text" style="font-size: 12px"><label class="user-loaded">
+                                            <img src="@routes.Assets.at(Counts.profileImage(i.applicant.profile))" class="user-image" alt="User Image">
+                                        </label>
+                                            @i.firstName @i.familyName
+                                        </span>
+                                            <!-- Emphasis label -->
+                                        @if(i.applicant.gender.equalsIgnoreCase("male")){
+                                            <small class="label label-info pull-right">@i.applicant.gender</small>
+                                        }else{
+                                            <small class="label label-primary pull-right">@i.applicant.gender</small>
+                                        }
+
+                                            <!-- General tools such as edit or delete-->
+                                    </li>
+                                }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="box box-primary  box-shadow-normal">
+                            <div class="box-header with-border">
+                                <i class="ion ion-android-home"></i>
+                                <h3 class="box-title">Rooms by campus</h3>
+                            </div>
+                            <div class="box-body" style="padding-bottom: 20px;">
+                                <table class="table table-condensed table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Campus</th>
+                                            <th>Rooms</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    @for(campus:Campus<-Campus.all()){
+                                        <tr>
+                                            <td>@campus.campusName</td>
+                                            <td>@campus.myRooms.size()</td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+                <!-- /.Left col -->
+            <section class="col-lg-5 connectedSortable">
+                <div class="box box-primary  box-shadow-normal">
+                    <div class="box-header with-border">
+                        <i class="fa fa-pie-chart"></i>
+                        <h3 class="box-title">Students registration </h3>
+                    </div>
+                        <!-- /.box-header -->
+                    <div class="box-body">
+                        <div data-male="@Counts.getTotalMale()" data-female="@Counts.getTotalFemale()" id="donut-chart2" style="height: 300px;"></div>
+                    </div>
+                </div>
+                <div class="box box-primary  box-shadow-normal">
+                    <div class="box-header with-border">
+                        <i class="fa fa-graduation-cap"></i>
+                        <h3 class="box-title">Students registration by Program</h3>
+                    </div>
+                        <!-- /.box-header -->
+                    <div class="box-body">
+                            <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
+                        <ul class="todo-list">
+                        @for(i <- allProgram) {
+                            <li>
+                                    <!-- drag handle -->
+                                <span class="handle">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                    <i class="fa fa-ellipsis-v"></i>
+                                </span>
+                                    <!-- todo text -->
+                                <span class="text" style="font-size: 12px">@i.programName.toUpperCase()</span>
+                                <span class="badge  bg-blue-gradient pull-right">@i.myStudents()</span>
+                            </li>
+                        }
+                        </ul>
+                    </div>
+                </div>
+                    <!-- /.box -->
+                <div class="box box-primary  box-shadow-normal">
+                    <div class="box-header with-border">
+                        <i class="fa fa-users"></i>
+
+                        <h3 class="box-title">5 Last registered users</h3>
+
+                    </div>
+                        <!-- /.box-header -->
+                    <div class="box-body" style="padding-bottom: 20px;">
+                            <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
+                        <ul class="todo-list">
+                        @for(i:Users <- Users.five()) {
+                            <li>
+                                    <!-- todo text -->
+                                <span class="text" style="font-size: 12px">
+                                    <label class="user-loaded">
+                                        <img src="@routes.Assets.at(Counts.profileImage(i.profile))" class="user-image" alt="User Image">
+                                    </label>
+                                    @i.email</span>
+                                    <!-- Emphasis label -->
+                                <span class="label label-primary pull-right">@i.role</span>
+                            </li>
+                        }
+                        </ul>
+                    </div>
+
+                </div>
+            </section>
+                <!-- right col -->
+        }
+        </div>
+    }
+    @if(session().containsKey("Instructor")) {
+        <div class="row">
+            <div class="col-lg-6 col-sm-6">
+                    <!-- small box -->
+                <div class="small-box bg-aqua-gradient">
+                    <div class="inner">
+                        <h3 class="count">@Counts.countComponents(Lecture.byUser(Users.finderByMail(session.get("Instructor")).id).id)</h3>
+                        <p>Total components </p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-ios-book-outline"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-6">
+                    <!-- small box -->
+                <div class="small-box bg-blue-gradient">
+                    <div class="inner">
+                        <h3 class="count">@Counts.getTotalAssignments(Lecture.byUser(Users.finderByMail(session.get("Instructor")).id).id)</h3>
+                        <p>Total assignments </p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-edit"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-clock-o"></i> Today's schedule</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                                <!-- /.box-header -->
+                            <div class="box-body" style="padding: 20px">
+                                <div class="row">
+                                    <table class="table table-condensed table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Day</th>
+                                                <th>Time</th>
+                                                <th>Room</th>
+                                                <th>Campus</th>
+                                                <th>Program</th>
+                                                <th>Component</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Day</th>
+                                                <th>Time</th>
+                                                <th>Room</th>
+                                                <th>Campus</th>
+                                                <th>Program</th>
+                                                <th>Component</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                        @for(i <- Counts.getScheduleList(Lecture.byUser(Users.finderByMail(session.get("Instructor")).id).id)) {
+                                            <tr>
+                                                <td>@i.date.format("EEEE , dd/MM/yyyy") </td>
+                                                <td>@i.getHour()</td>
+                                                <td>@i.room.roomName</td>
+                                                <td>@i.training.iMode.campusProgram.campus.campusName</td>
+                                                <td>@i.training.iMode.campusProgram.program.programAcronym</td>
+                                                <td>@i.component.compName</td>
+                                            </tr>
+                                        }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">
+                                    <i class="ion ion-edit"></i>
+                                    Recent given assignments
+                                </h3>
+                            </div>
+                                <!-- /.box-header -->
+                            <div class="box-body">
+                                <table class="table table-condensed table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Component</th>
+                                            <th>Program</th>
+                                            <th>Type</th>
+                                        </tr>
+                                        @for(row <- Counts.getRecentAssignments(Lecture.byUser(Users.finderByMail(session.get("Instructor")).id).id)) {
+                                            <tr>
+                                                <td>@row.assignmentTitle</td>
+                                                <td>@row.component.compName</td>
+                                                <td>@row.component.module.program.programAcronym</td>
+                                                <td>
+                                                @if(row.grouped== false) {
+                                                    <span class="label label-primary">Individual</span>
+                                                } else {
+                                                    <span class="label label-success">Group</span>
+                                                }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                                <!-- /.box-body -->
+                            <div class="box-footer no-padding">
+                                <a href="#" class="btn center-block"> View more <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-clock-o"></i> My weekly schedule</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                                <!-- /.box-header -->
+                            <div class="box-body" style="padding: 20px">
+                                <div class="row">
+                                    <table class="table table-condensed table-striped table-hover table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Date and Time</th>
+                                                <th>Room</th>
+                                                <th>Program</th>
+                                                <th>Campus</th>
+                                                <th>Component</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Date and Time</th>
+                                                <th>Room</th>
+                                                <th>Program</th>
+                                                <th>Campus</th>
+                                                <th>Component</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                        @for(i <- Counts.getWeekTimeTable(Lecture.byUser(Users.finderByMail(session.get("Instructor")).id).id)) {
+                                            <tr>
+
+                                                <td>@i.date.format("EEEE , dd/MM/yyyy") : @i.getHour</td>
+                                                <td>@i.room.roomName</td>
+                                                <td>@i.training.iMode.campusProgram.campus.campusName</td>
+                                                <td>@i.training.iMode.campusProgram.program.programAcronym</td>
+                                                <td>@i.component.compName</td>
+                                            </tr>
+                                        }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">
+                                    <i class="ion ion-ios-book"></i>
+                                    Given components
+                                </h3>
+                            </div>
+                                <!-- /.box-header -->
+                            <div class="box-body">
+                                <table class="table table-condensed table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Name</th>
+                                            <th>Program</th>
+                                            <th>Credits</th>
+                                        </tr>
+                                        @for(i <- Counts.getGivenComponents(Lecture.byUser(Users.finderByMail(session.get("Instructor")).id).id)) {
+                                            <tr>
+                                                <td> @i.getString("code")</td>
+                                                <td> @i.getString("component")</td>
+                                                <td> @i.getString("program_acronym")</td>
+                                                <td> @i.getString("credits")</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                                <!-- /.box-body -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if(session().containsKey("Coordinator") || session().containsKey("mark_officer")) {
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                    <!-- small box -->
+                <div class="small-box bg-aqua-gradient">
+                    <div class="inner">
+                        <h3 class="count">@Counts.getTotalComponents(cle)</h3>
+                        <p>Total components </p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-ios-book-outline"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                    <!-- small box -->
+                <div class="small-box bg-aqua-gradient">
+                    <div class="inner">
+                        <h3 class="count">@Counts.getTotalModules(cle)</h3>
+                        <p>Total module </p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-ios-book-outline"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                    <!-- small box -->
+                <div class="small-box bg-aqua-gradient">
+                    <div class="inner">
+                        <h3 class="count">@Counts.getTotalAssignments()</h3>
+                        <p>Total assignments (@(new Date().format("yyyy")))</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-ios-list-outline"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                    <!-- small box -->
+                <div class="small-box bg-aqua-gradient">
+                    <div class="inner">
+                        <h3 class="count">@Counts.getTotalInstructors()</h3>
+                        <p>Total instructors</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-ios-people-outline"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-clock-o"></i> Today's schedule</h3>
+                            </div>
+                                <!-- /.box-header -->
+                            <div class="box-body" style="padding: 20px">
+                                <div class="row table-responsive">
+                                    <table class="table table-condensed table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Time</th>
+                                                <th>Room</th>
+                                                <th>Program</th>
+                                                <th>Component</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Time</th>
+                                                <th>Room</th>
+                                                <th>Component</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                        @for(s<-Counts.getScheduleList){
+                                            <tr>
+                                                <td>@s.getHour()</td>
+                                                <td>@s.room.roomName ( @s.room.roomCode )</td>
+                                                <td>@s.component.compName</td>
+                                            </tr>
+                                        }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">
+                                    <i class="ion ion-edit"></i>
+                                    Recent  assignments
+                                </h3>
+                            </div>
+                                <!-- /.box-header -->
+                            <div class="box-body table-responsive">
+                                <table class="table table-condensed table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Component</th>
+                                            <th>Program</th>
+                                            <th>Type</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Component</th>
+                                            <th>Program</th>
+                                            <th>Type</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    @for(ass<-Counts.recentAssignments){
+                                        <tr>
+                                            <td>@ass.assignmentTitle</td>
+                                            <td>@ass.component.compName</td>
+                                            <td>@ass.training.iMode.campusProgram.program.programAcronym</td>
+                                            <td>
+                                            @if(ass.grouped){
+                                                <span class="label label-default"> Individual </span>
+                                            }else{
+                                                <span class="label label-primary"> Group </span>
+                                            }
+                                            </td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                                <!-- /.box-body -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">
+                                    <i class="ion ion-ios-people"></i>
+                                    Recent instructors
+                                </h3>
+                            </div>
+                                <!-- /.box-header -->
+                            <div class="box-body table-responsive">
+                                <table class="table table-condensed table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    @for(comp<-Counts.recentInstructors){
+                                        <tr>
+                                            <td>@comp.names</td>
+                                            <td>@comp.email</td>
+                                            <td>@comp.phone</td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                                <!-- /.box-body -->
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">
+                                    <i class="ion ion-ios-book"></i>
+                                    Recent components
+                                </h3>
+                            </div>
+                                <!-- /.box-header -->
+                            <div class="box-body table-responsive">
+                                <table class="table table-condensed table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Name</th>
+                                            <th>Credits</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    @for(comp<-Counts.recentComponents){
+                                        <tr>
+                                            <td>@comp.code</td>
+                                            <td>@comp.compName</td>
+                                            <td>@comp.credits</td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                                <!-- /.box-body -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if(session().containsKey("Finance") || session().containsKey("Rector") || session().containsKey("VRAC") || session().containsKey("Planning")) {
+        <script >
+                $(function () {
+//                donut chart
+                    var data = $("#donut-chart");
+                    var donutData = [
+                        {label: 'Full paid', data: data.attr("data-paid"), color: '#00A65A'},
+                        {label: 'Paid nothing', data: data.attr("data-unpaid"), color: '#D33724'},
+                        {label: 'Paid few amount', data: data.attr("data-paid-few"), color: '#DB8B0B'}
+                    ];
+                    $.plot('#donut-chart', donutData, {
+                        grid: {
+                            borderWidth: 1,
+                            borderColor: '#f3f3f3',
+                            tickColor: '#f3f3f3',
+                            hoverable: true,
+                            clickable: true
+                        },
+                        series: {
+                            pie: {
+                                show: true,
+                                radius: 1,
+                                innerRadius: 0.5,
+                                label: {
+                                    show: true,
+                                    radius: 2 / 3,
+                                    formatter: labelFormatter,
+                                    threshold: 0.1
+                                }
+                            }
+                        },
+                        legend: {
+                            show: true
+                        }
+                    });
+
+                    function labelFormatter(label, series) {
+                        return '<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">' + label + '<br>' + Math.round(series.percent) + '%</div>'
+                    }
+
+//                bar chart
+
+                    /*
+         * BAR CHART
+         * ---------
+         */
+
+                    var barChart = $("#bar-chart1");
+
+                    var bar_data = {
+                        data: [['School_fees', barChart.attr('data-school')],['Registration_fees', barChart.attr('data-reg')], ['Accommodation', barChart.attr('data-accom')], ['Restoration', barChart.attr('data-resto')]],
+                        color: '#2E6EA4'
+                    };
+                    $.plot('#bar-chart1', [bar_data], {
+                        grid: {
+                            borderWidth: 1,
+                            borderColor: '#f3f3f3',
+                            tickColor: '#f3f3f3',
+                            hoverable: true,
+                            clickable: true
+                        },
+                        series: {
+                            bars: {
+                                show: true,
+                                barWidth: 0.5,
+                                align: 'center'
+                            }
+                        },
+                        xaxis: {
+                            mode: 'categories',
+                            tickLength: 0
+                        }, colors: ["#1ab394"],
+                        legend: {
+                            show: false
+                        },
+                        tooltip: true,
+                        tooltipOpts: {
+                            content: "%y"
+                        }
+                    })
+                    /* END BAR CHART */
+
+                });
+        </script>
+        <div class="row">
+            <div class="col-md-12">
+                <h4 class="text-blue text-uppercase">Financial dashboard</h4>
+            </div>
+            <div class="col-md-3">
+                    <!-- small box -->
+                <div class="small-box bg-primary">
+                    <div class="inner">
+                        <h3>@Counts.totalSchoolFees()</h3>
+                        <p>Tuition fees(Income)</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-money"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                    <!-- small box -->
+                <div class="small-box bg-primary">
+                    <div class="inner">
+                        <h3>@Counts.getRegistraionFees()</h3>
+                        <p>Registration fees(Income)</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-money"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                    <!-- small box -->
+                <div class="small-box bg-primary">
+                    <div class="inner">
+                        <h3 class="">@Counts.totalAccomodation()</h3>
+                        <p>Accommodation fees(Income)</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-money"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                    <!-- small box -->
+                <div class="small-box bg-primary">
+                    <div class="inner">
+                        <h3 class="">@Counts.totalRestauration()</h3>
+                        <p>Restoration fees(Income)</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-dollar"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="info-box box-shadow-normal">
+                    <span class="info-box-icon bg-green">
+                        <i class="ion ion-ios-person"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Students who fully paid </span>
+                        <span class="info-box-number count">@Counts.totalStudentPaidAll()</span>
+                    </div>
+                        <!-- /.info-box-content -->
+                </div>
+                    <!-- /.info-box -->
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="info-box box-shadow-normal">
+                    <span class="info-box-icon bg-yellow-active">
+                        <i class="ion ion-ios-person"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Students who paid few </span>
+                        <span class="info-box-number count">@Counts.totalStudentPaidFew()</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="info-box box-shadow-normal">
+                    <span class="info-box-icon bg-red-active">
+                        <i class="ion ion-ios-person"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Students who paid nothing</span>
+                        <span class="info-box-number count">@Counts.totalStudentPaidNothing()</span>
+                    </div>
+                        <!-- /.info-box-content -->
+                </div>
+                    <!-- /.info-box -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box box-primary box-shadow-normal">
+                    <div class="box-header with-border">
+                        <i class="fa fa-pie-chart"></i>
+
+                        <h3 class="box-title">Students payment graph</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div data-paid="@Counts.totalStudentPaidAll()" data-paid-few="@Counts.totalStudentPaidFew()" data-unpaid="@Counts.totalStudentPaidNothing()" id="donut-chart" style="height: 300px;"></div>
+                    </div>
+                        <!-- /.box-body-->
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="box box-primary box-shadow-normal">
+                    <div class="box-header with-border">
+                        <i class="fa fa-bar-chart"></i>
+
+                        <h3 class="box-title">Fees graph</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div data-school="@Counts.totalSchoolFees().replace(",", "")"  data-reg="@Counts.getRegistraionFees().replace(",", "")" data-resto="@Counts.totalRestauration().replace(",", "")" data-accom="@Counts.totalAccomodation().replace(",", "")" id="bar-chart1" style="height: 300px;"></div>
+                    </div>
+                        <!-- /.box-body-->
+                </div>
+            </div>
+        </div>
+    }
+
+
+</section>

@@ -1,0 +1,44 @@
+
+        <!-- Content Header (Page header) -->
+
+        <!-- Main content -->
+    <section class="content"  ng-app="myApp" ng-controller="myCtrl">
+        <div class="row">
+
+            </div>
+                <!--/.row -->
+        <div class="row">
+
+            <div class="col-md-12">
+                    <!-- Form Element sizes -->
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-graduation-cap"></i> Application admission approval</h3>
+                    </div>
+                    <div class="box-body app-user loading super-heighted">
+                        <div align="center"> </div>
+
+
+                        <script>
+                            var ref = "@routes.Application.showAppliedForm(Applied.lastUserId(null),"under")";
+                            var elem = I(".app-user");
+                            hoss.ajax({page:ref,o:elem},1,2,function(res){
+                                hoss.Clremove(elem,"loading");
+                            },function () {
+                                hoss.Clremove(elem,"loading");
+                            });
+                        </script>
+                    </div>
+                        <!-- /.box-body -->
+                </div>
+                    <!-- /.box -->
+
+                    <!-- /.box-body -->
+            </div>
+
+        </div>
+            <!--/.row -->
+
+    </section>
+        <!-- /.content -->
+    <!-- /.content-wrapper -->

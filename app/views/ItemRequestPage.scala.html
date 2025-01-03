@@ -1,0 +1,148 @@
+@(categories: List[models.stock.Category], requested: List[models.stock.Request])
+
+@import scala.Predef;var inc = 0;
+
+
+<section class="content">
+    <div class="row">
+        <div class="col-md-3">
+            <a href="#" class="btn btn-ilpd btn-block margin-bottom"><i class="fa fa-camera-retro"></i>
+                Propose new item </a>
+            <script >
+                    $(".auto-data a").click();
+            </script>
+                <!-- /. box -->
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Item's categories</h3>
+
+                    <div class="box-tools">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body no-padding">
+                    <ul class="nav nav-pills nav-stacked">
+                    @for(one <- categories) {
+                        <li @if(inc.equals(0)) {
+                            class="active auto-data"}>
+                            <a href="@routes.Application.requestPerCategory()" class="fetch-data">
+                                <i class="fa fa-circle text-red"></i>
+                                @one.name</a>
+                        </li>
+                        @(inc = inc + 1)
+                    }
+                    </ul>
+                </div>
+                    <!-- /.box-body -->
+            </div>
+                <!-- /.box -->
+        </div>
+            <!-- /.col -->
+        <div class="col-md-9">
+            <div class="box box-ilpd">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-bookmark-o text-blue"></i> List of items per category</h3>
+                        <!-- /.box-tools -->
+                </div>
+                    <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="mailbox-messages heighted load-data">
+                            <!-- /.table -->
+                    </div>
+                        <!-- /.mail-box-messages -->
+                </div>
+            </div>
+                <!-- /. box -->
+        </div>
+            <!-- /.col -->
+    </div>
+        <!-- /.row -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-ilpd">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-list"></i> My items request</h3>
+                </div>
+                    <!-- /.box-header -->
+                <div class="box-body">
+                    <table class="table  table-hover table-striped table-bordered  table-condensed  manageTable">
+                        <thead>
+                            <tr>
+                                <th>Request#</th>
+                                <th>Date</th>
+                                @*<th>Staff/unit</th>*@
+                                <th>Items</th>
+                                <th>Details</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for(r <- requested) {
+
+                            <tr>
+                                <td>@r.id</td>
+                                <td>@r.date.format("dd/MM/yyy , HH:mm")</td>
+                                @*<td>@r.employee.print() / @r.employee.unit.acronym</td>*@
+                                <td>@models.stock.StockMovement.totalRequest(r)</td>
+                                <td>
+                                    <button onclick="setUrl('@routes.Application.updateAll(r.id,"getRequest")')" class="btn btn-sm btn-info " data-toggle="modal" data-target="#requestDetailsModalIndividual"> More <i class="fa fa-arrow-circle-right"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                @if(r.status.equalsIgnoreCase("pending")) {
+                                    <span class="label label-info ">@r.status</span>
+                                } else {
+                                    @if(r.status.equalsIgnoreCase("approved")) {
+                                        <span class="label label-success ">@r.status</span>
+                                    } else {
+                                        @if(r.status.equalsIgnoreCase("Waiting")) {
+                                            <span class="label label-primary ">@r.status</span>
+                                        }else{
+                                            <span class="label label-danger">@r.status</span>
+                                        }
+                                    }
+                                }
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <!-- Modal -->
+<div id="requestDetailsModalIndividual" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Details for the request</h4>
+            </div>
+            <div class="modal-body ">
+                <div class="modal-loading div-hide" style="width: 50px;
+                    margin: auto;
+                    padding-top: 50px;
+                    padding-bottom: 50px;">
+                    <img src="@routes.Assets.at("images/loader2.gif")" alt="Loading.." style="width: 50px !important;
+                        height: 50px !important;">
+                    @*<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>*@
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="bodyResult">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+        $('.manageTable').DataTable();
+</script>

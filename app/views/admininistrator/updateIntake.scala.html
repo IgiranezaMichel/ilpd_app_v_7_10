@@ -1,0 +1,41 @@
+@( intake : Intake )
+
+
+@if( intake != null ){
+  <div class="loginForm">
+    <form action="@routes.UpdateForm.updateIntake(intake.id)"method="POST"onsubmit="return allForms(this)">
+      <div class="box box-info">
+        <div class="box-header text-left resp-width">
+          <i class="fa fa-envelope"></i>
+
+          <h3 class="box-title">Update year Intake</h3>
+        </div>
+        <div class="box-body">
+      <div class="form-group has-feedback">
+        <p>Intake name</p>
+        <input type="text" class="form-control" name="intakeName" autocomplete="off" placeholder="Update Intake Name" value="@intake.intakeName"/>
+      </div>
+      <div class="form-group has-feedback">
+        <p>Academic year</p>
+        <select class="form-control" name="intakeYear" escape="1">
+          <option value="">Not present</option>
+          @for( i <- AcademicYear.all() ){
+            <option value="@i.id">@i.yearName</option>
+          }
+          </select>
+      </div>
+      <div class="form-group has-feedback">
+        <p>registration Fees</p>
+        <input class="form-control" name="registrationFees" placeholder="Update registration Fees" value="@intake.registrationFees" number="true"/>
+      </div>
+        </div>
+        <div class="box-footer clearfix">
+          <button type="submit" class="pull-right btn btn-default">Update
+            <i class="fa fa-arrow-circle-right"></i></button>
+        </div>
+      </div>
+    </form>
+  </div>
+}else{
+  <div>Error With Reference</div>
+}

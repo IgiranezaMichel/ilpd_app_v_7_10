@@ -1,0 +1,66 @@
+@( schedule: Schedule , student: List[Student] , train : Training )
+
+<div class="box box-widget widget-user-2">
+  <div class="widget-user-header bg-fuchsia">
+    <div class="widget-user-image">
+      <img class="img-circle" src="@routes.Assets.at(Vld.imagePro(schedule.lecture.user.profile))" alt="User Avatar">
+    </div>
+    <h4 class="widget-user-username">@schedule.lecture.hisNames()</h4>
+    <h5 class="widget-user-desc">@train.tNames()
+        <span class="pull-right">@schedule.date.format("yyyy/MM/dd") : @schedule.date.format("EEEE")</span>
+    </h5>
+  </div>
+  <form action="@routes.Registration.saveAttendance(schedule.id)" method="POST" onsubmit="return simpleSave(this)">
+    <span class="error-place"></span>
+    <div class="box-body">
+      <ul class="nav nav-stacked">
+        <div class="row">
+          <div class="col-md-8">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <b>Student names</b>
+          </div>
+          <div class="col-md-2">
+            <span style="padding-left: 20px;">AM</span>
+          </div>
+          <div class="col-md-2">
+            <span style="padding-left: 20px;">PM</span>
+          </div>
+        </div>
+      @for( i <- student ) {
+        <li>
+          <a href="#">
+          <div class="row">
+            <div class="col-md-8">
+            @i.toString
+            </div>
+            <div class="col-md-2">
+            <span >
+            <label class="check-container">
+            <input type="checkbox" value="@i.id" name="attender[]" checked>
+            <span class="checkmark"></span>
+            </label>
+            </span>
+            </div>
+            <div class="col-md-2">
+            <span>
+            <label class="check-container">
+          <input type="checkbox" value="@i.id" name="attendedp[]" checked>
+          <span class="checkmark"></span>
+        </label>
+          </span>
+              </div>
+            </div>
+          </a>
+        </li>
+      }
+      </ul>
+    </div>
+    <br>
+  <div class="box-footer">
+    <div>
+      <button class="btn  btn-success pull-left" id="saveAttendanceBtn"> Save attendance <i class="fa fa-check-circle"></i></button>
+      <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+  </form>
+</div>

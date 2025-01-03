@@ -1,0 +1,72 @@
+
+@(list:List[models.stock.StockMovement])
+@import scala.Predef;var inc = 1;var total = 0.0;var total1 = 0.0;
+@main("Asset Inventory report by location (Building ), office",""){
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="invoice">
+                    <div class="row">
+                        <div class="row no-print">
+                            <div class="col-xs-12">
+                            @shared.printButton.render()
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 table-responsive">
+                            <h4>
+                                Asset Inventory report by location (Building ), officex
+                                <small class="pull-right">Date: @(new Date().format("dd-MM-yyyy"))</small>
+                            </h4>
+                            <table class="table  table-striped table-bordered" id="example">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Item name</th>
+                                        <th>Category-Group</th>
+                                        <th>Location-Block</th>
+                                        <th>Serial number</th>
+                                        <th>Tag number</th>
+                                        <th>Quantity</th>
+                                        <th>Unit price</th>
+                                        <th>Total price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @for(item <- list) {
+                                    <tr>
+                                        <td>@inc</td>
+                                        <td>@item.item.name</td>
+                                        <td>@item.item.category.acronym - @item.item.category.group.acronym</td>
+                                        <td>@item.locationName()</td>
+                                        <td>@item.serialNumber</td>
+                                        <td>@item.tagNumber</td>
+                                        <td>@item.confirmedQty</td>
+                                        <td>@Counts.formatAmount(item.unitPrice) Fwf</td>
+                                        <td>@Counts.formatAmount(item.unitPrice * item.confirmedQty) Fwf</td>
+                                    </tr>
+                                    @(inc = inc + 1)
+                                    @(total = total + item.unitPrice)
+                                    @(total1 = total1 + item.unitPrice)
+                                }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="7">TOTAL AMOUNT</td>
+                                        <td>@Counts.formatAmount(total) Rwf</td>
+                                        <td colspan="3">@Counts.formatAmount(total1) Rwf</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    @views.html.reports.footer.render()
+                    <div class="row">
+                         @shared.reportFooter.render();
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

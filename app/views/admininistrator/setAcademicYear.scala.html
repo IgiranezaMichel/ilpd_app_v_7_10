@@ -1,0 +1,91 @@
+@(q: String)
+<div align="right" class="left-form">
+    <button id="meBut" class="btn btn-primary" onclick="addNew(this, event)"><i class="fa fa-plus"></i>
+        New year</button>
+    <div class="loginForm" id="form1" no-prop="true">
+
+        <div class="box box-info">
+            <div class="box-header text-left resp-width">
+                <i class="fa fa-envelope"></i>
+
+                <h3 class="box-title">Set year</h3>
+            </div>
+            <form action="@routes.Registration.saveYear()" class="validate-form" method="POST" onsubmit="return allForms(this)">
+                <div class="box-body">
+
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" name="yearName" placeholder="Enter yearName" autocomplete="off" id="PHJPO_Text" required/>
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default">Save
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="panel panel-success">
+    <div class="panel-heading">Available years</div>
+      <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Year Name</th>
+                        <th>Status</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for(i <- AcademicYear.allBy(q)) {
+                    <tr>
+                        <td>@i.yearName</td>
+                        <td>
+                        @if(i.status){
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-success btn-sm disabled" style="padding: 5px">Active</button>
+                                <button class="btn-sm btn btn-danger" id="btnDeactivate" data-url="@routes.Application.deActivate(i.id)">Deactivate</button>
+                            </div>
+                        }else{
+                            <div class="btn-group">
+                                <button class="btn btn-sm disabled btn-danger">Off </button>
+                                <button class="status-change btn-sm btn btn-success" value="@routes.Application.activate(i.id)" onclick="activator(this)">Activate</button>
+                            </div>
+                        }
+                        </td>
+                        <td><button class="btn btn-info btn-sm btn-circle" onclick="createModal(this, self.event)" href="@routes.Application.updateAll(i.id, "year")"><i class="fa fa-pencil"></i></button></td>
+                        <td><button class="btn btn-danger btn-sm btn-circle" onclick="createDel(this)" value="@routes.Application.deleteAll(i.id, "year")"><i class="fa fa-bitbucket"></i></button></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<script >
+        $('.validate-form').parsley();
+        $(document).on('click','#btnDeactivate',function () {
+            var button=$(this);
+//           alert('you clicked me');
+           $.ajax({
+               url:button.attr('data-url'),
+               type:'post',
+               success:function () {
+                   $('.hosted').click();
+               },
+               error:function () {
+//                   alert('Internal server error please try again');
+               }
+           })
+        });
+</script>

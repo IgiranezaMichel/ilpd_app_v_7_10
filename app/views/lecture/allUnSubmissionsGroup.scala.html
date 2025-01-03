@@ -1,0 +1,36 @@
+@( lst : List[GroupSubmission] )
+<div>
+    <div class="box-body" style="padding-left:1%;">
+        <table class="table table-condensed">
+            <tbody><tr>
+                <th style="width: 10px">#</th>
+                <th>Reg No</th>
+                <th>Assignment</th>
+                <th>Group</th>
+                <th>Add marks</th>
+            </tr>
+                @import scala.Predef;var counter=1;
+                @for( i <- lst ) {
+
+                    @if(!Counts.isSubmitted(i.assignment.id,i.student.id)){
+                        <tr class="fetcher-x">
+                            <td>@(counter) @(counter=counter+1)</td>
+                            <td>@i.student.toString2()</td>
+                            <td>@i.assignment.assignmentTitle</td>
+                            <td>
+                            @if(i.groups != null) {
+                                @i.groups.groupName
+                            }else{
+                                ALL GROUP
+                            }
+                            </td>
+                            <td>
+                                <a href="@routes.LectureController.addMarksGroup(i.id)" onclick="viewSubmit(this, event)" class="btn btn-default"><i class="fa fa-plus-circle"></i>
+                                    Add marks</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody></table>
+    </div>
+</div>

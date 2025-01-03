@@ -1,0 +1,40 @@
+@( lect : Lecture )
+<div class="col-md-4 col-centered transit main-dict">
+  <div class="card card-profile">
+    <form action="@routes.Application.viewByComp()" method="POST" onsubmit="return validate(this,function(f,form){bringRight(form)})">
+      <div class="content">
+        <a class="btn btn-link pull-right shrink"><i class="fa fa-bars"></i></a>
+        <div class="collapsable">
+          <h6 class="category text-gray">@lect.myComp().size() Module Components </h6>
+          <div class="card-avatar">
+            <div class="round-image">
+              <img class="img" src="@routes.Assets.at("images/boys.jpg")">
+            </div>
+          </div>
+          <h4 class="card-title">@lect.fName</h4>
+          <div>
+            @for( ix : Component <- lect.myComp() ){
+              <div class="timel">
+                <span></span>
+                <h5 class="timel-h">
+                  <span class="t-radio">
+                    <input checked type="radio" id="element@ix.id" name="depart" value="@ix.id">
+                    <label for="element@ix.id">@ix.compName</label>
+                  </span>
+                  Module Component
+                </h5>
+              </div>
+            }
+            <input type="hidden" value="@lect.id" name="lecturer">
+          </div>
+          <br>
+          <p class="card-content">
+            Select module and click on view student to create groups
+          </p>
+          <button type="submit" class="btn btn-primary btn-block force re-click">View students <i class="fa fa-send"></i></button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

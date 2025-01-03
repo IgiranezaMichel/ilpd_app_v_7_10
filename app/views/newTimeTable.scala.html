@@ -1,0 +1,107 @@
+@(schedules: List[Schedule], training: Training, dateRange: DateRange)
+
+<link rel="stylesheet" href="@routes.Assets.at("bootstrap/css/bootstrap.min.css")">
+    @* <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">*@
+    <!--font awesome-->
+    @* <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">*@
+<link rel="stylesheet" href="@routes.Assets.at("font-awesome/css/font-awesome.min.css")">
+    <!-- Ionicons -->
+<link rel="stylesheet" href="@routes.Assets.at("Ionicons/css/ionicons.min.css")">
+    <!-- Theme style -->
+<link rel="stylesheet" href="@routes.Assets.at("css/AdminLTE.min.css")">
+<link rel="stylesheet" href="@routes.Assets.at("css/main.css?THedidx")">
+
+<div class="wraper">
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-ilpd">
+                    <div class="box-header with-border">
+                        <table class="table" style="border: none;">
+                            <tr>
+                                <td style="border-right: 2px solid #E200E2;
+                                    vertical-align: middle;
+                                    border-top: none;">
+                                    <span>
+                                        <i class="fa fa-circle"></i>
+                                        <i class="fa fa-circle" style="color: #E200E2;"></i>
+                                        <i class="fa fa-circle" style="color: #E200E2;"></i>
+                                    </span>
+                                </td>
+                                <td style="vertical-align: top;
+                                    border-top: none;">
+                                    <span>
+                                            Institute of Legal Practice <br>
+                                        and Development
+                                        </span>
+                                </td>
+                                <td style="vertical-align: bottom;
+                                    border-top: none;">
+                                    <small>
+                                        <em class="text-left">Excellence in Legal Practice</em>
+                                    </small>
+                                </td>
+                                <td style="border-top: none;">
+                                    <img src="@routes.Assets.at("images/smLogo.png")" alt="" class="img-responsive pull-right" style="width: 50px">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="box-body">
+                        <h3 class="box-title">Time table for: <small>@training.tNames()</small></h3>
+                        <h5>Date range:
+                            <small>@dateRange.toString</small>
+                            <span class="pull-right">Done on: <small>@(new Date().format("dd/MM/yyyy"))</small></span>
+                        </h5>
+
+                        <button class="no-print btn btn-primary btn-sm pull-right" onclick="window.print();">
+                            <i class="ion-android-print"></i> Print
+                        </button> <br><br>
+
+                        <table class="table table-hover table-striped table-condensed table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Component</th>
+                                    <th>Instructor</th>
+                                    <th>Hour</th>
+                                    <th>Room/code</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @for(s <- schedules) {
+                                <tr>
+                                    <td>@s.date.format("dd/MM/yyyy") : @s.date.format("EEEE")</td>
+                                    <td>@s.component.compName</td>
+                                    <td>@s.lecture.hisNames()</td>
+                                    <td>@s.getHour</td>
+                                    <td>@s.room.toString</td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-footer">
+                        <div class="col-xs-12">
+                            <p class="text-center">
+                                <small>P.O. Box 49, Avenue des Sports, Nyanza, Southern Province, Rwanda
+                                    <br>
+                                    E: info@@ilpd.ac.rw / W: www.ilpd.ac.rw</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+

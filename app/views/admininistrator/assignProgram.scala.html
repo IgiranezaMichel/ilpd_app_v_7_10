@@ -1,0 +1,73 @@
+@( camping : List[CampusProgram] , campuses : List[Campus] , programs : List[Program] )
+<div align="right" class="left-form">
+  <button id="meBut" class="btn btn-primary" onclick="addNew(this, event)"><i class="fa fa-plus"></i>
+    Assign program
+  </button>
+
+  <div class="loginForm" id="form1" no-prop="true">
+    <div class="box box-info">
+      <div class="box-header text-left resp-width">
+        <i class="fa fa-envelope"></i>
+        <h3 class="box-title">Assign program to campus ...</h3>
+      </div>
+      <form action="@routes.Registration.programAssign()" method="POST" onsubmit="return allForms(this)">
+        <div class="box-body">
+          <div class="form-group has-feedback">
+            <select name="camp" class="form-control">
+              <option value="">-- Choose campus --</option>
+              @for( ip <- campuses ){
+                <option value="@ip.id">@ip.campusName</option>
+              }
+            </select>
+          </div>
+          <div class="form-group has-feedback">
+            <select name="prog" class="form-control" id="program">
+              <option value="">-- Choose program --</option>
+              @for( ip <- programs ){
+                <option value="@ip.id">@ip.programName</option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="box-footer clearfix">
+          <button type="submit" class="pull-right btn btn-default">Save
+            <i class="fa fa-arrow-circle-right"></i></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-success">
+  <div class="panel-heading">
+    <h1 class="panel-title">
+      Currently assigned programs
+    </h1>
+  </div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>program name</th>
+            <th>campus name</th>
+            <th>Update</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+        @for(i <- camping ) {
+          <tr>
+            <td>@i.program.programName</td>
+            <td>@i.campus.campusName</td>
+            <td><button class="btn btn-info btn-sm btn-circle" onclick="createModal(this, self.event)" href="@routes.Application.updateAll(i.id, "cPro")"><i class="fa fa-pencil"></i></button></td>
+            <td><button class="btn btn-danger btn-sm btn-circle" onclick="createDel(this)" value="@routes.Application.deleteAll(i.id, "cPro")"><i class="fa fa-bitbucket"></i></button></td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+

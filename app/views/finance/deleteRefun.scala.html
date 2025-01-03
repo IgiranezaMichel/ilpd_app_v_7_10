@@ -1,0 +1,23 @@
+@( refund : Refund )
+
+@if( refund != null ){
+    <div class="loginForm">
+        <form action="@routes.PaymentController.deleteRefund(refund.id)" method="POST" onsubmit="return allForms(this)">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-refresh"></i>
+                    <h3 class="box-title">Refund cancelling form</h3>
+                </div>
+                <div class="box-body">
+
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default">Confirm
+                        <i class="fa fa-trash"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+}

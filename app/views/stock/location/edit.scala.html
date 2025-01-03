@@ -1,0 +1,39 @@
+@(location: models.stock.Location)
+<div class="loginForm" id="form1" no-prop="true">
+    <div class="box box-ilpd">
+        <div class="box-header with-border text-left resp-width">
+            <i class="glyphicon glyphicon-edit"></i>
+            <h3 class="box-title">Edit location</h3>
+        </div>
+        <form action="@routes.UnitController.saveOrdUpdateLocation()" method="POST" onsubmit="return allForms(this)">
+            <div class="box-body width-100">
+                <div class="form-block has-feedback width-100">
+                    <input type="text" value="@location.name" class="form-control" name="name" placeholder="Loation name">
+                </div>
+                <div class="form-group width-100">
+                    <select class="form-control width-100" name="block" id="block">
+                        <option value="">--select block --</option>
+                        @for(b<-models.stock.Block.all()){
+                            @if(b.id==location.block.id){
+                                <option value="@location.block.id" selected>@location.block.name</option>
+                            }else{
+                                <option value="@b.id">@b.name</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-block has-feedback width-100">
+                    <input type="text" value="@location.acronym" class="form-control" name="acronym" placeholder="Location acronym">
+                </div>
+                <input type="hidden" name="id" value="@location.id">
+            </div>
+            <div class="box-footer clearfix">
+                <button type="submit" class="pull-right btn btn-ilpd">Update location
+                    <i class="fa fa-arrow-circle-right"></i></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+

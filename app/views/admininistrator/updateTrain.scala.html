@@ -1,0 +1,141 @@
+@(train: Training,intS:List[IntakeSessionMode])
+
+    @if(train != null) {
+        <script>
+                startPicker = new Pikaday({
+                    field: document.getElementById('startDate@train.id'),
+                    maxDate: new Date(2020, 12, 31),
+                    formatStrict: true,
+                    onSelect: function (e) {
+                        //updateStartDate();
+                    }
+                });
+                endDate = new Pikaday({
+                    field: document.getElementById('endDate@train.id'),
+                    maxDate: new Date(2020, 12, 31),
+                    formatStrict: true,
+                    onSelect: function (e) {
+                        //updateStartDate();
+                    }
+                });
+                startPicker = new Pikaday({
+                    field: document.getElementById('startDateApplication@train.id'),
+                    maxDate: new Date(2020, 12, 31),
+                    formatStrict: true,
+                    onSelect: function (e) {
+                        //updateStartDate();
+                    }
+                });
+                endDate = new Pikaday({
+                    field: document.getElementById('endDateApplication@train.id'),
+                    maxDate: new Date(2020, 12, 31),
+                    formatStrict: true,
+                    onSelect: function (e) {
+                        //updateStartDate();
+                    }
+                });
+        </script>
+        <div class="loginForm">
+            <form action="@routes.UpdateForm.updateTraining(train.id)" method="POST" onsubmit="return allForms(this)" class="validate-form">
+                <div class="box box-info">
+                    <div class="box-header text-left resp-width with-border">
+                        <i class="fa fa-pencil"></i>
+                        <h3 class="box-title">Update School Fees</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-group has-feedback">
+                            <label for="">choose intakeSession</label>
+                            <select class="form-control" name="intakeSess" required>
+                                <option value="@train.iMode.id">@train.iMode.print()</option>
+                                @for(ip <- intS) {
+                                    <option value="@ip.id" @if(ip.id==train.iMode.id){selected} > @ip.print()</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label class="pull-left"> Training title [Required for CLE]</label>
+                            <input type="text" data-escape="1" class="form-control" name="title" autocomplete="off" value="@train.title" placeholder="Enter training title"/>
+                        </div>
+                            <div class="form-group has-feedback">
+                                <label class="pull-left"> Enter trainer [Required for CLE]</label>
+                                <input type="text" data-escape="1" class="form-control" name="trainer" value="@train.trainer" autocomplete="off" placeholder="Enter Trainer"/>
+                            </div>
+                        <div class="form-group has-feedback">
+                            <p>Start date</p>
+                            <input type="text" name="startDate" value="@train.startDate.format("yyyy-MM-dd")" class="form-control datepicker" placeholder="Update start date" required>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <p>End date</p>
+                            <input type="text" name="endDate" value="@train.endDate.format("yyyy-MM-dd")" class="form-control datepicker" placeholder="Update end date" required>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <p>Start date</p>
+                            <input type="text" name="startDateApplication" value="@train.startDateApplication.format("yyyy-MM-dd")" class="form-control datepicker" placeholder="Update application start date" required>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <p>End date</p>
+                            <input type="text" name="endDateApplication" value="@train.endDateApplication.format("yyyy-MM-dd")" class="form-control datepicker" placeholder="Update application end date" required>
+                        </div>
+                        <fieldset class="border form-group">
+                            <legend class="bg-aqua text-center">
+                                <span class=" fw-bold">EAC Student Tuition Fee Payment</span>
+                            </legend>
+                            <div class="form-group mb-3">
+                                <input type="text" class="form-control" name="eacStudentTuitionFees" value="@train.eacStudentTuitionFees" id="eacStudentTuitionFees" autocomplete="off" placeholder="Tuition fee" required data-parsley-type="number" data-parsley-min="0" />
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="text" class="form-control" name="minEacStudentTuitionFees" value="@train.minEacStudentTuitionFees" id="minEacStudentTuitionFees" autocomplete="off" placeholder="Minimum Tuition fee payment" required data-parsley-type="number" data-parsley-min="0" />
+                            </div>
+                        </fieldset>
+                        <fieldset class="border form-group">
+                            <legend class="bg-aqua text-center">
+                                <span class=" fw-bold">Non EAC Student Tuition Fee Payment</span>
+                            </legend>
+                            <div class="form-group mb-3">
+                                <input type="text" class="form-control" name="nonEacStudentTuitionFees" value="@train.nonEacStudentTuitionFees" id="nonEacStudentTuitionFees" autocomplete="off" placeholder="Tuition fee" required data-parsley-type="number" data-parsley-min="0" />
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="text" class="form-control" name="minNonEacStudentTuitionFees" value="@train.minNonEacStudentTuitionFees" id="minNonEacStudentTuitionFees" autocomplete="off" placeholder="Minimum Tuition fee payment" required data-parsley-type="number" data-parsley-min="0" />
+                            </div>
+                        </fieldset>
+
+                        <div class="form-group has-feedback">
+                            <p>Accomodation fees</p>
+                            <input type="text" class="form-control" name="accomodationFees" id="accomodationFees@train.id" autocomplete="off" min="0" value="@train.accomodationFees" placeholder="Accomodation feees" required/>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <p>Restauration fees</p>
+                                <input type="text" value="@train.restaurationFees" class="form-control" name="restaurationFees"  autocomplete="off" min="0" placeholder="Restauration fees" required/>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <p>Graduation fees</p>
+                            <input type="text" value="@train.otherFees" class="form-control" name="otherFees" autocomplete="off" min="0" placeholder="Graduation fees" required/>
+                        </div>
+
+                        <div class="form-group has-feedback">
+                            <p>Graduation fees's specification</p>
+                            <textarea name="otherFeesSpec" id="otherFeesSpec" class="form-control" placeholder="Graduation fees's specification">@train.otherFeesSpec</textarea>
+                        </div>
+                    </div>
+                    <div class="box-footer clearfix">
+                        <button type="submit" class="pull-right btn btn-primary">Update
+                            <i class="fa fa-check-circle-o"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    } else {
+        <div>Error With Reference</div>
+    }
+
+<script>
+        $('.validate-form').parsley();
+</script>
+
+<script>
+        $('.datepicker').datepicker({
+            autoclose: true,
+            format: 'yyyy-mm-dd',
+            todayHighlight: true
+        });
+</script>

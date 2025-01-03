@@ -1,0 +1,35 @@
+@(cMode: CampusProgramMode,cProgs : List[CampusProgram],modes:List[StudyMode])
+
+<div class="loginForm" id="form1" no-prop="true">
+
+    <div class="box box-info">
+        <div class="box-header text-left resp-width">
+            <i class="fa fa-envelope"></i>
+            <h3 class="box-title"> assign study mode to campus & program</h3>
+        </div>
+        <form action="@routes.UpdateForm.updateCampusProgramMode(cMode.id)" method="POST" onsubmit="return allForms(this)">
+            <div class="box-body">
+                <div class="form-group has-feedback">
+                    <select name="myCProg" class="form-control">
+                        <option value="">-- Choose campus program --</option>
+                        @for( ip <- cProgs ){
+                            <option value="@ip.id" @if(cMode.mode.id.equals(ip.id)){selected}>@ip.print()</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group has-feedback">
+                    <select name="sMode" class="form-control" id="program">
+                        <option value="">-- Choose Study mode --</option>
+                        @for( ip <- modes ){
+                            <option value="@ip.id" @if(cMode.mode.id.equals(ip.id)){selected}>@ip.modeName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="box-footer clearfix">
+                <button type="submit" class="pull-right btn btn-default">Update
+                    <i class="fa fa-arrow-circle-right"></i></button>
+            </div>
+        </form>
+    </div>
+</div>

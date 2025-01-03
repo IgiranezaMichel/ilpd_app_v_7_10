@@ -1,0 +1,44 @@
+@( user : Users )
+<div class="box box-success">
+  <div class="box-header with-border">
+    <h3 class="box-title"><i class="fa fa-pencil-square text-green"></i> @user.names profile modification</h3>
+    <div class="form-group has-feedback">
+      <div class="text-center">
+        <img src="@routes.Assets.at(Vld.imagePro(user.profile))" class="round-image bigger" alt="User Image">
+      </div></div>
+  </div>
+    <!-- /.box-header -->
+    <form role="form" action="@routes.Registration.updateEveryProfile()" method="POST" enctype="multipart/form-data" onsubmit="return allForms(this)">
+        <!-- text input -->
+      <div class="box-body">
+      <div class="form-group has-feedback">
+        <label><i class="fa fa-address-card"></i> Electronic mail</label>
+        <input type="text" class="form-control" value="@user.email" name="email" disabled="disabled">
+      </div>
+      @admininistrator.countryForm()
+      <div class="form-group has-feedback">
+        <label><i class="fa fa-phone"></i> Telephone number</label>
+        <input type="text" class="form-control left-pad" placeholder="Enter ..." value="@user.phone" name="phone">
+        <span class="phone-label">+@user.code</span>
+      </div>
+
+        <!-- input states -->
+      <div class="form-group has-feedback">
+        <span class="help-block"><i class="fa fa-key"></i> Enter old password</span>
+        <input type="password" class="form-control" id="inputSuccess" name="old-password" placeholder="Enter ...">
+      </div>
+      <div class="form-group has-feedback">
+        <span class="help-block"><i class="fa fa-key"></i> Enter new password</span>
+        <input type="password" data-escape="1" class="form-control" id="inputWarning" name="password" placeholder="Enter ...">
+      </div>
+      <div class="form-group has-feedback">
+        <span class="help-block"><i class="fa fa-key"></i> Confirm new password</span>
+        <input type="password" data-escape="1" class="form-control" id="inputWarning" name="conf-password" placeholder="Enter ...">
+      </div>
+
+        <!-- Select multiple-->
+    <button class="btn btn-block btn-success"><i class="fa fa-send"></i> Update profile</button>
+      </div>
+    </form>
+    <!-- /.box-body -->
+</div>

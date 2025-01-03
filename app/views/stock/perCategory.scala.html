@@ -1,0 +1,171 @@
+@(  supplied : List[models.stock.Item], requested: List[models.stock.Request])
+@import scala.Predef; var remain = 0.0;
+<div class="box box-ilpd">
+    <div class="box-header with-border">
+        <h3 class="box-title"><i class="fa fa-bookmark-o text-blue"></i> List of items per category</h3>
+    </div>
+    <div class="box-body">
+        <div class="mailbox-messages heighted load-data">
+            <section class="relative heighted-much new-form">
+                <div class="form-widget didHide">
+                    <div class="col-md-0 white-bundle percentHeight" no-prop="true">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-car text-blue"></i> List of pending requests</h3>
+                            </div>
+                            <form action="#" method="POST" onsubmit="return refreshAndSave(this)">
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Set school fees</label>
+                                        <input type="text" class="form-control" value="#schoolFees.feesAmount" disabled>
+                                        <input type="hidden" value="#schoolFees.id" name="feesID">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Faculty</label>
+                                        <input type="text" class="form-control" value="#faculty.facultyName" disabled>
+                                    </div>
+                                    <div class="form-group relative">
+                                        <label>Choose week date</label>
+                                        <select class="form-control" name="dateID">
+                                            <option value="">-- Choose week date --</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                    <button type="submit" class="btn btn-primary btn-block btn-flat">Save installment</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+                <form action="@routes.Application.sendRequestItem()" method="POST" onsubmit="return sendChecked(this)">
+                    <button class="btn btn-ilpd btn-sm pull-right" type="submit">
+                        <i class="fa fa-plus-circle"></i> Add selected
+                    </button>
+                    <h4> <i class="fa fa-list"></i> List of items in all category</h4>
+                    <table class="table table-hover table-striped table-bordered table-condensed manageTable">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Type</th>
+                                <th>Select</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for( item <- supplied ){
+                            @(remain = item.getBeginningStockQty(Counts.getTomorrow().toDate.format("yyyy-MM-dd")))
+                            <tr>
+                                <td class="mailbox-name"><a href="#">@item.name <span class="label bg-orange">The remain quantity is:
+                                @if(remain <= 0){
+                                    0 @item.unitMeasure
+                                }else{
+                                    @remain @item.unitMeasure
+                                    }
+                                </span></a></td>
+                                <td>
+                                @(item.iType)
+                                </td>
+                                <td class="mailbox-subject">
+                                   @* @if(item.getBeginningStockQty(Counts.getTomorrow().toDate.format("yyyy-MM-dd")) > 0){ *@
+                                    @if(remain > 0){
+                                        <label class="check-container">
+                                            <input type="checkbox" value="@item.id" name="itemID"/>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    }else{
+                                        <span class="label label-danger">Out Of Stock</span>
+                                    }
+
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-ilpd">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-list"></i> My items request</h3>
+            </div>
+            <div class="box-body">
+                <table class="table  table-hover table-striped table-bordered  table-condensed  manageTable">
+                    <thead>
+                        <tr>
+                            <th>Request#</th>
+                            <th>Date</th>
+                            <th>Items</th>
+                            <th>Details</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @for(r <- requested) {
+
+                        <tr>
+                            <td>@r.id</td>
+                            <td>@r.date.format("dd/MM/yyy , HH:mm")</td>
+                            <td>@models.stock.StockMovement.totalRequest(r)</td>
+                            <td>
+                                <button onclick="setUrl('@routes.Application.updateAll(r.id,"getRequest")')" class="btn btn-sm btn-info " data-toggle="modal" data-target="#requestDetailsModalIndividual"> More <i class="fa fa-arrow-circle-right"></i>
+                                    </button>
+                            </td>
+                            <td>
+                            @if(r.status.equalsIgnoreCase("pending")) {
+                                <span class="label label-info ">@r.status</span>
+                            } else {
+                                @if(r.status.equalsIgnoreCase("approved")) {
+                                    <span class="label label-success ">@r.status</span>
+                                } else {
+                                    @if(r.status.equalsIgnoreCase("Waiting")) {
+                                        <span class="label label-primary ">@r.status</span>
+                                    }else{
+                                        <span class="label label-danger">@r.status</span>
+                                    }
+                                }
+                            }
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="requestDetailsModalIndividual" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Details for the request</h4>
+            </div>
+            <div class="modal-body ">
+                <div class="modal-loading div-hide" style="width: 50px;
+                    margin: auto;
+                    padding-top: 50px;
+                    padding-bottom: 50px;">
+                    <img src="@routes.Assets.at("images/loader2.gif")" alt="Loading.." style="width: 50px!important;
+                        height: 50px!important;">
+                    @*<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>*@
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="bodyResult">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+        $('.manageTable').DataTable();
+</script>

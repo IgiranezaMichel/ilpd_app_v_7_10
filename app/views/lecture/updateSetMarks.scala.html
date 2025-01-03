@@ -1,0 +1,53 @@
+@( compMarks: ComponentMax, trainingList : List[Training], components : List[Component])
+@if( compMarks != null ) {
+    <div class="loginForm">
+        <form action="@routes.UpdateForm.updateCompMax(compMarks.id)" method="POST" onsubmit="return allForms(this)">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width with-border">
+                    <i class="glyphicon glyphicon-edit"></i>
+                    <h3 class="box-title">Update set marks @compMarks.component.compName MAX </h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group has-feedback">
+                        <label for="campus">Change training</label>
+                        <select name="trainingId" class="form-control" required>
+                                <option value="@compMarks.training.id">@compMarks.training.print()</option>
+                                    @for(t <- trainingList) {
+                                        <option value="@t.id">@t.print()</option>
+                                    }
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="campus">Change component</label>
+                        <select name="componentId" class="form-control" required>
+                            <option value="@compMarks.component.id">@compMarks.component.compName</option>
+                            @for(t <- components) {
+                                <option value="@t.id">@t.compName</option>
+                            }
+                        </select>
+                    </div>
+                        <div class="form-group has-feedback">
+                            <p>Research exercise max</p>
+                            <input type="text" value="@compMarks.researchMax" class="form-control" name="researchMax" autocomplete="off" placeholder="Hour name"/>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <p>Reseat Research exercise max</p>
+                            <input type="text" value="@compMarks.resitResearchMax" class="form-control" name="resitResearchMax" autocomplete="off" placeholder="Reseat Research exercise max"/>
+                        </div>
+                    <div class="form-group has-feedback">
+                        <p>Examination Max</p>
+                        <input type="text" value="@compMarks.examMax" class="form-control" name="examMax" autocomplete="off"  placeholder="Hour name"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <p>Resit exam Max</p>
+                        <input type="text" value="@compMarks.resitMax" class="form-control" name="resitMax" autocomplete="off"  placeholder="Resit max"/>
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default"> Update
+                        <i class="fa fa-check-circle"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+}

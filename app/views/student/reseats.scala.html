@@ -1,0 +1,595 @@
+@(list: List[Module],student: Student)
+@import scala.Predef;var total = 0.0;var totals = 0.0;var totalAmount = 0.0;var totalResit = 0.0;var totalRetakeAmount = 0.0;var inc1 = 1; var averageOneMarks = 0.0; var ifFail = true; var total1 = 0.0; var averageAllMarks = 0.0; var tot = 0; var inc = 1; var tots = 0
+@main("My re-seats", "") {
+    <div class="col-md-10 col-centered">
+    @if(student.status.equalsIgnoreCase("PASS") || student.status.equalsIgnoreCase("Merit") || student.status.equalsIgnoreCase("DISTINCTION")  || student.status.equalsIgnoreCase("Satisfactory") ) {
+        <div class="box box-primary">
+            <div class="box-header">
+                <i class="ion ion-clipboard"></i>
+                <h3 class="box-title">DELIBERATION DECISION SUMMARY</h3>
+                <span class="label bg-green pull-right">Congratulations! You have passed the Academic Senate deliberation !</span>
+            </div>
+            <div class="box-body">
+                <ul class="todo-list">
+                    <li>
+                        <span class="handle">
+                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <span class="text">STUDENT NAMES:  </span>
+                        <small class="label label-info">@student.familyName @student.firstName</small>
+                    </li>
+                    <li>
+                        <span class="handle">
+                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <span class="text">REG NO: </span>
+                        <small class="label label-info">@student.regNo</small>
+                    </li>
+                    <li>
+                        <span class="handle">
+                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <span class="text">TRAINING: </span>
+                        <small class="label label-info">@student.training.print()</small>
+                    </li>
+
+                    @if(!student.inResit) {
+                        <li>
+                            <span class="handle">
+                                <i class="fa fa-ellipsis-v"></i>
+                                <i class="fa fa-ellipsis-v"></i>
+                            </span>
+                            <span class="text">TOTAL AVERAGE MARKS:
+                                @for(module: Module <- list) {
+                                    <td>
+                                        @if(AssignmentResult.numberAssignmentDone(student.id, module.id, student.training.id) <= 0.0 && AssignmentResult.numberResearchDone(student.id, module.id, student.training.id) <= 0.0 && Counts.getExamMaxTrainingModule(student.training.id, module.id) <= 0.0) {
+
+                                        } else {
+                                            @if(inc == 1) {
+                                                @(tot = tot + 1)
+                                            }
+                                        }
+                                        @(total = total + module.allModuleAverage(student.id))
+                                        @(inc1 = inc1 + 1)
+                                    </td>
+                                }
+                            </span>
+                            <small class="label label-success">@Student.rounding(total / tot) %</small>
+                        </li>
+                    }else{
+                        <li>
+                            <span class="handle">
+                                <i class="fa fa-ellipsis-v"></i>
+                                <i class="fa fa-ellipsis-v"></i>
+                            </span>
+                            <span class="text">TOTAL AVERAGE MARKS:
+                                @for(module: Module <- list) {
+                                    <td>
+                                        @if(AssignmentResult.numberAssignmentDone(student.id, module.id, student.training.id) <= 0.0 && AssignmentResult.numberResearchDone(student.id, module.id, student.training.id) <= 0.0 && Counts.getExamMaxTrainingModule(student.training.id, module.id) <= 0.0) {
+
+                                        } else {
+                                            @if(inc == 1) {
+                                                @(tot = tot + 1)
+                                            }
+                                        }
+                                        @(total = total + module.allModuleAverage(student.id))
+                                        @(inc1 = inc1 + 1)
+                                    </td>
+                                }
+                            </span>
+                            @if((total / tot) < ProfileInfo.unique().maximumResit) {
+                                <small style="color: #9c079c !important;" class="label label-success">@Student.rounding(total / tot) %</small>
+                            }else{
+                                <small style="color: #9c079c !important;" class="label label-success">@Student.rounding(60.0) %</small>
+                            }
+                        </li>
+                    }
+                    <li>
+                        <span class="handle">
+                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <span class="text">DELIBERATION DECISION</span>
+                        <small class="label label-success">@student.status</small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    }
+    @if(student.status.equalsIgnoreCase("RE-SIT")) {
+        <div class="box box-primary">
+            <div class="box-header">
+                <i class="ion ion-clipboard"></i>
+                <h3 class="box-title">DELIBERATION DECISION SUMMARY</h3>
+                <span class="label bg-orange pull-right">Sorry student ! You have some module(s) to resit, Please apply for resit </span>
+            </div>
+            <div class="box-body">
+                <ul class="todo-list">
+                    <li>
+                        <span class="handle">
+                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <span class="text">STUDENT NAMES:  </span>
+                        <small class="label label-info">@student.familyName @student.firstName</small>
+                    </li>
+                    <li>
+                        <span class="handle">
+                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <span class="text">REG NO: </span>
+                        <small class="label label-info">@student.regNo</small>
+                    </li>
+                    <li>
+                        <span class="handle">
+                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <span class="text">TRAINING: </span>
+                        <small class="label label-info">@student.training.print()</small>
+                    </li>
+                    <li>
+                        <span class="handle">
+                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <span class="text">TOTAL AVERAGE MARKS %:
+                            @for(module : Module <- list){
+                                <td>
+                                    @if(AssignmentResult.numberAssignmentDone(student.id, module.id, student.training.id) <= 0.0 && AssignmentResult.numberResearchDone(student.id, module.id, student.training.id) <= 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, module.id) <= 0.0) {
+
+                                    }else{
+                                        @if(inc == 1) {
+                                            @(tot = tot + 1)
+                                        }
+                                    }
+                                    @(total = total + module.allModuleAverage(student.id))
+                                    @(inc1 = inc1 + 1)
+                                </td>
+                            }
+                        </span>
+                        <small class="label label-warning">@Student.rounding(total/tot) %</small>
+                    </li>
+                    <li>
+                        <span class="handle">
+                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <span class="text">DELIBERATION DECISION</span>
+                        <small class="label label-success">@student.status</small>
+                    </li>
+                </ul>
+            </div>
+            <div class="box box-ilpd">
+                <div class="box-header with-border">
+                    <h4 class="box-title">
+                       List of modules to resit
+                    </h4>
+                </div>
+                <div class="box-body">
+                    <table class="table table-striped table-hover table-condensed table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Module code</th>
+                                <th>Module title</th>
+                                <th>Credits</th>
+                                <th>Marks %</th>
+                                <th>Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for(l <- list) {
+                            @(averageOneMarks = l.allModuleAverage(student.id))
+                            @if(averageOneMarks < ProfileInfo.unique().scoreThree) {
+                                <tr>
+                                    <td>@l.moduleCode</td>
+                                    <td>@l.moduleName</td>
+                                    <td>@l.credits</td>
+                                    <td>@Student.rounding(l.allModuleAverage(student.id))</td>
+                                    <td>@Counts.formatAmount(l.resitAmount)</td>
+                                    @if(AssignmentResult.numberAssignmentDone(student.id, l.id, student.training.id) <= 0.0 && AssignmentResult.numberResearchDone(student.id, l.id, student.training.id) <= 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, l.id) <= 0.0) {
+                                    }else{
+                                        @if(inc == 1) {
+                                            @(tots = tots + 1)
+                                        }
+                                    }
+                                </tr>
+                                @(totalResit = totalResit + l.resitAmount)
+                            }
+                        }
+                        </tbody>
+                        <tr>
+                            <td colspan="4">Total cost</td>
+                            <td>@Counts.formatAmount(totalResit)</td>
+                        </tr>
+                    </table>
+                        @if(Counts.getTotalRequestStudentTraining(student.id , "resit") > 0) {
+                            <div class="alert alert-info alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <h4><i class="icon fa fa-info"></i> Your re-sit request is @ReSitReTakeRequest.resitPerStudent(student.id).status</h4>
+                                Your request has successfully submitted, please wait for the feedback!
+                            </div>
+                        }
+                </div>
+                <div class="box-footer clearfix no-border">
+                    @if(Counts.getTotalRequestStudentTraining(student.id, "resit") <= 0) {
+                        <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#modal-default_@student.id">
+                            Apply for resit
+                        </button>
+                    }
+                    <div class="modal fade" id="modal-default_@student.id">
+                        <form action="@routes.Registration.reSitRetakeRequest()" method="POST" onsubmit="return allForms(this)">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title">Dear @student.familyName @student.firstName Fill in bellow form for re-sit!</h4>
+                                </div>
+                                <div class="modal-body">
+                                        <div class="box-body">
+                                            <div class="form-group has-feedback">
+                                                <label for="">Training name</label>
+                                                <select name="trainingId" class="form-control" readonly="true">
+                                                    <option value="@student.training.id">@student.training.print()</option>
+                                                </select>
+                                            </div>
+                                            <input type="hidden" name="requestType" value="resit">
+                                            <input type="hidden" name="studentId" value="@student.id">
+                                            <div class="form-group has-feedback">
+                                                <label for="">Enter comment (If any)</label>
+                                                <textarea name="comment" data-escape="1" class="form-control"></textarea>
+                                            </div>
+                                            <p>Modules to re-sit</p>
+                                            <table class="table table-striped table-hover table-condensed table-bordered">
+                                                <tbody>
+                                                @for(l <- list) {
+                                                    @(averageOneMarks = l.allModuleAverage(student.id))
+                                                    @if(averageOneMarks < ProfileInfo.unique().scoreThree) {
+                                                        <tr>
+                                                            <th>Code: @l.moduleCode</th>
+                                                            <th>Name: @l.moduleName</th>
+                                                            <th>Credit: @l.credits</th>
+                                                            <th>re-sit cost: @Counts.formatAmount(l.resitAmount)</th>
+                                                        </tr>
+                                                    }
+                                                }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Submit request</button>
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if(student.status.equalsIgnoreCase("RETAKE-MODULES")) {
+        <div class="box box-primary">
+            <div class="box-header">
+                <i class="ion ion-clipboard"></i>
+                <h3 class="box-title">DELIBERATION DECISION SUMMARY</h3>
+                <span class="label bg-orange pull-right">Sorry student ! You have some module(s) to retake, Please apply for retake </span>
+            </div>
+            <div class="box-body">
+                <ul class="todo-list">
+                    <li>
+                        <span class="handle">
+                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <span class="text">STUDENT NAMES:  </span>
+                        <small class="label label-info">@student.familyName @student.firstName</small>
+                    </li>
+                    <li>
+                        <span class="handle">
+                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <span class="text">REG NO: </span>
+                        <small class="label label-info">@student.regNo</small>
+                    </li>
+                    <li>
+                        <span class="handle">
+                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <span class="text">TRAINING: </span>
+                        <small class="label label-info">@student.training.print()</small>
+                    </li>
+                    <li>
+                        <span class="handle">
+                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <span class="text">TOTAL AVERAGE MARKS %:
+                            @for(module : Module <- list){
+                                <td>
+                                    @if(AssignmentResult.numberAssignmentDone(student.id, module.id, student.training.id) <= 0.0 && AssignmentResult.numberResearchDone(student.id, module.id, student.training.id) <= 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, module.id) <= 0.0) {
+
+                                    }else{
+                                        @if(inc == 1) {
+                                            @(tot = tot + 1)
+                                        }
+                                    }
+                                    @(total = total + module.allModuleAverage(student.id))
+                                    @(inc1 = inc1 + 1)
+                                </td>
+                            }
+                        </span>
+                        <small class="label label-success">@Student.rounding(total/tot) %</small>
+                    </li>
+                    <li>
+                        <span class="handle">
+                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <span class="text">DELIBERATION DECISION</span>
+                        <small class="label label-warning">@student.status</small>
+                    </li>
+                </ul>
+            </div>
+            <div class="box box-ilpd">
+                <div class="box-header with-border">
+                    <h4 class="box-title">
+                        List of modules to retake
+                    </h4>
+                </div>
+                <div class="box-body">
+                    <table class="table table-striped table-hover table-condensed table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Module code</th>
+                                <th>Module title</th>
+                                <th>Retake cost</th>
+                                <th>Credits</th>
+                                <th>Marks %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for(l <- list) {
+                            @(averageOneMarks = l.allModuleAverage(student.id))
+                            @if(averageOneMarks < ProfileInfo.unique().scoreThree) {
+                                <tr>
+                                    <td>@l.moduleCode</td>
+                                    <td>@l.moduleName</td>
+                                    <td>@Counts.formatAmount(l.retakeAmount) RWF</td>
+                                    <td>@l.credits</td>
+                                    @if(AssignmentResult.numberAssignmentDone(student.id, l.id, student.training.id) <= 0.0 && AssignmentResult.numberResearchDone(student.id, l.id, student.training.id) <= 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, l.id) <= 0.0) {
+                                    }else{
+                                        @if(inc == 1) {
+                                            @(tots = tots + 1)
+                                        }
+                                    }
+                                    <td>@Student.rounding(l.allModuleAverage(student.id))</td>
+                                </tr>
+                                @(totalAmount = totalAmount + l.retakeAmount)
+                            }
+                        }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2">TOTAL COST</td>
+                                <td colspan="2">@Counts.formatAmount(totalAmount) RWF</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    @if(Counts.getTotalRequestStudentTraining(student.id, "retake-modules") <= 0) {
+                        <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#modal-defaultRetakeModule_@student.id">
+                            Apply for retake modules
+                        </button>
+                    }
+                    @if(Counts.getTotalRequestStudentTraining(student.id , "retake-modules") > 0) {
+                        <div class="alert alert-info alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h4><i class="icon fa fa-info"></i> Your retake modules request is @ReSitReTakeRequest.retakeModulesPerStudent(student.id).status</h4>
+                            Your request has successfully submitted, please wait for the feedback!
+                        </div>
+                    }
+                </div>
+                <div class="modal fade" id="modal-defaultRetakeModule_@student.id">
+                    <form action="@routes.Registration.retakeModuleRetakeRequest()" method="POST" onsubmit="return allForms(this)">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title">Dear @student.familyName @student.firstName Fill in bellow form for re-take!</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="box-body">
+                                        <div class="form-group has-feedback">
+                                            <label for="">Training name</label>
+                                            <select name="trainingId" class="form-control" readonly="true">
+                                                <option value="@student.training.id">@student.training.print()</option>
+                                            </select>
+                                        </div>
+                                        <input type="hidden" name="requestType" value="retake-modules">
+                                        <input type="hidden" name="studentId" value="@student.id">
+                                        <div class="form-group has-feedback">
+                                            <label for="">Enter comment (If any)</label>
+                                            <textarea name="comment" data-escape="1" class="form-control"></textarea>
+                                        </div>
+                                        <p>Modules to retake</p>
+                                        <table class="table table-striped table-hover table-condensed table-bordered">
+                                            <tbody>
+                                            @for(l <- list) {
+                                                @(averageOneMarks = l.allModuleAverage(student.id))
+                                                @if(averageOneMarks < ProfileInfo.unique().scoreThree) {
+                                                    <tr>
+                                                        <th>Code: @l.moduleCode</th>
+                                                        <th>Name: @l.moduleName</th>
+                                                        <th>Credit: @l.credits</th>
+                                                        <th>Cost: @Counts.formatAmount(l.retakeAmount)</th>
+                                                    </tr>
+                                                    @(totalRetakeAmount = totalRetakeAmount + l.retakeAmount)
+                                                }
+                                            }
+                                                <tr>
+                                                    <td colspan="3">Total cost</td>
+                                                    <td>@Counts.formatAmount(totalRetakeAmount)</td>
+                                                </tr>
+                                            </tbody>
+                                            @if(Counts.getTotalRequestStudentTraining(student.id , "retake-modules") > 0) {
+                                                <div class="alert alert-info alert-dismissible">
+                                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                    <h4><i class="icon fa fa-info"></i> Your retake-modules request is @ReSitReTakeRequest.retakeModulesPerStudent(student.id).status</h4>
+                                                    Your request has successfully submitted, please wait for the feedback!
+                                                </div>
+                                            }
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Submit request</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
+    @if(student.status.equalsIgnoreCase("RETAKE-PROGRAM")) {
+        <div class="box box-primary">
+            <div class="box-header">
+                <i class="ion ion-clipboard"></i>
+                <h3 class="box-title">DELIBERATION DECISION SUMMARY</h3>
+                <span class="label bg-orange pull-right">Sorry student ! According to the timeTableReport, you have to retake the all program, Please apply for program retake </span>
+            </div>
+            <div class="box-body">
+                <ul class="todo-list">
+                    <li>
+                        <span class="handle">
+                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <span class="text">STUDENT NAMES:  </span>
+                        <small class="label label-info">@student.familyName @student.firstName</small>
+                    </li>
+                    <li>
+                        <span class="handle">
+                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <span class="text">REG NO: </span>
+                        <small class="label label-info">@student.regNo</small>
+                    </li>
+                    <li>
+                        <span class="handle">
+                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <span class="text">TRAINING: </span>
+                        <small class="label label-info">@student.training.print()</small>
+                    </li>
+                    <li>
+                        <span class="handle">
+                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <span class="text">TOTAL AVERAGE MARKS %:
+                            @for(module : Module <- list){
+                                <td>
+                                    @if(AssignmentResult.numberAssignmentDone(student.id, module.id, student.training.id) <= 0.0 && AssignmentResult.numberResearchDone(student.id, module.id, student.training.id) <= 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, module.id) <= 0.0) {
+
+                                    }else{
+                                        @if(inc == 1) {
+                                            @(tot = tot + 1)
+                                        }
+                                    }
+                                    @(total = total + module.allModuleAverage(student.id))
+                                    @(inc1 = inc1 + 1)
+                                </td>
+                            }
+                        </span>
+                        <small class="label label-success">@Student.rounding(total/tot) %</small>
+                    </li>
+                    <li>
+                        <span class="handle">
+                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <span class="text">DELIBERATION DECISION</span>
+                        <small class="label label-success">@student.status</small>
+                    </li>
+                </ul>
+                @if(Counts.getTotalRequestStudentTraining(student.id, "retake-program") <= 0) {
+                    <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#modal-defaultRetakeProgram_@student.id">
+                        Apply to retake a program
+                    </button>
+                }
+            </div>
+            <div class="modal fade" id="modal-defaultRetakeProgram_@student.id">
+                <form action="@routes.Registration.retakeProgramRetakeRequest()" method="POST" onsubmit="return allForms(this)">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">Dear @student.familyName @student.firstName Fill in bellow form for re-take!</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="box-body">
+                                    <div class="form-group has-feedback">
+                                        <label for="">Training name</label>
+                                        <select name="trainingId" class="form-control" readonly="true">
+                                            <option value="@student.training.id">@student.training.print()</option>
+                                        </select>
+                                    </div>
+                                    <input type="hidden" name="requestType" value="retake-program">
+                                    <input type="hidden" name="studentId" value="@student.id">
+                                    <div class="form-group has-feedback">
+                                        <label for="">Enter comment (If any)</label>
+                                        <textarea name="comment" data-escape="1" class="form-control"></textarea>
+                                    </div>
+                                    <p>Modules to re-sit</p>
+                                    <table class="table table-striped table-hover table-condensed table-bordered">
+                                        <tbody>
+                                        @for(l <- list) {
+                                            @(averageOneMarks = l.allModuleAverage(student.id))
+                                            @if(averageOneMarks < ProfileInfo.unique().scoreThree) {
+                                                <tr>
+                                                    <th>Code: @l.moduleCode</th>
+                                                    <th>Name: @l.moduleName</th>
+                                                    <th>Credit: @l.credits</th>
+                                                </tr>
+                                            }
+                                        }
+                                        </tbody>
+                                        @if(Counts.getTotalRequestStudentTraining(student.id , "retake-program") > 0) {
+                                            <div class="alert alert-info alert-dismissible">
+                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                <h4><i class="icon fa fa-info"></i> Your retake-program request is @ReSitReTakeRequest.retakeProgramPerStudent(student.id).status</h4>
+                                                Your request has successfully submitted, please wait for the feedback!
+                                            </div>
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Submit request</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    }
+}

@@ -1,0 +1,13 @@
+@(anounceRoles : List[AnounceRole], userType : String, us:Users , anns : List[Announce] )
+@main("Head of Unit Page",""){
+  @header(anounceRoles, userType, true  , us )
+  @(us.role="HeadOfUnit")
+  @leftMenu("HeadOfUnit",us)
+  <div class="content-wrapper">
+    @admininistrator.adminContent.render(us)
+
+    @communication.render(anns)
+
+  </div>
+  @footer(us)
+}

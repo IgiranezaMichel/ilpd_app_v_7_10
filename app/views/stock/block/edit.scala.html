@@ -1,0 +1,27 @@
+@(block: models.stock.Block)
+<div class="loginForm" id="form1" no-prop="true">
+    <div class="box box-ilpd">
+        <div class="box-header with-border text-left resp-width">
+            <i class="glyphicon glyphicon-edit"></i>
+            <h3 class="box-title">Edit block</h3>
+        </div>
+        <form action="@routes.UnitController.saveOrdUpdateBlock()" method="POST" onsubmit="return allForms(this)">
+            <div class="box-body width-100">
+                <div class="form-block has-feedback width-100">
+                    <input type="text" value="@block.name" class="form-control" name="name" placeholder="Block name">
+                </div>
+                <div class="form-block has-feedback width-100">
+                    <input type="text" value="@block.acronym" class="form-control" name="acronym" placeholder="Block acronym">
+                </div>
+                <input type="hidden" name="id" value="@block.id">
+            </div>
+            <div class="box-footer clearfix">
+                <button type="submit" class="pull-right btn btn-ilpd">Update block
+                    <i class="fa fa-arrow-circle-right"></i></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+

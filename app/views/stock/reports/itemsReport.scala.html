@@ -1,0 +1,95 @@
+@(items:List[models.stock.Item],string: String)
+@import scala.Predef;var inc=1;var depDate=new Date();var remain = 0; var date = new Date().format("yyyy-MM-dd"); var remainTotal = 0.0
+@main(string,"") {
+    <div class="content">
+        <div class="row">
+            <div class="row no-print">
+                <div class="col-xs-12">
+                @shared.printButton.render()
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="invoice">
+                    <div class="row">
+                        <div class="col-xs-12 table-responsive">
+                            <h4 class="text-blue">
+                                @string
+                                    <small class="pull-right">Date: @(new Date().format("dd-MM,yyyy"))</small><br />
+                            </h4>
+                            <table class="table table-hover table-striped" id="example">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Category</th>
+                                        <th>Type</th>
+                                        <th>Unit measure</th>
+                                        <th>Entry date</th>
+                                        <th>Depr.min year</th>
+                                        <th>Depr.date</th>
+                                        <th>Status</th>
+                                        <th>Qty</th>
+                                        <th>Unity cost</th>
+                                        <th>Total value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @for(g <- items) {
+                                    @(depDate=Counts.dateAddMonth(g.date,g.depleciationMinMonths))
+                                  @(remain = g.getBeginningStockQty(Counts.getTomorrow().toDate.format("yyyy-MM-dd")))
+                                    @if(remain > 0) {
+                                        <tr>
+                                            <td>@inc</td>
+                                            <td>@g.name</td>
+                                            <td>@g.category.name</td>
+                                            <td>@(g.iType)</td>
+                                            <td>@g.unitMeasure</td>
+                                            <td>@g.date.format("dd-MM,yyyy")</td>
+                                            <td>@g.depleciationMinMonths</td>
+                                            <td>
+                                            @depDate.format("dd-MM,yyyy")
+                                            </td>
+                                            <td>
+                                            @if(Counts.dateIsBefore(depDate) && g.iType != null && g.iType.equalsIgnoreCase("Non-consumable")) {
+                                                <span class="text-danger">Depreciated</span>
+                                            } else {
+                                                <span class="text-success">Good</span>
+                                            }
+                                            </td>
+                                            <td>
+                                            @if(remain < 0) {
+                                                0
+                                            } else {
+                                                @Counts.formatAmount(remain)
+                                            }
+                                            </td>
+                                            <td>@Counts.formatAmount(g.unitPrice)</td>
+                                            <td>@Counts.formatAmount(g.unitPrice * remain)</td>
+                                        </tr>
+                                    }
+                                    @(inc = inc + 1)
+                                    @(remainTotal = remainTotal + (g.unitPrice * remain))
+                                }
+                                <tfoot>
+                                <tr>
+                                <td colspan="11">TOTAL VALUE</td>
+                                <td colspan="2">@Counts.formatAmount(remainTotal)</td>
+                                </tr>
+                                </tfoot>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                    </div>
+                    @views.html.reports.footer.render()
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+<script type="text/javascript">
+        window.print();
+</script>
+

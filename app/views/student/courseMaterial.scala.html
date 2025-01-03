@@ -1,0 +1,168 @@
+@(chd : List[Schedule], isStudent : Boolean, materials:List[CourseMaterial], scheduleList:List[Schedule], app : Applicant)
+@if(!isStudent){
+    <div align="right" class="left-form">
+        <button id="meBut" class="btn btn-ilpd" onclick="addNew(this, event)">
+            <i class="fa fa-plus"></i>
+            Add new
+        </button>
+        <div class="loginForm" id="form1" no-prop="true">
+            <div class="box box-ilpd">
+                <div class="box-header with-border text-left resp-width">
+                    <i class="fa fa-plus"></i>
+                    <h3 class="box-title">Add new course material</h3>
+                </div>
+                <form
+                action="@routes.LectureController.saveCourseMaterial()"
+                method="POST" enctype="multipart/form-data"
+                onsubmit="return allForms(this)" >
+                    <div class="box-body">
+                        <div class="form-group has-feedback">
+                            <label for="campus">Choose campus</label>
+                            <select name="campus" id="campus" class="form-control" required>
+                                <option value="">--select--</option>
+                                @for(campus : Campus <- Campus.all()) {
+                                    <option value="@campus.id">@campus.campusName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="iMode">Choose training</label>
+                            <select name="iMode" id="iMode" class="form-control" required>
+                                <option value="">--select--</option>
+                            </select>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="component">Choose component</label>
+                            <select name="component" id="component" class="form-control" required>
+                                <option value="">--select--</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" required class="form-control"
+                            id="name" name="name" placeholder="Course material title">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="file" name="fileName" class="form-control">
+                        </div>
+
+                    </div>
+                    <div class="box-footer clearfix">
+                        <button type="submit" class="pull-right btn btn-ilpd">
+                            Upload material
+                            <i class="fa fa-arrow-circle-right"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-ilpd">
+            <div class="box-header with-border">
+                <h3 class="box-title">List of course materials</h3>
+            </div>
+            <div class="box-body">
+                <div class="">
+                    <table class="table table table-hover table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Upload date</th>
+                                <th>Material name</th>
+                                <th>Component name</th>
+                                <th>Module name</th>
+                                <th>Training name</th>
+                                <th>File</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for(m <- materials) {
+                            <tr>
+                               <td width="150">@m.date.format("dd/MM/yyy , HH:mm")</td>
+                               <td>@m.name</td>
+                               <td>@m.schedule.component.compName</td>
+                               <td>@m.schedule.component.module.moduleName</td>
+                               <td>@m.schedule.training.print()</td>
+                               <td>
+                                    <a target="_blank" href="@routes.Application.updateAll(m.id,"downloadCourseMaterial")"
+                                    class="btn btn-ilpd" title="Download">
+                                        <i class="fa fa-download"></i>
+                                        Download
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+        //Date picker
+        $('.datepicker').datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            format: 'dd-mm-yyyy'
+        });
+        $(function () {
+            $(document).on('change', '#campus', function () {
+                var self = $(this);
+                $.ajax({
+                    url: '/report/campus/' + self.val() + "/",
+                    method: 'get',
+                    dataType: 'json'
+                }).done(function (response) {
+                    var iMode = $('#iMode');
+                    iMode.html('');
+                    iMode.append($('<option>', {
+                        value: '',
+                        text: '--select--'
+                    }));
+
+                    $.each(response, function (index, item) {
+
+                        iMode.append($('<option>', {
+                            value: item.id,
+                            text: item.print
+                        }));
+
+                    });
+                })
+            });
+
+
+            $(document).on('change', '#iMode', function () {
+                var self = $(this);
+                $.ajax({
+                    url: '/report/iMode/' + self.val() + "/",
+                    method: 'get',
+                    dataType: 'json'
+                }).done(function (response) {
+                    var comp = $('#component');
+                    comp.html('');
+                    comp.append($('<option>', {
+                        value: '',
+                        text: '--select--'
+                    }));
+
+                    $.each(response, function (index, item) {
+                        comp.append($('<option>', {
+                            value: item.id,
+                            text:item.comp_name
+                        }));
+                        console.log("Index:" + index + " ,Value:" + item.comp_name)
+                    });
+                })
+            });
+        })
+
+        $("#module_report_form").parsley();
+
+</script>
+
+

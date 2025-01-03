@@ -1,0 +1,727 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+# Home page
+GET         /                                                        controllers.Application.index()
+GET         /:indexCustom                                            controllers.Application.HomeIndex(indexCustom:String)
+GET         /action/logout                                           controllers.Application.getOut
+GET         /admin/updateInfo                                        controllers.Application.updateInfo()
+GET         /admin/dashboard/                                        controllers.Application.dashboard()
+
+POST        /lecture/saveCourseMaterial/                             controllers.LectureController.saveCourseMaterial()
+POST        /lecture/uploadAcademicFiles/                            controllers.LectureController.uploadAcademicFiles()
+
+GET         /register/schedule/show/:page/:p/                        controllers.Application.showSchedules(page: Integer,p:String)
+GET         /showSchedulesQuality/show/:page/:p/                     controllers.Application.showSchedulesQuality(page: Integer,p:String)
+
+GET         /timeTable/:t/:d/                                        controllers.Application.getTimetable(t: Long,d:Long)
+
+POST        /student/FinalLogin/                                     controllers.Application.FinalLogin()
+POST        /student/FinalStudent/                                   controllers.Application.FinalStudent()
+POST        /admin/assignChosenRoles/                                controllers.Application.assignRoles()
+POST        /confirmShowMarks/                                       controllers.Application.confirmShowMarks()
+
+POST        /academic/year/deactivate/                               controllers.Application.deActivate(id: Long)
+POST        /academic/deActivateIntake/                              controllers.Application.deActivateIntake(id: Long)
+POST        /academic/deActivateProgram/                              controllers.Application.deActivateProgram(id: Long)
+GET         /academic/deActivaResult/                                 controllers.Application.deActivaResult(id: Long)
+
+#//
+GET         /student/id/:id/                                         controllers.Application.getStudentById(id: Long)
+POST        /student/refund/amount/                                  controllers.PaymentController.refundStudent()
+POST        /deleteRefund/:id                                        controllers.PaymentController.deleteRefund(id: Long)
+POST        /uploadPayment/:id                                       controllers.Application.uploadPayment(id: Long)
+
+GET         /finance/damage/record/                                  controllers.Application.getStudentDamage
+
+POST        /finance/damage/                                         controllers.Application.postStudentDamage()
+
+
+GET         /students/all                                            controllers.Application.getStudentsByRegister
+GET         /student/:id                                             controllers.Application.getStudentPaymentHistory(id:Long)
+
+GET         /student/profile/                                        controllers.Application.getProfile
+
+GET         /payment/id/:id                                          controllers.PaymentController.getPayment(id:Long)
+GET         /students/payment/record                                 controllers.PaymentController.recordPayment()
+GET         /finance/refundView/view/                                controllers.PaymentController.refundView()
+GET         /studentRefundCancel/view/                               controllers.PaymentController.studentRefundCancel()
+GET         /student/payments/                                       controllers.PaymentController.paymemtHistory()
+GET         /student/refund/process/                                 controllers.PaymentController.studentRefund()
+POST        /student/refund/activity/                                controllers.PaymentController.refundRequest()
+
+GET         /student/ecord/payment/trainig/:page/:p                  controllers.PaymentController.recordPaymentByTraining(page:Integer,p:String)
+
+GET         /student/payments/success                                controllers.PaymentController.paymentSuccess()
+
+
+POST        /student/payment/save                                    controllers.PaymentController.savePayment()
+POST        /payment/confirm                                         controllers.PaymentController.confirmPayment()
+
+POST        /finance/payments/history/                               controllers.PaymentController.payments()
+
+
+GET         /student/refunds/                                        controllers.PaymentController.studentRefunds()
+
+
+POST        /deleteUncompletedUsers/                                 controllers.Application.deleteUncompletedUsers()
+GET         /student/account/status                                  controllers.PaymentController.accountStatus()
+
+GET         /student/regForm/                                        controllers.Registration.studentRegForm()
+GET         /activate/language/:ss                                   controllers.Registration.activateLang(ss:String)
+GET         /admin/fetchChatPeoplepage/                              controllers.Application.chatPeople()
+GET         /admin/fetchChatPeoplepage/:chat/                        controllers.Application.searchChat( chat : String )
+GET         /admin/singleChat/:id/                                   controllers.Application.singleChat( id : Long )
+GET         /AllUsers/refreshChat/                                   controllers.Application.refreshChat()
+GET         /admin/searchUser/:query                                 controllers.Application.searchUser( query : String )
+GET         /admin/moduleSettings/                                   controllers.Application.modulePages()
+GET         /admin/trainingPermission/                               controllers.Application.trainingPermission()
+GET         /admin/moreSettings/                                     controllers.Application.moreSettingsPage()
+GET         /getApplicationForm/:id                                  controllers.Application.getApplicationForm(id: Long)
+GET         /admin/getStudyMode/:progId/                             controllers.Application.getStudyMode( progId : Long )
+GET         /admin/getSession/:modeId/                               controllers.Application.getSession( modeId : Long )
+GET         /admin/academicalPages/:ss/q                             controllers.Application.academicPages(ss :String,q :String)
+GET         /admin/assignmentPages/:ss/q                             controllers.LectureController.assignmentPages(ss :String,q :String)
+GET         /student/registration/                                   controllers.Application.studentRegistration()
+GET         /allUsersExcept/request/items/                           controllers.Application.reqeustItems()
+GET         /allUsersExcept/perCategory/                             controllers.Application.requestPerCategory()
+POST        /allUsers/sendRequestPage/                               controllers.Application.sendRequestItem()
+POST        /allUsers/finalReqSend/                                  controllers.Application.saveRequest()
+GET         /Logistic/approve/:mvId/:comment                         controllers.Application.approveRequest(mvId:Long,comment:String)
+GET         /updateMvmnt/updateMvt/:mvId/                            controllers.Application.updateMovement(mvId:Long)
+GET         /admin/acaddemicaly/                                     controllers.Application.academicPage()
+GET         /admin/assignmentPage/                                   controllers.Application.assignmentPage()
+POST        /student/formRequest/:ss                                 controllers.Application.formRequest(ss : String)
+GET         /student/formRequested/                                  controllers.Application.formRequested()
+GET         /admin/requirements/                                     controllers.Application.requirements()
+GET         /deliberationSettings/                                   controllers.Application.deliberationSettings()
+GET         /student/structure/:id                                   controllers.Application.district(id:Long)
+GET         /student/sector/:id                                      controllers.Application.sectors(id:Long)
+GET         /admin/updateAllPages/:id/:ssi                           controllers.Application.updateAll(id:Long, ssi :String)
+GET         /admin/dd/setMarks/:id/                                  controllers.Application.setMarks(id:Long)
+GET         /scheduleByLecture/                                      controllers.Application.scheduleByLecture
+GET         /admin/deleteAllPages/:id/:ssi                           controllers.Application.deleteAll(id:Long, ssi :String)
+GET         /register/verifyApp/:id/str                              controllers.Application.verify(id:Long,str : String)
+GET         /activate/year/:ss                                       controllers.Application.activate(ss : Long)
+GET         /activate/activateIntake/:ss                             controllers.Application.activateIntake(ss : Long)
+GET         /activate/activateProgram/:ss                            controllers.Application.activateProgram(ss : Long)
+GET         /activate/activateResult/:ss                             controllers.Application.activateResult(ss : Long)
+GET         /register/Applied/:type/:ss                              controllers.Application.showApplied(type : String , ss : String)
+GET         /register/inApp/:id                                      controllers.Application.showByIntake( id : Long )
+GET         /register/prog/:id                                       controllers.Application.showByProgram( id : Long )
+GET         /register/Applied/:type/:ss/status                       controllers.Application.showByStatus(type : String , ss : String , status : String)
+GET         /access/appPage/:ss/typ                                  controllers.Application.showAppliedForm(ss : Long, typ : String)
+GET         /student/applicationNotes/                               controllers.Application.studentNotes()
+GET         /register/viewDetails/:id/:ss                            controllers.Application.detailedView(id:Long,ss : String)
+POST        /register/updateAppStatus/:id/:ss                        controllers.Application.updateAppStatus(id:Long,ss :Boolean)
+GET         /student/resetApplication/:id                            controllers.Application.resetApp(id:Long)
+GET         /allUsers/fetchUpdateInfo/                               controllers.Application.resetFetch()
+GET         /register/FetchSearchForm/                               controllers.Application.preGet()
+GET         /register/sort/:ss                                       controllers.Application.sortPage( ss : String )
+GET         /register/sortIntake/:id                                 controllers.Application.sortIntake( id : Long )
+GET         /register/sortProg/:id                                   controllers.Application.sortByProgram( id : Long )
+GET         /register/sortIntakeStudent/:id                          controllers.Application.studentByIntake( id : Long )
+GET         /register/AllStudents/                                   controllers.Application.allStudents()
+GET         /Finance/downloadStudentAttachemnt/:id/                  controllers.Application.downloadFinanceAttachment(id:Long)
+GET         /Finance/downloadRefund/:id/                             controllers.Application.downloadRefund(id:Long)
+GET         /Finance/getClearancePage/                               controllers.Application.getClearance
+GET         /Finance/getClearancePageStudent/:reg                    controllers.Application.searchStudent(reg:String)
+GET         /register/registrarReports/                              controllers.Application.registrarReports()
+POST        /allYUsers/getNotEmail/                                  controllers.Application.getEmailForReset
+GET         /allYUsers/enableStudentAccount/                         controllers.Application.enableStudentAccount
+GET         /register/getUserFile/:id                                controllers.Application.downloader(id:Long)
+GET         /register/shelfer/:id                                    controllers.Application.shelfer(id:Long)
+GET         /register/getAnnounceMentPage/                           controllers.Application.announcePage()
+GET         /register/getEventCreatepage/                            controllers.Application.eventpage()
+GET         /INstrouctor/getUpdateAss/:id/:lid/                      controllers.Application.getAssignmentUpdatePage(id:Long, lid:Long)
+GET         /INstrouctor/uploadAssignment/:id/:lid/                  controllers.Application.uploadAssignment(id:Long, lid:Long)
+GET         /deleteAssignmentPage/:id/:lid/                          controllers.Application.deleteAssignmentPage(id:Long, lid:Long)
+GET         /register/finalStepping/:str                             controllers.Application.getStudents(str : String )
+GET         /register/searchApplicant/:str                           controllers.Application.searchApplicant(str : String )
+GET         /register/finalSter/:id                                  controllers.Application.getStudentsIntake(id : Long )
+GET         /register/viewDetails/:id/:typ/                          controllers.Application.viewStudentDetails(id : Long , typ : String )
+GET         /viewApplicantDetails/:id/:typ/                          controllers.Application.viewApplicantDetails(id : Long , typ : String )
+GET         /register/printCard/:id/ty                               controllers.Application.printCard( id : Long )
+GET         /student/getStudy/:typ/:id                               controllers.Application.getMode( typ : String , id : Long )
+GET         /training/getComps/:typ/:id                              controllers.Application.getComps( typ : String , id : Long )
+GET         /student/getIntake/:sId/:id                              controllers.Application.getIntake( sId : Long , id : Long )
+GET         /allUsers/resetMail/:codes                               controllers.Application.resetMail( codes : String )
+GET         /student/print/admissionLetter/:id                       controllers.Application.admissionLetter( id : Long )
+GET         /student/print/myAdmissions/                             controllers.Application.myAddmission()
+GET         /student/myComponentsViews/                              controllers.Application.myComponentsViews()
+GET         /student/myAddmissionRegistrar/:id                       controllers.Application.myAddmissionRegistrar( id : Long)
+GET         /student/myAddmissionRegistrarSelect/:id                 controllers.Application.myAddmissionRegistrarSelect( id : Long)
+GET         /lecture/print/studentList/:id                           controllers.Application.studentList( id : Long )
+GET         /lecture/search/student/:id/:q/                          controllers.Application.searchMember( id : Long , q : String )
+GET         /Student/checkTrain/:inId/:sModeId/:proId/               controllers.Application.checkTrain( inId : Long , sModeId : Long , proId : Long )
+GET         /Student/getAssigments/                                  controllers.Application.getAssignment
+GET         /Student/getSubForm/:id/:aBoolean/                       controllers.Application.getSubForm( id : Long ,aBoolean : Boolean )
+GET         /Student/getSubGroupForm/:id/:gid/:aBoolean/             controllers.Application.getSubGroupForm( id : Long , gid : Long ,aBoolean : Boolean )
+GET         /Instructor/getAssignment/                               controllers.Application.viewMines(bool : Boolean )
+GET         /Instructor/viewMinesGroup/                              controllers.Application.viewMinesGroup()
+GET         /Instructor/assignmentMarks/                             controllers.Application.assignmentMarks(bool : Boolean )
+GET         /Instructor/editAssignmentMarks/                         controllers.Application.editAssignmentMarks(bool : Boolean )
+GET         /delete/uncompleted/                                     controllers.Application.deleteUncompleted()
+GET         /unable/student/:stdEm/                                  controllers.Application.unableStudent(stdEm : String )
+GET         /unable/enableStudent/                                   controllers.Application.enableStudent()
+GET         /back/uncompleted/                                       controllers.Application.backUncompleted()
+
+GET         /admin/evaluation/settings/                              controllers.Application.evSettingsPage()
+GET         /cordinator/getAssignment/all/                           controllers.Application.viewAssignmentsCor(bool : Boolean )
+
+
+
+GET         /Instructor/getSingle/:id/:bool/                         controllers.Application.singleAssign( id : Long , bool : Boolean )
+GET         /Instructor/singleAssignGroup/:id/:g/:l                  controllers.Application.singleAssignGroup( id : Long, g : Long, l : Long)
+GET         /unsubmitedAssignment/:id/:bool/                         controllers.Application.unsubmitedAssignment( id : Long , bool : Boolean )
+GET         /assignmentMarksCorrection/:id/:bool/                    controllers.Application.assignmentMarksCorrection( id : Long , bool : Boolean )
+GET         /unsubmitedEditAssignment/:id/:bool/                     controllers.Application.unsubmitedEditAssignment( id : Long , bool : Boolean )
+GET         /Instructor/getSingleSingleRe/:assId/:bool/              controllers.Application.getSubmiters( assId : Long,bool:Boolean )
+GET         /Instructor/getUnSubmiters/:assId/                       controllers.Application.getUnSubmiters( assId : Long )
+GET         /Instructor/getViewedSubmiters/:assId/                   controllers.Application.getViewedSubmiters( assId : Long )
+GET         /Instructor/getUnEditSubmiters/:assId/                   controllers.Application.getUnEditSubmiters( assId : Long )
+GET         /Instructor/downloadAtt/:assId/:sub/                     controllers.Application.downloadAssign( assId : Long , sub : Boolean )
+GET         /Instructor/downloadAssignGroup/:sub/                    controllers.Application.downloadAssignGroup(sub : Long )
+GET         /Instructor/viewSubmission/:sId/                         controllers.LectureController.viewSubmitted( sId : Long )
+GET         /Instructor/addMarks/:sId/                               controllers.LectureController.addMarks( sId : Long )
+GET         /Instructor/changeMarks/:sId/                            controllers.LectureController.changeMarks( sId : Long )
+GET         /Instructor/addMarksGroup/:sId/                          controllers.LectureController.addMarksGroup( sId : Long )
+GET         /Instructor/addSameMarksGroup/:sId/                      controllers.LectureController.addSameMarksGroup( sId : Long )
+GET         /Instr/cancelGroupSubmission/:sId/                       controllers.LectureController.cancelGroupSubmission( sId : Long )
+GET         /Administrator/printTimetable/:trainId/                  controllers.Application.printTimetable( trainId : Long )
+GET         /Administrator/roomComping/:id/                          controllers.Application.roomPossibleComponent( id : Long )
+GET         /Administrator/compTrains/:id/                           controllers.Application.CompPossibleTraining( id : Long )
+GET         /Administrator/TrainDays/:id/                            controllers.Application.TrainPossibleDays( id : Long )
+GET         /Administrator/TrainHours/:id/                           controllers.Application.TrainPossibleHours( id : Long )
+GET         /Lecture/setStudentMarksPage/                            controllers.Application.fetchSetMarkPage()
+GET         /Lecture/fetchSetResitMarkPage/                          controllers.Application.fetchSetResitMarkPage()
+GET         /Lecture/moduleMarksPage/                                controllers.Application.moduleMarks()
+GET         /Lecture/moduleStudents/:m/:l/:t/                        controllers.Application.moduleStudentsM(m:Long,l:Long,t:Long)
+GET         /Lecture/studentListForMarks/:id/:lId/                   controllers.Application.marksPage( id : Long,lId:Long )
+GET         /Lecture/resitMarksPage/:id/:lId/                        controllers.Application.resitMarksPage( id : Long,lId:Long )
+GET         /Lecture/marksClaimPage/:id/:lId/                        controllers.Application.marksClaimPage( id : Long,lId:Long )
+GET         /Lecture/studentListForMarksEnter/:lId/:id/:de/          controllers.Application.setMarkPage(lId: Long, id : Long , de : Long )
+GET         /Lecture/setResitMarkPage/:lId/:id/:de/                  controllers.Application.setResitMarkPage(lId: Long, id : Long , de : Long )
+GET         /Lecture/setMarkClaimPage/:lId/:id/:de/                  controllers.Application.setMarkClaimPage(lId: Long, id : Long , de : Long )
+GET         /Lecture/saveStudentMarks/:id/:de/:marks/:types/         controllers.Application.saveMarksAll( id : Long , de : Long , marks : Float , types : String )
+GET         /Lecture/setAttending/                                   controllers.Application.setAttending()
+GET         /Lecture/fetchTable/:training/:lecturerId                controllers.Application.fetchTable( training : Long,lecturerId:Long)
+GET         /Lecture/fetchStudentsForAttendance/:sch/                controllers.Application.attendanceCheck( sch : Long )
+GET         /Student/fetchAnnoncefullView/:id/                       controllers.Application.announceFullView( id : Long )
+GET         /Student/markAnnouncementAlreadyviewed/:announce/        controllers.Application.markViewed( announce : Long )
+GET         /Student/downloadAnnouncementLink/:linkId/               controllers.Application.downloadAnnounce( linkId : Long )
+GET         /Lecture/moveNext/:mId/                                  controllers.Application.moveNext( mId : Long )
+GET         /RegisterAndCoordinator/transcripts/                     controllers.Application.allTranscript()
+GET         /RegisterAndCoordinator/degrees/                         controllers.Application.allDegrees()
+GET         /RegisterAndCoordinator/trainTrans/:id/                  controllers.Application.allTranscriptForTraining(id:Long)
+GET         /RegisterAndCoordinator/trainDegree/:id/                 controllers.Application.allDegreeForTraining(id:Long)
+GET         /LoadingData/studentTranscript/:sId/:bld/                controllers.Application.loadTranscript( sId : Long , bld : Boolean)
+GET         /LoadingData/studentDegree/:sId/:bld/                    controllers.Application.loadDegree( sId : Long , bld : Boolean)
+GET         /LoadingData/studentTranscript/:bld/                     controllers.Application.myTranscript( bld : Boolean )
+GET         /Registrar/setStatuses/:id/:status/                      controllers.Application.setStatuses( id : Long , status : String )
+
+
+GET         /Search/studentString/:str/                              controllers.Application.searchStudentByReg(str:String)
+GET         /reports/student/status/:s/                              controllers.Reports.financialReportBySatus(s:String)
+
+POST        /Lecture/moveNextTONext/:mId/                            controllers.Application.moveGroupMember( mId : Long )
+
+POST        /applied/reject/:id/                                     controllers.Registration.rejectProvisionallyAcceptedApplication( id : Long )
+
+
+#coordinatoor back in activity routes for all users
+GET         /Coordinator/setAttendanceUser/                          controllers.Application.CoAttending()
+
+POST        /daterange/save/                                         controllers.Registration.saveDate()
+POST        /daterange/update/:id                                    controllers.Registration.updateDate(id:Long)
+
+
+GET         /student/internships/all                                 controllers.StudentController.myInternships()
+GET         /internships/all                                         controllers.CoordinatorController.internships()
+GET         /student/evaluation/                                     controllers.StudentController.evaluation()
+GET         /student/studentAttendance/                              controllers.StudentController.studentAttendance()
+GET         /student/studentAttendanceClaime/                        controllers.Application.studentAttendanceClaime()
+POST        /student/internship/save                                 controllers.StudentController.saveInternship()
+
+
+POST        /student/evaluate/save                                   controllers.StudentController.submitEvaluation()
+
+
+
+
+
+
+POST        /hours/update/:id                                        controllers.UpdateForm.updateHours(id:Long)
+POST        /updateCampusProgram/update/:id                          controllers.UpdateForm.updateCampusProgram(id:Long)
+POST        /updateSessionMode/update/:id                            controllers.UpdateForm.updateSessionMode(id:Long)
+POST        /admin/updateBank/:id                                    controllers.UpdateForm.updateBank(id:Long)
+POST        /makeGraduation/:id                                      controllers.UpdateForm.makeGraduation(id:Long)
+POST        /makeGraduationResit/:id                                 controllers.UpdateForm.makeGraduationResit(id:Long)
+POST        /makeGraduationFinal/:id                                 controllers.UpdateForm.makeGraduationFinal(id:Long)
+POST        /updateCourseMaterial/:id                                controllers.UpdateForm.updateCourseMaterial(id:Long)
+POST        /intakeSessionMode/update/:id                            controllers.UpdateForm.intakeSessionMode(id:Long)
+POST        /updateAssignedDays/update/:id                           controllers.UpdateForm.updateAssignedDays(id:Long)
+POST        /updateHoursSession/update/:id                           controllers.UpdateForm.updateHoursSession(id:Long)
+POST        /updateCompMax/update/:id                                controllers.UpdateForm.updateCompMax(id:Long)
+POST        /updateCAmpusProgramMode/update/:id                      controllers.UpdateForm.updateCampusProgramMode(id:Long)
+
+POST        /action/updateAssignment/:id/                            controllers.Registration.updateAssignment(id:Long)
+POST        /action/uploadAssignment/:id/                            controllers.Registration.uploadAssignment(id:Long)
+POST        /action/deleteAssignment/:id/                            controllers.Registration.deleteAssignment(id:Long)
+
+# defines POST Request for Data forms
+
+POST        /action/login                                            controllers.Application.performLogin()
+GET         /action/getUsersRoles/                                   controllers.Application.renderRoles()
+GET         /admin/deleteRole/:id/                                   controllers.Application.removeRole( id : Long )
+GET         /admin/setUserRoles/:uId/                                controllers.Application.setUserRoles( uId : Long )
+
+POST        /employee/save/                                          controllers.Registration.saveEmployee()
+
+
+
+POST        /action/submitAssignment/                                controllers.Application.submitAssignment(id : Long,isGroup : Boolean)
+POST        /action/GroupSubmitAssignment/:id/:gid/                  controllers.Application.GroupSubmitAssignment(id : Long, gid : Long)
+POST        /action/makeStudent/:id                                  controllers.Application.makeStudent(id:Long)
+POST        /action/saveStudent/                                     controllers.Registration.saveStudent()
+POST        /action/activateNew/:string/                             controllers.Registration.activateNew(string:String)
+POST        /action/saveGroup/:cId                                   controllers.Registration.saveGroup( cId : Long )
+POST        /action/saveGroupExist/                                  controllers.Registration.saveGroupExist()
+POST        /action/saveYears/                                       controllers.Registration.saveYear()
+POST        /action/saveCampus/                                      controllers.Registration.saveCampus()
+POST        /action/saveProgram/                                     controllers.Registration.saveProgram()
+POST        /lecture/addMember/:id/                                  controllers.Registration.addMember( id : Long )
+POST        /action/saveSession/                                     controllers.Registration.saveSession()
+POST        /action/saveBank/                                        controllers.Registration.saveBank()
+POST        /approveTrainingMarks/:id/                               controllers.Registration.approveTrainingMarks( id : Long )
+POST        /action/saveTraining/                                    controllers.Registration.saveTraining()
+POST        /action/usermanage/                                      controllers.Registration.saveSystemUser()
+POST        /action/saveIntake/                                      controllers.Registration.saveIntake()
+POST        /action/saveModule/                                      controllers.Registration.saveModule()
+POST        /action/saveRoom/                                        controllers.Registration.saveRoom()
+POST        /action/saveMode/                                        controllers.Registration.saveStudyMode()
+POST        /action/saveLecture/                                     controllers.Registration.saveLecture()
+POST        /action/saveApplicant/:def                               controllers.Registration.saveApplicant(def:String)
+POST        /action/updateFile/:id                                   controllers.Registration.updateFile(id : Long)
+POST        /action/saveApplication/:def                             controllers.Registration.saveApplication(def:String)
+POST        /actAdmin/saveFees/                                      controllers.Registration.saveFees()
+POST        /actAdmin/saveFiles/                                     controllers.Registration.saveFiles()
+POST        /inst/updater/:id                                        controllers.Application.updateInst(id:Long)
+POST        /register/deny/:id/:ss                                   controllers.Application.denyFile(id : Long,ss : String)
+POST        /everyUser/updatePhoto/                                  controllers.Registration.changePhoto()
+POST        /change/appProfile/:id                                   controllers.ApplicantController.appProfile(id : Long)
+POST        /action/resetForm                                        controllers.Registration.resetPassword()
+POST        /action/saveAssignment                                   controllers.Registration.saveAssignment()
+POST        /action/saveComponent                                    controllers.Registration.saveComponent()
+POST        /action/viewByComp/                                      controllers.Application.viewByComp()
+POST        /lecture/Inst/saveAss/:id/                               controllers.Registration.saveSubAssignmentMark( id : Long )
+POST        /lecture/changeSubAssignmentMark/:id/                    controllers.Registration.changeSubAssignmentMark( id : Long )
+POST        /saveSubAssignmentMarkGroup/:id/                         controllers.Registration.saveSubAssignmentMarkGroup( id : Long )
+POST        /saveSubAssignmentSameMarkGroup/:id/                     controllers.Registration.saveSubAssignmentSameMarkGroup( id : Long )
+POST        /cancelSubmissionPost/:id/                               controllers.Registration.cancelSubmissionPost( id : Long )
+POST        /admin/saveSchedule/                                     controllers.Registration.saveSchedule()
+POST        /admin/saveDays/                                         controllers.Registration.saveDays()
+POST        /admin/saveHours/                                        controllers.Registration.saveHours()
+POST        /admin/assignProgram/                                    controllers.Registration.programAssign()
+POST        /admin/assignStudyModes/                                 controllers.Registration.modesAssign()
+POST        /admin/assignDaysSession/                                controllers.Registration.daysAssign()
+POST        /admin/assignHoursSession/                               controllers.Registration.hoursAssign()
+POST        /admin/assignstudySessions/                              controllers.Registration.sessionAssign()
+POST        /admin/reSitRetakeRequest/                               controllers.Registration.reSitRetakeRequest()
+POST        /admin/retakeModuleRetakeRequest/                        controllers.Registration.retakeModuleRetakeRequest()
+POST        /admin/retakeProgramRetakeRequest/                       controllers.Registration.retakeProgramRetakeRequest()
+POST        /admin/assignstudySessionsOfIntake/                      controllers.Registration.sessionIntakeAssign()
+POST        /Lecture/saveAttendance/:sche/                           controllers.Registration.saveAttendance( sche : Long )
+POST        /AllUsers/sendChatMessages/:receiver/                    controllers.Application.sendMessage( receiver : Long )
+POST        /Registrar/saveAnnouncement/                             controllers.Registration.saveAnnouncement()
+
+
+# updating routes From Form ONLY POST REQUESTS
+
+
+POST        /action/changeMinAge                                     controllers.Application.updateAge()
+POST        /action/updateAcSenate                                   controllers.Application.updateAcSenate()
+POST        /action/updateExamBoard                                  controllers.Application.updateExamBoard()
+POST        /action/updateCumulativeCGPA                             controllers.Application.updateCumulativeCGPA()
+POST        /action/updateCumulative                                 controllers.Application.updateCumulative()
+POST        /action/updateCumulativeRange                            controllers.Application.updateCumulativeRange()
+GET         /action/cgangeSignature/                                 controllers.Application.signatureForm()
+POST        /action/updateRegSignature/:s/                           controllers.UpdateForm.updateSignature(s:String)
+POST        /action/upadteYear/:id                                   controllers.UpdateForm.updateYear(id :Long)
+POST        /action/returnAssignment/:id                             controllers.UpdateForm.returnAssignment(id :Long)
+POST        /action/updateApp/:id                                    controllers.UpdateForm.updateApp(id :Long)
+POST        /action/deleteApplicantUnc/:id                           controllers.UpdateForm.deleteApplicantUnc(id :Long)
+POST        /action/deleteApplicantUncAll/                           controllers.UpdateForm.deleteApplicantUncAll()
+POST        /action/updateAppSucc/:id                                controllers.UpdateForm.updateAppSucc(id :Long)
+POST        /action/marksClaim/:id                                   controllers.UpdateForm.marksClaim(id :Long)
+POST        /marksClaimApproval/:id                                  controllers.UpdateForm.marksClaimApproval(id :Long)
+POST        /marksClaimApprovalDenial/:id                            controllers.UpdateForm.marksClaimApprovalDenial(id :Long)
+POST        /action/removeDepr/:id                                   controllers.UpdateForm.removeDepr(id :Long)
+POST        /action/removeDeprApprove/:id                            controllers.UpdateForm.removeDeprApprove(id :Long)
+POST        /action/marksClaimAss/:id                                controllers.UpdateForm.marksClaimAss(id :Long)
+POST        /action/marksClaimAssApproval/:id                        controllers.UpdateForm.marksClaimAssApproval(id :Long)
+POST        /action/upadteCampus/:id                                 controllers.UpdateForm.updateCampus(id :Long)
+POST        /action/upadteProgram/:id                                controllers.UpdateForm.updateProgram(id :Long)
+POST        /action/updateAssResult/:id                              controllers.UpdateForm.updateAssResult(id :Long)
+POST        /action/upadteSession/:id                                controllers.UpdateForm.updateSession(id :Long)
+POST        /action/upadteIntake/:id                                 controllers.UpdateForm.updateIntake(id :Long)
+POST        /action/updateModule/:id                                 controllers.UpdateForm.updateModule(id :Long)
+POST        /action/appealExemption/:id                              controllers.UpdateForm.appealExemption(id :Long)
+POST        /action/appealDoingInternship/:id                        controllers.UpdateForm.appealDoingInternship(id :Long)
+POST        /action/updateLecture/:id                                controllers.UpdateForm.updateLecture(id :Long)
+POST        /action/upadteSchoolFees/:id                             controllers.UpdateForm.updateFees(id :Long)
+POST        /submitAttendanceClaim/:id                               controllers.UpdateForm.submitAttendanceClaim(id :Long)
+POST        /submitAttendanceClaimApproval/:id                       controllers.UpdateForm.submitAttendanceClaimApproval(id :Long)
+POST        /action/upadteSystemUsers/:id                            controllers.UpdateForm.updateUsers(id :Long)
+POST        /action/updateRequiredFiles/:id                          controllers.UpdateForm.updateFiles(id :Long)
+POST        /action/updateComponent/:id                              controllers.UpdateForm.updateComponent(id :Long)
+POST        /action/updateStudyMode/:id                              controllers.UpdateForm.updateMode(id :Long)
+POST        /action/updateRoom/:id                                   controllers.UpdateForm.updateRoom(id :Long)
+POST        /allMarksEntered/:id                                     controllers.UpdateForm.allMarksEntered(id :Long)
+POST        /action/appealDecision/:id                               controllers.UpdateForm.appealDecision(id :Long)
+POST        /retakeModuleDecision/:id                                controllers.UpdateForm.retakeModuleDecision(id :Long)
+POST        /resitModulesDecision/:id                                controllers.UpdateForm.resitModulesDecision(id :Long)
+POST        /resitAppealDecisionProgram/:id                          controllers.UpdateForm.resitAppealDecisionProgram(id :Long)
+POST        /action/updateTraining/:id                               controllers.UpdateForm.updateTraining(id :Long)
+POST        /action/updatePassword/:id                               controllers.UpdateForm.updatePassword(id :Long)
+POST        /action/hashPassword/:id                                 controllers.UpdateForm.hashPassword(id :Long)
+POST        /action/updateSchedule/:id                               controllers.UpdateForm.updateSchedule(id :Long)
+POST        /action/updateSchedule2/:id                              controllers.UpdateForm.updateSchedule2(id :Long)
+POST        /action/updateAnnouncement/:id                           controllers.UpdateForm.updateAnnouncement(id :Long)
+
+#chart data
+
+GET         /action/applicant/gender/:gender/:g/                     controllers.Application.getChartDataByGender(gender:String,g:Boolean)
+
+#dashboard routes
+GET         /dashboard/chart/program                                 controllers.Application.getStudentByProgram
+GET         /pendingIntershipClaims/program                          controllers.Application.pendingIntershipClaims
+GET         /reSitRequests/                                          controllers.Application.reSitRequests
+GET         /retakemoduleRequests/                                   controllers.Application.retakemoduleRequests
+GET         /retakeProgramRequests/                                  controllers.Application.retakeProgramRequests
+GET         /processedIntershipClaims/program                        controllers.Application.processedIntershipClaims
+GET         /dashboard/getStudentBy/:id/:c/                          controllers.Application.getStudentBy(id:Long,c:Long)
+GET         /dashboard/getStudentExistsGroupBy/:id/:gId/          controllers.Application.getStudentExistsGroupBy(id:Long, gId:Long)
+
+#reports routes
+GET         /register/reports/student/report                         controllers.Reports.getStudentReport
+GET         /register/reports/application/report                     controllers.Reports.getApplicationReport
+GET         /register/reports/getAuditReport/report                  controllers.Reports.getAuditReport
+GET         /register/reports/finance/report                         controllers.Reports.getFinancialReport
+GET         /register/reports/attendance/report                      controllers.Reports.getAttendanceReport
+GET         /register/reports/timeTableReport/report/                controllers.Reports.timeTableReport()
+GET         /register/reports/deliberationTableReport/               controllers.Reports.deliberationTableReport()
+POST        /register/reports/timeTableSubmit/report/                controllers.Reports.timeTableSubmit()
+POST        /register/reports/deliberationReport/report/             controllers.Reports.deliberationReport()
+POST        /register/deliberationResitReport/report/                controllers.Reports.deliberationResitReport()
+POST        /register/reports/resitRequestReport/report/             controllers.Reports.resitRequestReport()
+POST        /register/retakeModulesRequestReport/report/             controllers.Reports.retakeModulesRequestReport()
+GET         /register/reports/evaluationReport/report/               controllers.Reports.evaluationReport()
+GET         /print/transcript                                        controllers.Reports.printTranscript()
+GET         /print/printAdmission/:id/                               controllers.Reports.printAdmission(id:Long)
+GET         /register/reports/listComp/listComp/:id/                 controllers.Application.listComp(id:Long)
+GET         /register/reports/listComponents/:id/                    controllers.Application.listComponents(id:Long)
+
+#students reports
+#report by intake
+POST        /students/reports/byintake/report/                       controllers.Reports.getStudentByIntake()
+#study mode
+POST        /students/reports/studyMode/                             controllers.Reports.getStudentByStudyMode()
+#study mode
+POST        /students/reports/studyMode-x/intake.                    controllers.Reports.getStudentByIntakeStudyMode()
+POST        /students/getStudentByIntakeGender/intake.               controllers.Reports.getStudentByIntakeGender()
+POST        /students/getStudentByIntakeStatus/                      controllers.Reports.getStudentByIntakeStatus()
+#study mode
+POST        /students/reports/program/                               controllers.Reports.getStudentByIntakeProgram()
+#gender
+GET         /students/reports/gender/:gender                         controllers.Reports.getStudentByGender(gender:String)
+#gender
+POST        /students/reports/country/                               controllers.Reports.getStudentByCountry()
+#martial status
+GET         /students/reports/martial/:status                        controllers.Reports.getStudentByMaritial(status:String)
+
+
+
+#
+#applicants reports
+POST        /applicants/intake/                                      controllers.Reports.getApplicantsByIntake()
+POST        /applicants/studyMode/                                   controllers.Reports.getApplicantsByStudyMode()
+POST        /applicants/studyMode/intake/                            controllers.Reports.getApplicantsByStudyModeIntake()
+POST        /applicants/program/intake/                              controllers.Reports.getApplicantsByProgramIntake()
+GET         /applicants/gender/:gender                               controllers.Reports.getApplicantsByGender(gender:String)
+POST        /applicants/country/                                     controllers.Reports.getApplicantByCountry()
+POST        /applicants/university/                                  controllers.Reports.getApplicantByUniversity()
+POST        /applicants/getStudentByUniversity/                      controllers.Reports.getStudentByUniversity()
+POST        /applicants/getStudentByIntakeUniversity/                controllers.Reports.getStudentByIntakeUniversity()
+POST        /applicants/getStudentByIntakeNationality/               controllers.Reports.getStudentByIntakeNationality()
+GET         /applicants/martial/:status                              controllers.Reports.getApplicantsByMaritial(status:String)
+GET         /getStudentComponentsMarks/:mId/:sId/:tid/               controllers.Reports.getStudentComponentsMarks(mId : Long, sId : Long, tid : Long)
+
+
+POST        /applicants/campus/:status/                              controllers.Reports.byCampus(status:String)
+POST        /applicants/program/intake/mode/:s                       controllers.Reports.programIntakeMode(s:String)
+POST        /applicants/certificate/program/intake/mode/:s           controllers.Reports.programIntakeMode2(s:String)
+POST        /programIntakeMode3/program/intake/mode/                 controllers.Reports.programIntakeMode3()
+
+
+
+
+#financil reports
+
+#Attendance reports
+POST        /attendance/component/report/                            controllers.Reports.componentAttendanceReport()
+POST        /attendance/component/evaluationPost/                    controllers.Reports.evaluationPost()
+POST        /evaluationPostModule/                                   controllers.Reports.evaluationPostModule()
+POST        /attendance/module/report/                               controllers.Reports.moduleAttendanceReport()
+
+#Summary report
+GET         /summary/report/                                         controllers.Reports.summaryReport()
+#Library report
+GET         /library/report/                                         controllers.Reports.libraryReport()
+POST        /library/filter/report/                                  controllers.Reports.libraryReportFilter()
+
+#Library routes
+GET         /library/status                                          controllers.LibraryController.getLibraryStatus
+GET         /library/report                                          controllers.LibraryController.libraryReport()
+GET         /student/certificate/                                    controllers.StockTabsController.meritCertificate()
+GET         /library/report/lost/:regno/:lost                        controllers.LibraryController.getStudentReport(regno:String,lost:Integer)
+POST        /library/student/save                                    controllers.LibraryController.saveEntry()
+POST        /library/student/clear                                   controllers.LibraryController.clearStudent()
+GET         /library/student/:regno                                  controllers.LibraryController.findStudent(regno:String)
+
+POST        /library/student/                                        controllers.LibraryController.postFindStudent()
+POST        /certificateMerit/                                       controllers.StockTabsController.certificateMerit()
+
+
+
+GET         /library/:regno/:bCode                                   controllers.LibraryController.findLibraryEntry(regno:String,bCode:String)
+POST        /library/update/:id                                      controllers.UpdateForm.updateLibrary(id:Long)
+
+GET         /Every/UserUpdateProfile/                                controllers.Application.updateUserProfile()
+POST        /applicant/updateUserPrrofile/                           controllers.Registration.updateEveryProfile()
+
+#///
+GET         /student/start/evaluation/:id/                           controllers.StudentController.evaluate(id:Long)
+POST        /admin/save/EvCategory/                                  controllers.Registration.saveEvCategory()
+POST        /student/start/pst/evaluate/:id/                         controllers.StudentController.postEvaluate(id:Long)
+POST        /admin/save/EvQuestions/                                 controllers.Registration.saveEvQuestion()
+POST        /admin/update/EvCategory/:id/                            controllers.UpdateForm.updateEvCat(id:Long)
+POST        /admin/update/EvQuestion/:id/                            controllers.UpdateForm.updateEvQuestion(id:Long)
+GET         /finance/student/info/:id/                               controllers.Registration.showStudentInfo(id:Long)
+GET         /moduleReportMarks/:id/:mId/                             controllers.Application.moduleReportMarks(id:Long, mId:Long)
+
+POST        /finance/student/disable/acc/:id/                        controllers.Registration.disableAccommodation(id:Long)
+POST        /finance/student/enable/acc/:id/                         controllers.Registration.enableAccommodation(id:Long)
+
+POST        /finance/student/disable/rest/:id/                       controllers.Registration.disableRestoration(id:Long)
+POST        /finance/student/enable/rest/:id/                        controllers.Registration.enableRestoration(id:Long)
+
+
+
+POST        /admin/training/transcript/:id/:b/                       controllers.Registration.managePeriodTranscript(id:Long,b:Boolean)
+POST        /managePeriodTranscriptPrint/:id/:b/                     controllers.Registration.managePeriodTranscriptPrint(id:Long,b:Boolean)
+
+POST        /admin/training/closing/:id/:b/                          controllers.Registration.managePeriodClosingStatus(id:Long,b:Boolean)
+
+
+
+POST        /damage/id/:id/                                          controllers.Application.clearStudentDamage(id:Long)
+POST        /deleteMaterial/id/:id/                                  controllers.Application.deleteMaterial(id:Long)
+
+#update user info
+
+POST        /applicant/update/info                                   controllers.UpdateForm.updateInfo()
+
+##################################################################################################################################
+######################################################### Coordinator ########################################################
+GET         /coordinator/assignmentPage/                             controllers.CoordinatorController.assignmentPage()
+GET         /coordinator/courseMaterialPage/                         controllers.CoordinatorController.courseMaterialPage()
+GET         /coordinator/assignmentPages/:ss/q                       controllers.CoordinatorController.assignmentPages(ss :String,q :String)
+GET         /coordinator/getUpdateAss/:id/                           controllers.CoordinatorController.getAssignmentUpdatePage(id:Long)
+POST        /coordinator/lecturer/view/components                    controllers.CoordinatorController.loadForLecturer()
+GET         /coordinator/select/lecturer/:action                     controllers.CoordinatorController.viewLecturersTimetabled(action:String)
+GET         /assignment/groups/:compId/                              controllers.LectureController.getGroupsForAssignment(compId:Long)
+
+
+GET         /report/campus/:campusId/                                controllers.Reports.getImodes(campusId:Long)
+GET         /report/iMode/:iMode/                                    controllers.Reports.getComponents(iMode:Long)
+GET         /report/iMode/training/:inId/                            controllers.Reports.getTraining(inId:Long)
+GET         /getAssignments/:compId/                                 controllers.Reports.getAssignments(compId:Long)
+
+
+##############################################################
+#Stock and assets routes
+
+GET         /stock/tab/itemTab/                                      controllers.StockTabsController.ItemPage()
+GET         /stock/harmonizeStock/                                   controllers.StockTabsController.harmonizeStock()
+GET         /stock/tabs/itemTabs/:page/                              controllers.StockTabsController.ItemsPage(page:String)
+POST        /items/stock/tabs/itemTabs/:page/                        controllers.DynamicReportController.DynamicReport(page:String)
+
+GET         /stock/tab/staffTab/                                     controllers.StockTabsController.StaffTabs()
+GET         /stock/tabs/staffTab/:page/                              controllers.StockTabsController.StaffsPage(page:String)
+
+GET         /stock/tab/MovementTabs/                                 controllers.StockTabsController.MovementTabs()
+GET         /stock/tab/RemoveDepreciated/                            controllers.StockTabsController.RemoveDepreciated()
+GET         /stock/tabs/MovementTabs/:page/                          controllers.StockTabsController.MovementPages(page:String)
+
+GET         /stock/tab/RequestPages/                                 controllers.StockTabsController.RequestTabs()
+GET         /stock/tab/RemoveDefective/                              controllers.StockTabsController.RemoveDefective()
+POST        /stock/save/Supplied/                                    controllers.StockTabsController.saveSupplied()
+POST        /stock/save/StockOut/                                    controllers.StockTabsController.saveStockOut()
+GET         /stock/tabs/RequestPages/:page/                          controllers.StockTabsController.RequestPages(page:String)
+
+#CRUD group
+POST        /stock/group/save/                                       controllers.GroupController.save()
+POST        /saveSource/                                             controllers.GroupController.saveSource()
+POST        /stock/group/update/                                     controllers.GroupController.update()
+POST        /updateSourceFund/                                       controllers.GroupController.updateSourceFund()
+GET         /stock/group/delete/:id/                                 controllers.GroupController.delete(id: Long)
+GET         /deleteSource/:id/                                       controllers.GroupController.deleteSource(id: Long)
+GET         /stock/group/find/:id/                                   controllers.GroupController.find(id: Long)
+GET         /updateSource/find/:id/                                  controllers.GroupController.updateSource(id: Long)
+#CRUD categories
+POST        /stock/category/save/                                    controllers.CategoryController.save()
+POST        /stock/category/update/                                  controllers.CategoryController.update()
+GET         /stock/category/delete/:id/                              controllers.CategoryController.delete(id: Long)
+GET         /stock/category/find/:id/                                controllers.CategoryController.find(id: Long)
+#CRUD items
+POST        /stock/item/save/                                        controllers.ItemsController.save()
+POST        /stock/item/update/:id/                                  controllers.ItemsController.update(id:Long)
+GET         /stock/item/delete/:id/                                  controllers.ItemsController.delete(id: Long)
+GET         /stock/item/edit/:id/                                    controllers.ItemsController.edit(id: Long)
+GET         /AddHarmonization/:id/                                   controllers.ItemsController.AddHarmonization(id: Long)
+GET         /removeHarmonization/:id/                                controllers.ItemsController.removeHarmonization(id: Long)
+GET         /deleteHarmonization/:id/                                controllers.ItemsController.deleteHarmonization(id: Long)
+GET         /stock/editAsset/:id/                                    controllers.ItemsController.editAsset(id: Long)
+#CRUD uinits
+POST        /stock/unit/save/                                        controllers.UnitController.save()
+POST        /stock/unit/update/:id/                                  controllers.UnitController.update(id:Long)
+GET         /stock/unit/delete/:id/                                  controllers.UnitController.delete(id: Long)
+GET         /stock/unit/edit/:id/                                    controllers.UnitController.edit(id: Long)
+#CRUD positions
+POST        /stock/position/save/                                    controllers.PositionController.save()
+POST        /stock/position/update/:id/                              controllers.PositionController.update(id:Long)
+GET         /stock/position/delete/:id/                              controllers.PositionController.delete(id: Long)
+GET         /stock/position/edit/:id/                                controllers.PositionController.edit(id: Long)
+
+
+#CRUD supplier
+POST        /stock/supplier/save/                                    controllers.EmployeesController.saveSupplier()
+POST        /stock/supplier/update/:id/                              controllers.EmployeesController.updateSupplier(id:Long)
+GET         /stock/supplier/delete/:id/                              controllers.EmployeesController.deleteSupplier(id: Long)
+GET         /stock/supplier/edit/:id/                                controllers.EmployeesController.editSupplier(id: Long)
+
+# Head of unit routes
+
+GET         /HoUnit/receive/confirm/                                 controllers.HUnitController.myRequest()
+GET         /HoUnit/receive/myRequestDaf/                            controllers.HUnitController.myRequestDaf()
+POST        /HoUnit/confirm/:moveId/                                 controllers.HUnitController.approveRequest(moveId:Long)
+
+# DAF routes
+
+GET         /DAF/receive/confirm/                                    controllers.DAFController.myRequest()
+POST        /DAF/confirm/:moveId/                                    controllers.DAFController.approveRequest(moveId:Long)
+
+POST        /DAF/reject/:moveId/                                     controllers.DAFController.rejectRequest(moveId:Long)
+
+#other emoployee
+
+GET         /employee/edit/:moveId/:value                            controllers.Application.editNumber(moveId:Long,value:Integer)
+GET         /employeeer/updateFinal/:moveId/                         controllers.Application.updateFinal(moveId:Long)
+
+#Block and location
+
+POST        /blok/saveUpdate/                                        controllers.UnitController.saveOrdUpdateBlock()
+POST        /location/saveUpdate/                                    controllers.UnitController.saveOrdUpdateLocation()
+
+
+
+GET         /request/detail/:id/:info/                               controllers.HUnitController.details(id:Long,info:String)
+POST        /request/employee/confirm/:id/                           controllers.HUnitController.employeeEnfirmation(id:Long)
+POST        /request/logistic/confirm/:id/:s/                        controllers.HUnitController.comfirmStockOut(id:Long,s:String)
+POST        /comfirmStockOutHarmonization/                           controllers.HUnitController.comfirmStockOutHarmonization()
+POST        /comfirmDeleteItem/                                      controllers.HUnitController.comfirmDeleteItem()
+
+#stock reports
+GET         /stock/reports/:s/                                       controllers.Reports.generalStockReport(s:String)
+
+
+POST        /stock/save/saveExistingAssest/                          controllers.StockTabsController.saveExistingAssest()
+POST        /stock/save/updateExistingAssest/:id                     controllers.StockTabsController.updateExistingAssest(id:Long)
+
+
+GET         /get/student/mark/report/                                controllers.Reports.marksReport()
+GET         /get/DeliberationReports/                                controllers.Reports.DeliberationReports()
+GET         /get/student/mark/:regNumber/                            controllers.Reports.marksReportByStudent(regNumber:String)
+GET         /get/deliberationReportPerTrainingStatus/                controllers.Reports.deliberationReportPerTrainingStatus()
+GET         /get/student/intake/mark/:id/                            controllers.Reports.marksReportByIntake(id:Long)
+GET         /get/marksReportByTraining/mark/:id/                     controllers.Reports.marksReportByTraining(id:Long)
+GET         /get/printTranscripts/mark/:id/                          controllers.Reports.printTranscripts(id:Long)
+GET         /get/printDegrees/mark/:id/                              controllers.Reports.printDegrees(id:Long)
+GET         /get/marksReportByPermission/mark/:id/                   controllers.Reports.marksReportByPermission(id:Long)
+GET         /get/marksReportByTrainingFinal/:id/                     controllers.Reports.marksReportByTrainingFinal(id:Long)
+GET         /get/marksReportByTrainingReSit/mark/:id/                controllers.Reports.marksReportByTrainingReSit(id:Long)
+
+POST        /edit/student/                                           controllers.UpdateForm.updateStudentInfo()
+POST        /edit/deleteUser/                                        controllers.UpdateForm.deleteUser()
+POST        /edit/regNewEmail/                                       controllers.UpdateForm.regNewEmail()
+POST        /deleteUncompletedUser/                                  controllers.UpdateForm.deleteUncompletedUser()
+POST        /update/all/:s/:id/                                      controllers.UpdateForm.updateData(s:String,id:Long)
+POST        /removeDefecApprove/:id/                                 controllers.UpdateForm.removeDefecApprove(id:Long)
+POST        /removeDefec/:id/                                        controllers.UpdateForm.removeDefec(id:Long)
+
+
+GET         /select/training/                                        controllers.StudentController.selectPeriod()
+GET         /selected/training/                                      controllers.StudentController.selectedPeriod()
+GET         /selected/training/:id/                                  controllers.StudentController.studentByTraining(id:Long)
+GET         /change/student/training/:id/:t/                         controllers.StudentController.changeStudentTraining(id:Long,t:Long)
+
+#//
+# New routes
+GET         /admin/reset/student/account                             controllers.HomeController.getTrainingView
+POST        /admin/reset/student/account                             controllers.HomeController.resetStudentAccount
+
+GET         /register/applicants/:page/:p                            controllers.ApplicantController.allApplicants(page :Integer,p:String)
+GET         /register/applicants/payment/:page/:p/:status            controllers.ApplicantController.allApplicantsByPayment(page :Integer,p:String,status:String)
+GET         /applicants/:id                                          controllers.ApplicantController.getApplicant(id:Long)
+GET         /applicants/:id                                          controllers.ApplicantController.getApplicant(id:Long)
+GET         /addDocuments/:id                                        controllers.ApplicantController.addDocuments(id:Long)
+GET         /applicants/details/:id                                  controllers.ApplicantController.applicantDetails(id:Long)
+PUT         /applicants/update                                       controllers.ApplicantController.updateApplicant()
+POST        /applicants/update/two/:id                               controllers.ApplicantController.updateApplicant2(id:Long)
+POST        /updateProductChangeImage/:id                            controllers.UpdateForm.updateProductChangeImage(id :Long)
+
+
+
+
+
+
+##################################################################################################################################
+
+
+
+GET         /reports/index/:s/                                       controllers.ReportsController.index(s:String)
+GET         /reports/getReportChooseValue/:s/                        controllers.ReportsController.getReportChooseValue(s:String)
+GET         /reports/nextChooseValue/data/:s/                        controllers.ReportsController.nextChooseValue(s:String)
+POST        /reports/data/filteringPlace/:s/                         controllers.ReportsController.filteringPlace(s:String)
+POST        /reports/data/js/filteredData/:s/                        controllers.ReportsController.filteredData(s:String)
+
+
+GET         /components/setmax/:s/                                   controllers.LectureController.componentMax(s:String)
+POST        /components/updatemax/                                   controllers.LectureController.updateComponentMax()
+
+GET         /componentsResults/                                      controllers.Application.componentsResults()
+GET         /deleteAllUncompleted/                                   controllers.Application.deleteAllUncompleted()
+
+GET         /Lecture/moduleStudents/:modID/:lecturerId               controllers.Application.moduleStudents( modID : Long,lecturerId:Long )
+
+GET         /componentsStudent/:modID/:sId/:tId                      controllers.Application.componentsStudent( modID : Long,sId:Long,tId:Long )
+GET         /module/getComponent/:typ/:id                            controllers.Application.getComponent( typ : String , id : Long )
+GET         /remove/duplicate/                                       controllers.Application.removeDuplicate()
+POST        /upload/uploadStudentPayment/proof/:id                   controllers.Application.uploadStudentPayment(id:Long)
+
+
+# Map static resources from the /public folder to the /assets URL path
+
+
+GET         /assets/*file                                            controllers.Assets.at(path="/public", file)

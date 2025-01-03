@@ -1,0 +1,28 @@
+@(student : Student)
+<div class="loginForm">
+    <form action="@routes.UpdateForm.regNewEmail()" method="post" onsubmit="return allForms(this)">
+        <div class="box box-info">
+            <div class="box-header text-left resp-width">
+                <i class="fa fa-envelope"></i>
+                <h3 class="box-title">New student email confirmation from</h3>
+            </div>
+                <div class="box-body">
+                    <input type="hidden" name="studentId" value="@student.id">
+                    <input type="hidden" name="email" value="@student.applicant.user.email">
+                    <span>Used email: <b>@student.applicant.user.email</b></span>
+                    <br/>
+                    <br/>
+                    <span>Proposed academic email: <b>@student.academicEmail</b></span>
+                    <br/>
+                    <div class="form-group has-feedback">
+                        <p>Enter password</p>
+                        <input type="password" class="form-control" name="password" placeholder="Enter password"/>
+                    </div>
+                    <div class="box-footer clearfix">
+                        <button type="submit" class="pull-right btn btn-default"> Confirm new email
+                            <i class="fa fa-trash-o-right"></i></button>
+                    </div>
+                 </div>
+            </div>
+    </form>
+</div>

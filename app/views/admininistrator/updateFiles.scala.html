@@ -1,0 +1,55 @@
+@( file : AcademicFiles , listPro : List[Program] )
+
+
+@if( file != null ){
+  <div class="loginForm" xmlns="http://www.w3.org/1999/html">
+    <form action="@routes.UpdateForm.updateFiles(file.id)"method="POST"onsubmit="return allForms(this)">
+      <div class="box box-info">
+        <div class="box-header text-left resp-width">
+          <i class="fa fa-envelope"></i>
+
+          <h3 class="box-title">Update academic files</h3>
+        </div>
+        <div class="box-body">
+      <div class="form-group has-feedback">
+        <p>Program Name</p>
+        <select class="form-control" name="prog" id="lionel@file.id">
+          <option value="">--select program--</option>
+          @for( i <- listPro ){
+            <option value="@i.id" @if(file.program.id.equals(i.id)){selected="true"}>@i.programName</option>
+          }
+        </select>
+      </div>
+
+          <div class="form-group has-feedback">
+            <select class="form-control" name="sessionId" id="SELECT_Session" max="3000">
+              <option value="">-- select Session --</option>
+              @for( i <- Session.all() ){
+                @if(file.session!=null){
+                  <option value="@i.id" @if(file.session.id.equals(i.id)){selected="true"} >@i.sessionName</option>
+                }else{
+                  <option value="@i.id">@i.sessionName</option>
+                }
+              }
+            </select>
+          </div>
+
+      <div class="form-group has-feedback">
+        <p>File Name</p>
+        <input class="form-control" placeholder="Update File Name" name="fileName" value="@file.fileName">
+      </div>
+      <div class="form-group has-feedback">
+        <p>File Name Description</p>
+        <textarea class="form-control" placeholder="Update File Name Description" name="description">@file.description</textarea>
+      </div>
+        </div>
+        <div class="box-footer clearfix">
+          <button type="submit" class="pull-right btn btn-default">Update
+            <i class="fa fa-arrow-circle-right"></i></button>
+        </div>
+      </div>
+    </form>
+  </div>
+}else {
+  <div>Error With Reference</div>
+}

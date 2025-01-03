@@ -1,0 +1,38 @@
+@(trainings: List[Training])
+
+
+<div class="row content">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-check-square"></i> Choose period to continue</h3>
+                <div class="box-tools">
+                </div>
+            </div>
+                <!-- /.box-header -->
+
+            <form action="@routes.StudentController.selectedPeriod()" target="_blank" method="get">
+                <div class="box-body">
+                @for(t <- trainings) {
+                    <div class="form-group">
+                        <div class="col-md-12" style="margin-top: 9px">
+                            <label class="radio-container" style="font-size: 13px">
+                                <input type="radio" value="@t.id" name="training"/>
+                                <span class="radio-mark" style="padding: 5px;width: 15px;height: 15px"></span>
+                                @t.tNames()
+                            </label>
+                        </div>
+                    </div>
+                }
+                </div>
+                <div class="box-footer">
+                    <button class="btn btn-primary btn-block center-block" type="submit">
+                        Continue <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+
+            </form>
+
+
+        </div>
+    </div>
+</div>

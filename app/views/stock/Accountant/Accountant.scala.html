@@ -1,0 +1,11 @@
+@(anounceRoles : List[AnounceRole], user : Users, string : String ,s2: String )
+@main(string,""){
+    @(user.role=s2)
+    @header(anounceRoles, s2, loged = true  , user )
+    @leftMenu(s2,user)
+    <div class="content-wrapper">
+        <div class="data-deposit" style="padding:5px;">
+        </div>
+    </div>
+    @footer(user)
+}

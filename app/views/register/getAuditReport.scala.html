@@ -1,0 +1,229 @@
+@( cle : Boolean )
+@main("Audit log report", "") {
+    <section class="content-header">
+        <h1>
+            Audit log
+            <small>reports</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Reports</a></li>
+            <li class="active">Audit log reports</li>
+        </ol>
+    </section>
+    <div class="content" style="padding-left: 20px ">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h2 class="box-title text-success">
+                            <i class="fa fa-info"></i> Audit log report.
+                            <small>
+                                This page has been enhanced for printing. Click on the links below to print the below content in new tab.</small>
+                        </h2>
+                    </div>
+                    <div class="box-body">
+                        <div class="panel-group" id="app-accordion">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#app-accordion" href="#appStatusIntake">
+                                                    Finance payment log report <i class="fa fa-plus-circle pull-right"></i></a>
+                                            </h4>
+                                        </div>
+                                        <div id="appStatusIntake" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <form target="_blank" class="form-inline" action="@routes.Reports.generalStockReport("FinanceLogReport")" method="get" autocomplete="off">
+                                                        <div class="form-group">
+                                                            <select name="userNames" id="campus" class="form-control" required>
+                                                                <option value="all">All users</option>
+                                                                @for(uRole : UserRole <- UserRole.finder.where("deleteStatus='false' group by user.id").findList()){
+                                                                    @if(uRole.role.sessionName.equalsIgnoreCase("Finance") || uRole.role.sessionName.equalsIgnoreCase("DAF") || uRole.role.sessionName.equalsIgnoreCase("Accountant")) {
+                                                                        <option value="@uRole.user.print()">
+                                                                            @uRole.user.print()
+                                                                        </option>
+                                                                    }
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                        @*
+                                                        <div class="form-group">
+                                                            <div class="form-group has-feedback">
+                                                                <label for="startDate">Start date</label>
+                                                                <input type="text" id="startDate" name="startDate" class="form-control datepicker">
+                                                            </div>
+                                                            <div class="form-group has-feedback">
+                                                                <label for="endDate">End date</label>
+                                                                <input type="text" id="endDate" name="endDate" class="form-control datepicker1">
+                                                            </div>
+                                                        </div>
+                                                        *@
+                                                        <button type="submit" class="btn btn-primary">
+                                                            <i class="fa fa-print"></i> Generate report
+                                                        </button>
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#app-accordion" href="#appcollapse3">
+                                                    Assignment mark record audit report <i class="fa fa-plus-circle pull-right"></i></a>
+                                            </h4>
+                                        </div>
+                                        <div id="appcollapse3" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <form class="form-inline" target="_blank" action="@routes.Reports.generalStockReport("marksRecords")" method="get" autocomplete="off">
+                                                        <div class="form-group">
+                                                            <select name="userNames" id="campus" class="form-control" required>
+                                                                <option value="all">All users</option>
+                                                                @for(uRole : UserRole <- UserRole.finder.where("deleteStatus='false' group by user.id").findList() ){
+                                                                    @if(uRole.role.sessionName.equalsIgnoreCase("Instructor") || uRole.role.sessionName.equalsIgnoreCase("Coordinator") || uRole.role.sessionName.equalsIgnoreCase("registrar")) {
+                                                                        <option value="@uRole.user.print()">
+                                                                        @uRole.user.print()
+                                                                        </option>
+                                                                    }
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                        @*
+                                                        <div class="form-group">
+                                                            <div class="form-group has-feedback">
+                                                                <label for="startDate">Start date</label>
+                                                                <input type="text" id="startDate" name="startDate" class="form-control datepicker">
+                                                            </div>
+                                                            <div class="form-group has-feedback">
+                                                                <label for="endDate">End date</label>
+                                                                <input type="text" id="endDate" name="endDate" class="form-control datepicker1">
+                                                            </div>
+                                                        </div>
+                                                        *@
+                                                        <button type="submit" class="btn btn-primary">
+                                                            <i class="fa fa-print"></i> Generate report
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#app-accordion" href="#appImdePro">
+                                                    Exam marks record trail <i class="fa fa-plus-circle pull-right"></i></a>
+                                            </h4>
+                                        </div>
+                                        <div id="appImdePro" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <form class="form-inline" target="_blank" action="@routes.Reports.generalStockReport("examMarksResultsTrail")" method="get" autocomplete="off">
+                                                        <div class="form-group">
+                                                            <select name="userNames" id="campus" class="form-control" required>
+                                                                <option value="all">All users</option>
+                                                                @for(uRole : UserRole <- UserRole.finder.where("deleteStatus='false' group by user.id").findList() ){
+                                                                    @if(uRole.role.sessionName.equalsIgnoreCase("Instructor") || uRole.role.sessionName.equalsIgnoreCase("registrar") || uRole.role.sessionName.equalsIgnoreCase("Coordinator")) {
+                                                                        <option value="@uRole.user.print()">
+                                                                        @uRole.user.print()
+                                                                        </option>
+                                                                    }
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                        @*
+                                                        <div class="form-group">
+                                                            <div class="form-group has-feedback">
+                                                                <label for="startDate">Start date</label>
+                                                                <input type="text" id="startDate" name="startDate" class="form-control datepicker">
+                                                            </div>
+                                                            <div class="form-group has-feedback">
+                                                                <label for="endDate">End date</label>
+                                                                <input type="text" id="endDate" name="endDate" class="form-control datepicker1">
+                                                            </div>
+                                                        </div>
+                                                        *@
+                                                        <button type="submit" class="btn btn-primary">
+                                                            <i class="fa fa-print"></i> Generate report
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#app-accordion" href="#appcollapse4">
+                                                    Stock item approval log report <i class="fa fa-plus-circle pull-right"></i></a>
+                                            </h4>
+                                        </div>
+                                        <div id="appcollapse4" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <form class="form-inline" target="_blank" action="@routes.Reports.generalStockReport("stockApprovalTrail")" method="get" autocomplete="off">
+                                                        <div class="form-group">
+                                                            <select name="userNames" id="campus" class="form-control" required>
+                                                                <option value="all">All users</option>
+                                                                @for(uRole : UserRole <- UserRole.finder.where("deleteStatus='false' group by user.id").findList() ){
+                                                                    @if(uRole.role.sessionName.equalsIgnoreCase("HeadOfUnit") || uRole.role.sessionName.equalsIgnoreCase("DAF") || uRole.role.sessionName.equalsIgnoreCase("Logistic")) {
+                                                                        <option value="@uRole.user.print()">
+                                                                        @uRole.user.print()
+                                                                        </option>
+                                                                    }
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                        @*
+                                                        <div class="form-group">
+                                                            <div class="form-group has-feedback">
+                                                                <label for="startDate">Start date</label>
+                                                                <input type="text" id="startDate" name="startDate" class="form-control datepicker">
+                                                            </div>
+                                                            <div class="form-group has-feedback">
+                                                                <label for="endDate">End date</label>
+                                                                <input type="text" id="endDate" name="endDate" class="form-control datepicker1">
+                                                            </div>
+                                                        </div>
+                                                        *@
+                                                        <button type="submit" class="btn btn-primary">
+                                                            <i class="fa fa-print"></i> Generate report
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+        <!-- /.content -->
+    <div class="clearfix"></div>
+}
+    <script>
+        //Date picker
+        $('.datepicker').datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            format: 'dd-mm-yyyy'
+        });
+        //Date picker
+        $('.datepicker1').datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            format: 'dd-mm-yyyy'
+        });
+    </script>

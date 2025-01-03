@@ -1,0 +1,7 @@
+.add-lang-data{display:inline-block;padding:10px;margin: 0 auto;background: #508ef5;color: #ffffff;cursor: pointer}
+.slider-viewer{position:relative;display: block;margin:10px;}
+.slider-viewer .simple-holder{overflow:hidden;display:inline-block;width:150px;height:150px;vertical-align:top;text-align:center;position:relative}
+.simple-holder img{max-height:100%;cursor: pointer}
+.simple-holder:hover i{font-size:20px;}
+.simple-holder:hover .upload-widget{visibility:visible;height:100%;width:100%;top:0%;left:0%;}
+

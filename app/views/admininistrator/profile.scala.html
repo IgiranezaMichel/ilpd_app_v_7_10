@@ -1,0 +1,23 @@
+@(applicant1 : Applicant )
+@if(applicant1 != null ) {
+    <div class="loginForm">
+        <form action="@routes.ApplicantController.appProfile(applicant1.id)"method="POST"onsubmit="return allForms(this)">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-envelope"></i>
+                    <h3 class="box-title">Change student profile</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group has-feedback">
+                        <p>Select profile to change</p>
+                        <input type="file" name="profile"/>
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default"> Change profile
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+}

@@ -1,0 +1,45 @@
+@( comp : Component )
+
+
+@if( comp != null ){
+  <div class="loginForm" xmlns="http://www.w3.org/1999/html">
+    <form action="@routes.UpdateForm.updateComponent(comp.id)"method="POST"onsubmit="return allForms(this)">
+      <div class="box box-info">
+        <div class="box-header text-left resp-width">
+          <i class="fa fa-envelope"></i>
+
+          <h3 class="box-title">Update module component</h3>
+        </div>
+        <div class="box-body">
+          <div class="form-group has-feedback">
+            <p>Module Name</p>
+            <select class="form-control" name="mod" id="lionel@comp.id">
+              <option value="">Update Module Name</option>
+              @for( i <- Module.hasComp() ){
+                <option value="@i.id" @if(comp.module.id.equals(i.id)){selected="true"}>@i.moduleName</option>
+              }
+            </select>
+          </div>
+          <div class="form-group has-feedback">
+            <p>Update Component Name</p>
+            <input class="form-control" placeholder="Update Component Name" name="compName" value="@comp.compName">
+          </div>
+          <div class="form-group has-feedback">
+            <p>Component credits</p>
+            <input class="form-control" placeholder="Update Component credits" name="credits" number="true" value="@comp.credits">
+          </div>
+          <div class="form-group has-feedback">
+            <p>Component code</p>
+            <input class="form-control" placeholder="Update Component code" value="@comp.code" name="code"/>
+          </div>
+        </div>
+        <div class="box-footer clearfix">
+          <button type="submit" class="pull-right btn btn-default">Update
+            <i class="fa fa-arrow-circle-right"></i></button>
+        </div>
+      </div>
+    </form>
+  </div>
+}else {
+  <div>Error With Reference</div>
+}

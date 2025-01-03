@@ -1,0 +1,44 @@
+@( id : Long )
+<div>
+    <div class="col-md-3">
+        <div class="box box-default">
+            <div class="box-header text-left resp-width">
+                <i class="fa fa-address-card"></i>
+                <h3 class="box-title">Undergraduate Students</h3>
+            </div>
+            <div class="box-body">
+                <div class="form-group has-feedback">
+                    <input type="text" placeholder="Search Here !!!" class="form-control" oninput="searchIt(this)" href="@routes.Application.getStudents("")">
+                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                </div>
+
+    <div class="app-user">
+       <p align="center"> <img src="@routes.Assets.at("images/loader2.gif")"></p>
+    </div>
+        @if( id != null ){
+            <script>
+                    var page = '@routes.Application.getStudentsIntake(id)';
+                    hoss.ajax({page:page,o:I(".app-user")},1,2,function(res){
+                    });
+            </script>
+        }else {
+            <script>
+                    var page = '@routes.Application.getStudents("a")';
+                    hoss.ajax({page:page,o:I(".app-user")});
+            </script>
+        }
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="box box-default">
+            <div class="box-header text-left resp-width">
+                <i class="fa fa-graduation-cap"></i>
+                <h3 class="box-title">Student information</h3>
+            </div>
+            <div class="box-body box-classic" style="min-height:400px">
+            </div>
+        </div>
+    </div>
+</div>

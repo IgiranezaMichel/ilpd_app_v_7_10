@@ -1,0 +1,57 @@
+@(students : List[Student])
+@import scala.Predef;var code = 250;var selected = false;var color = ""; var inc = 1
+<br>
+<div class="box box-ilpd" style="margin-top: 50px">
+    <div class="box-header with-border">Available system users</div>
+    <div class="box-body">
+        <div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Full name</th>
+                        <th>Phone number</th>
+                        <th>Reg. No</th>
+                        <th>Used email</th>
+                        <th>Proposed email</th>
+                        <th>Change password</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for(i <- students) {
+                    <tr>
+                        <td>@inc.</td>
+                        <td>@i.firstName @i.familyName</td>
+                        <td>@if(i.applicant.user != null){
+                            @i.applicant.user.phone
+                        }else{
+
+                        }
+                        </td>
+                        <td>@i.regNo</td>
+                        <td>@if(i.applicant.user != null){
+                            @i.applicant.user.email
+                        }else{
+
+                        }
+                        </td>
+                        <td>@i.academicEmail</td>
+                        <td>
+                        @if(i.applicant.user != null) {
+                            <button class="btn btn-info btn-sm btn-circle" href="@routes.Application.updateAll(i.id, "giveAcademicEmail")" onclick="return createModal(this, self.event);">
+                                <i class="fa fa-refresh"></i>
+                            </button>
+                        }else{
+                            <span>Incomplete data</span>
+                        }
+                        </td>
+                    </tr>
+                    @(inc = inc + 1)
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

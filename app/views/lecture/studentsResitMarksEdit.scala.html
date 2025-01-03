@@ -1,0 +1,41 @@
+@( stuList : List[Student] , train : Training , comps : models.Component,lecture: Lecture )
+@import scala.Predef;var compMax=ComponentMax.componentMax(comps.id,lecture.id, train.id); var averageOneMarks = 0.0;var resitMax=0.0; var inc =1;var examResult=0.0;
+<h4>&nbsp; @train.tNames()</h4>
+<script>
+        (function (res) {
+            var table = T(".marks-table");
+            manageEditing( table );
+        })(1);
+</script>
+@if(compMax!=null){
+    @(resitMax=compMax.resitMax)
+}
+<div style="padding-bottom: 50px">
+    <table class="table table-bordered marks-table text-center">
+        <thead>
+            <tr>
+                <th class="text-center" colspan="3">@comps.compName </th>
+            </tr>
+            <tr>
+                <th>#</th>
+                <th>Student Reg Number</th>
+                <th>Resit exam result (@Student.rounding(comps.module.minMarks)) - <strong class="text-info">@resitMax</strong> </th>
+            </tr>
+        </thead>
+        <tbody>
+        @for( i <- stuList ){
+            @(averageOneMarks = comps.module.allModuleAverage(i.id))
+                <tr class="text-center">
+                    <td>@inc</td>
+                    <td style="vertical-align: middle" class="text-left">@i.regNo </td>
+                    <td>
+                        <div class="has-feedback">
+                            <div style="color: #9c079c !important;" class="editable" data-stu="@i.id" data-comp="@comps.id" data-type="EXAM" max="@resitMax">@i.isMyMarksResit(comps.id,i.id)</div>
+                        </div>
+                    </td>
+                </tr>
+                @(inc = inc + 1)
+        }
+        </tbody>
+    </table>
+</div>

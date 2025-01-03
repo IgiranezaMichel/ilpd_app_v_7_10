@@ -1,0 +1,16 @@
+
+@import scala.Predef;var code = 0;var selected = false;
+<div class="form-group has-feedback others" style="text-align: left">
+  <label>Country <em>*</em></label>
+  <select class="form-control" name="country"  onchange="changeCountry(this)">
+    <option value=""></option>
+    @for(i <- Country.all()) {
+      @( selected = false )
+      @if( i.nicename.equals("Rwanda") ){
+        @( selected = true )
+        @( code = i.phonecode )
+      }
+      <option value="@i.id" code="@i.phonecode" @if(selected){selected}>@i.nicename</option>
+    }
+  </select>
+</div>

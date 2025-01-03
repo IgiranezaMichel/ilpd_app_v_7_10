@@ -1,0 +1,269 @@
+@main("Financial report", "") {
+    <section class="content-header">
+        <h1>
+            Financial
+            <small>reports</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Reports</a></li>
+            <li class="active">Financial reports</li>
+        </ol>
+    </section>
+
+        <!-- Main content -->
+    <div class="content" style="padding-left: 20px">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h4 class="box-title text-success">
+                    <i class="fa fa-money"></i> Financial report
+                </h4>
+                <small>
+                    This page has been enhanced for printing. Click on the links below to print the below content in new tab.</small>
+            </div>
+            <div class="box-body">
+                <div class="panel-group" id="faccordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#faccordion" href="#fintakeId">
+                                    Intake + session + payment status (Students)
+                                    <i class="fa fa-plus-circle pull-right"></i>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="fintakeId" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <form action="@routes.Reports.financialReportBySatus("intakeSessionStatus")" class="form-inline" method="get" target="_blank">
+                                            <div class="form-group">
+                                                <select name="intake" id="intake" class="form-control">
+                                                    <option value="">-select intake---</option>
+                                                    @for(intake : Intake <- Intake.all()) {
+                                                        <option value="@intake.id">@intake.intakeName @if(intake.year != null){ - @intake.year.yearName }</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <select name="session" id="session" class="form-control">
+                                                    <option value="">-select session---</option>
+                                                    @for(session : models.Session <- Session.all()) {
+                                                        <option value="@session.id">@session.sessionName</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <select name="status" id="status" class="form-control">
+                                                    <option value="">-select status---</option>
+                                                    <option value="all">All</option>
+                                                    <option value="Unpaid">Unpaid</option>
+                                                    <option value="Paid">Paid</option>
+                                                </select>
+                                            </div>
+                                            <button class="btn btn-primary" type="submit">Generate report</button>
+                                        </form>
+                                        <br><br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#faccordion" href="#finByProgram">
+                                    Payment status by program <i class="fa fa-plus-circle pull-right"></i>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="finByProgram" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <form action="@routes.Reports.financialReportBySatus("pro")" class="form-inline" method="get" target="_blank">
+                                            <div class="form-group">
+                                                <select name="status" id="status" class="form-control">
+                                                    <option value="">--select status--</option>
+                                                    <option value="all">All</option>
+                                                    <option value="Paid">Paid</option>
+                                                    <option value="Unpaid">Un paid</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <select name="program" id="program" class="form-control">
+                                                    <option value="">--select program--</option>
+                                                    @for(i : Program <- Program.all()) {
+                                                        <option value="@i.id">@i.programAcronym</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <button class="btn btn-primary" type="submit">Generate report</button>
+                                        </form>
+                                        <br><br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#faccordion" href="#finByIntake">
+                                    Payment status by intake <i class="fa fa-plus-circle pull-right"></i>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="finByIntake" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <form action="@routes.Reports.financialReportBySatus("intake")" class="form-inline" method="get" target="_blank">
+                                            <div class="form-group">
+                                                <select name="status" id="status" class="form-control" required>
+                                                    <option value="">--select status--</option>
+                                                    <option value="all">All</option>
+                                                    <option value="Paid">Paid</option>
+                                                    <option value="Unpaid">Un paid</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <select name="intake" id="intake" class="form-control" required>
+                                                    <option value="">--select intake--</option>
+                                                    @for(i : Intake <- Intake.all()) {
+                                                        <option value="@i.id">@i.print()</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <button class="btn btn-primary" type="submit">Generate report</button>
+                                        </form>
+                                        <br><br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#faccordion" href="#finBySession">
+                                    Payment status by session <i class="fa fa-plus-circle pull-right"></i>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="finBySession" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <form action="@routes.Reports.financialReportBySatus("session")" class="form-inline" method="get" target="_blank">
+                                            <div class="form-group">
+                                                <select name="status" id="status" class="form-control" required>
+                                                    <option value="">--select status--</option>
+                                                    <option value="all">All</option>
+                                                    <option value="Paid">Paid</option>
+                                                    <option value="Unpaid">Un paid</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <select name="session" id="session" class="form-control" required>
+                                                    <option value="">--select session--</option>
+                                                    @for(i : models.Session <- Session.all()) {
+                                                        <option value="@i.id">@i.sessionName</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <button class="btn btn-primary" type="submit">Generate report</button>
+                                        </form>
+                                        <br><br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#faccordion" href="#appIntakePayment">
+                                  Intake + Payment status (Applicants) <i class="fa fa-plus-circle pull-right"></i>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="appIntakePayment" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <form action="@routes.Reports.financialReportBySatus("intakeStatus")"
+                                        class="form-inline" method="get" target="_blank">
+
+                                            <div class="form-group">
+                                                <label for="status" class="control-label-important">Intake</label>
+                                                <select name="intake" id="intake" class="form-control" required>
+                                                    <option value="0">--All intake--</option>
+                                                    @for(i : Intake <- Intake.all()) {
+                                                        <option value="@i.id">@i.print()</option>
+                                                    }
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="status" class="control-label-important">Payment status</label>
+                                                <select name="status" id="status" class="form-control" required>
+                                                    <option value="all">All</option>
+                                                    <option value="Paid">Paid</option>
+                                                    <option value="Unpaid">Un paid</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="status" class="control-label-important">Select payment type</label>
+                                                <select name="type" id="type" class="form-control" required>
+                                                    <option value="all">All</option>
+                                                    <option value="Paid">Tuition fee</option>
+                                                    <option value="Unpaid">Application fee</option>
+                                                    <option value="Unpaid">Accommodation fee</option>
+                                                    <option value="Unpaid">Graduation fee</option>
+                                                    <option value="Unpaid">Restoration fee</option>
+                                                </select>
+                                            </div>
+                                            <button class="btn btn-primary" type="submit">Generate report</button>
+                                        </form>
+                                        <br><br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#faccordion" href="#appIntakePayment1">
+                                  Report of damaged items <i class="fa fa-plus-circle pull-right"></i>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="appIntakePayment1" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <form action="@routes.Reports.financialReportBySatus("damagedItems")"
+                                        class="form-inline" method="get" target="_blank">
+                                            <button class="btn btn-primary" type="submit">Generate report</button>
+                                        </form>
+                                        <br><br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- /.content -->
+    <div class="clearfix"></div>
+}

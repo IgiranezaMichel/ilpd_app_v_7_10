@@ -1,0 +1,138 @@
+html, body {
+  font-family: 'Source Sans Pro', sans-serif!important;
+  font-weight: 200;
+  height: 100vh;
+}
+.flat{
+  border-radius: 0!important;
+}
+
+.alert,.btn,.box,.form-control{
+  border-radius: 2px;
+}
+
+.auth-box {
+  max-width: 400px;
+  box-shadow: none!important;
+  border: 1px solid #f0efef;
+  padding: 20px;
+}
+
+@media screen and (max-width: 768px){
+  .auth-box {
+    max-width:100%;
+  }
+}
+@media screen and (max-width: 992px){
+  .auth-box {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 1279px){
+  .auth-box {
+    width: 100%;
+  }
+}
+.div-hide{
+  display: none;
+}
+.invalid-feedback{
+  color: #ec4848;
+}
+input.parsley-error, select.parsley-error, textarea.parsley-error {
+  color: #B94A48;
+  background-color: #F2DEDE;
+  border: 2px solid #a01f32;
+}
+.parsley-errors-list.filled>li{
+  color: #a01f32;
+  padding-top: 5px;
+}
+textarea{
+  resize: vertical;
+}
+.table>tbody>tr>td, .table>tbody>tr>th,.table>thead>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+  vertical-align: middle;
+  border-top: 1px solid #ddd;
+}
+
+
+/*themes*/
+
+body {
+  color: #52656B!important;
+}
+
+h1, .h1, h2, .h2, h3, .h3 {
+  margin-bottom: 30px;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  color: #3B4B50;
+}
+
+h2, .h2 {
+  font-size: 25px;
+}
+
+
+a, .btn-link {
+  color: #09A7E4;
+}
+.btn {
+  border-radius: 10px !important;
+  text-transform: none !important;;
+  font-weight: bold !important;;
+}
+.btn-uok{
+  color: #f5f5f5;
+  background-color: #800000;
+  border:1px solid #800000;
+}
+
+.btn-info {
+  color: #ffffff;
+  background-color: #4C7ABD;
+  border: 0;
+}
+.box.box-uok {
+  border-top-color: #800000;
+}
+.btn-uok:hover, .btn-uok:focus,.btn-uok:hover, .btn-uok:active, .btn-uok.active, .open > .dropdown-toggle.btn-uok {
+  color: #f5f5f5;
+  background-color: #ac0000;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+  color: #ffffff;
+  background-color: #52656B;
+  border-color: #52656B;
+}
+
+.pagination > li > a, .pager > li > a, .pagination > li > span, .pager > li > span {
+  text-transform: none;
+}
+
+table a:not(.btn), .table a:not(.btn) {
+  text-decoration: none;
+}
+
+.form-control {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  -webkit-transition: border-color ease-in-out .10s, box-shadow ease-in-out .15s;
+  -moz-transition: border-color ease-in-out .10s, box-shadow ease-in-out .15s;
+  -ms-transition: border-color ease-in-out .10s, box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .10s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .10s, box-shadow ease-in-out .15s;
+  border-radius: 10px;
+}
+.form-control:focus {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border: 2px solid #4C7ABD;
+}
+
+.btn{
+  border: #010050 !important;
+}

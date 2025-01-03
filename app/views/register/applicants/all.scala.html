@@ -1,0 +1,76 @@
+@(status: String,trainings: List[Training])
+
+<div class="content">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box box-ilpd">
+                <div class="box-header with-border">
+                    <div>
+                        <h4 class="box-title">Applicants
+                        </h4>
+                        <span class="label label-info pull-right">@status</span>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12 with-border">
+                            <form method="get" id="searchForm" action="@routes.ApplicantController.allApplicantsByPayment(0, "partial",status)" autocomplete="off">
+                                <div class="form-group form-group-sm">
+                                    <label for="pageSize" class="sr-only">Page size</label>
+                                    <select name="pageSize" id="pageSize" class="form-control flat">
+                                        <option value="5">5</option>
+                                        <option value="10" selected>10</option>
+                                        <option value="20">20</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                                <div class="form-group form-group-sm">
+                                    <label for="training" class="sr-only">Training</label>
+                                    <select name="training" id="training" class="form-control flat" onchange="getPage('@routes.ApplicantController.allApplicantsByPayment(0,"partial",status)')">
+                                        @for(t:Training<-trainings){
+                                            @if(session.containsKey("status")){
+                                                <option value="@t.id" @Counts.selectTraining(session.get("status"),t.id) > @t.tNames()</option>
+                                            }else{
+                                                <option value="@t.id">@t.tNames()</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group form-group-sm" title="Type in the search box and press enter or click search button.">
+                                    <label for="searchText" class="sr-only">Search</label>
+                                    <input type="search" placeholder="Search here payt" name="search" id="searchText" class="form-control flat">
+                                </div>
+                                <button type="submit" class="btn btn-ilpd btn-block btn-sm btn-flat">Search
+                                <i class="fa fa-search"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <div class="divResult">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="box box-ilpd">
+                <div class="box-header with-border">
+                    <div>
+                        <h4 class="box-title">Details</h4>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div id="detail"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        var url = '@routes.ApplicantController.allApplicantsByPayment(0,"partial",status)';
+        $(function () {
+            getPage(url);
+        });
+</script>

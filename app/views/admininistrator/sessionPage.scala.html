@@ -1,0 +1,72 @@
+@( listSession : List[models.Session] )
+
+<div align="right" class="left-form">
+  <button id="meBut" class="btn btn-primary" onclick="addNew(this,event)"><i class="fa fa-plus"></i> New session</button>
+  <div class="loginForm" id="form1" no-prop="true">
+    <form action="@routes.Registration.saveSession()"method="POST"onsubmit="return allForms(this)">
+      <div class="box box-info">
+        <div class="box-header text-left resp-width">
+          <i class="fa fa-envelope"></i>
+
+          <h3 class="box-title">Add new session</h3>
+        </div>
+        <div class="box-body">
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control has-feedback" name="sessionName" autocomplete="off"  id="MONOPOLY_Text" max="3000" placeholder="Enter session name"/>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" name="sessionStart" autocomplete="off"  id="MONOPOLYX_Text" placeholder="Enter session start day"/>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" name="sessionEnd" autocomplete="off"  id="MONOPOLYXSESSION_Text" placeholder="Enter session end day"/>
+      </div>
+    @*  <div class="form-group has-feedback">
+        <input type="text" class="form-control" name="startHour" autocomplete="off"  id="MONOPOLYXSSSION_Text" placeholder="session start time"/>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" name="endHour" autocomplete="off"  id="MXN_Text" placeholder="session end time"/>
+      </div>*@
+        </div>
+        <div class="box-footer clearfix">
+          <button type="submit" class="pull-right btn btn-default">Save
+            <i class="fa fa-arrow-circle-right"></i></button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="panel panel-success">
+  <div class="panel-heading">Currently registered session</div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>Session name</th>
+            <th>Start day</th>
+            <th>End day</th>
+    @*        <th>Start Hour</th>
+            <th>End Hour</th>*@
+            <th>Update</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for( i <- listSession ) {
+              <tr>
+              <td>@i.sessionName</td>
+              <td>@i.sessionStart</td>
+            <td>@i.sessionEnd</td>
+            @*  <td>@i.startHour</td>
+              <td>@i.endHour</td>*@
+              <td><button class="btn btn-info btn-sm btn-circle" onclick="createModal(this,self.event)" href="@routes.Application.updateAll(i.id,"session")"><i class="fa fa-pencil"></i></button></td>
+              <td><button class="btn btn-danger btn-sm btn-circle" onclick="createDel(this)" value="@routes.Application.deleteAll(i.id,"session")"><i class="fa fa-bitbucket"></i></button></td>
+              </tr>
+            }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+

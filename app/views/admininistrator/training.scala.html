@@ -1,0 +1,279 @@
+@(userType : String, tr: List[Training], intS: List[IntakeSessionMode])
+<script>
+        startPicker = new Pikaday({
+            field: document.getElementById('sDate'),
+            formatStrict: true
+        });
+        endPicker = new Pikaday({
+            field: document.getElementById('eDate'),
+            formatStrict: true
+        });
+        startPicker = new Pikaday({
+            field: document.getElementById('sDateApp'),
+            formatStrict: true
+        });
+        endPicker = new Pikaday({
+            field: document.getElementById('eDateApp'),
+            formatStrict: true
+        });
+</script>
+<div align="right" class="left-form">
+    <button id="meBut" class="btn btn-primary" onclick="addNew(this, event)"><i class="fa fa-plus"></i> New training</button>
+    <div class="loginForm" id="form1" no-prop="true">
+        <form action="@routes.Registration.saveTraining()" method="POST" onsubmit="return allForms(this)" enctype="multipart/form-data" class="validate-form">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-envelope"></i>
+                    <h3 class="box-title">Add new training</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group has-feedback">
+                        <select class="form-control" name="intakeSess" required>
+                            <option value="">-- choose intakeSession --</option>
+                            @for(ip <- intS) {
+                                <option value="@ip.id">@ip.print()</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label class="pull-left"> Training title [Required for CLE]</label>
+                        <input type="text" class="form-control" name="title" autocomplete="off" placeholder="Enter training title" data-escape="1"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label class="pull-left"> Enter trainer [Required for CLE]</label>
+                        <input type="text" class="form-control" name="trainer" autocomplete="off" placeholder="Enter Trainer" data-escape="1"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" name="startDate" id="sDate" autocomplete="off" placeholder="Training start date" required/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" name="endDate" id="eDate" autocomplete="off" placeholder="Training end date" required />
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" name="startDateApplication" id="sDateApp" autocomplete="off" placeholder="Application start date" required/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" name="endDateApplication" id="eDateApp" autocomplete="off" placeholder="Application end date" required />
+                    </div>
+                    <fieldset class="border form-group">
+                        <legend class="bg-aqua text-center">
+                            <span class=" fw-bold">EAC Student Tuition Fee Payment</span>
+                        </legend>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" name="eacStudentTuitionFees" id="eacStudentTuitionFees" autocomplete="off" placeholder="Tuition fee" required data-parsley-type="number" data-parsley-min="0" />
+                        </div>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" name="minEacStudentTuitionFees" id="minEacStudentTuitionFees" autocomplete="off" placeholder="Minimum Tuition fee payment" required data-parsley-type="number" data-parsley-min="0" />
+                        </div>
+                    </fieldset>
+                    <fieldset class="border form-group">
+                        <legend class="bg-aqua text-center">
+                            <span class=" fw-bold">Non EAC Student Tuition Fee Payment</span>
+                        </legend>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" name="nonEacStudentTuitionFees" id="nonEacStudentTuitionFees" autocomplete="off" placeholder="Tuition fee" required data-parsley-type="number" data-parsley-min="0" />
+                        </div>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" name="minNonEacStudentTuitionFees" id="minNonEacStudentTuitionFees" autocomplete="off" placeholder="Minimum Tuition fee payment" required data-parsley-type="number" data-parsley-min="0" />
+                        </div>
+                    </fieldset>
+
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" name="accomodationFees" id="accomodationFees" autocomplete="off" placeholder="Accomodation feees" required data-parsley-type="number" data-parsley-min="0" />
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" name="restaurationFees" id="restaurationFees" autocomplete="off" placeholder="Restoration fees" required data-parsley-type="number"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" name="otherFees" id="otherFees" autocomplete="off" placeholder="Graduation fees" required data-parsley-type="number"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <textarea name="otherFeesSpec" id="otherFeesSpec" class="form-control" placeholder="Graduation fees's specification"></textarea>
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default">Save
+                        <i class="fa fa-arrow-circle-right"></i> </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <h3 class="panel-title">Available study period</h3>
+    </div>
+    <div class="panel-body">
+        <div class="">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Close/Open</th>
+                        <th>Start date</th>
+                        <th>End date</th>
+                        <th>Period</th>
+                        <th class="text-center">
+                            <div>Tuition fees</div>
+                            <b>(FRW)</b>
+                        </th>
+                        <th>Acc.fees</th>
+                        <th>Rest. fees</th>
+                        <th>Graduation fees</th>
+                        <th>Min Payment</th>
+                        <th>Eac Payment</th>
+                        <th>Non Eac Payment</th>
+@*                        <th>Total</th>*@
+                        <th class="bg-aqua-gradient">Trans., Diploma & Attend.</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for(i <- tr) {
+                    <tr>
+                        <td width="150">
+                        @if(i.isClosedA){
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-success btn-sm disabled" style="padding: 5px">Closed</button>
+                                <button class="btn-sm btn btn-danger" id="btnDeactivate" data-url="@routes.Application.deActivateProgram(i.id)">Open</button>
+                            </div>
+                        }else{
+                            <div class="btn-group">
+                                <button class="btn btn-sm disabled btn-danger">Opened</button>
+                                <button class="status-change btn-sm btn btn-success" value="@routes.Application.activateProgram(i.id)" onclick="activator(this)">Close</button>
+                            </div>
+                        }
+                        </td>
+                        <td>@i.startDate.format("dd/MM/yyyy")</td>
+                        <td>@i.endDate.format("dd/MM/yyyy")</td>
+                        <td>
+                        @if(i.iMode.campusProgram.program.cle){
+                            @i.title [Trainer: @i.trainer]
+                                }else{
+                                    @i.tNames()
+                            }
+                         </td>
+                        <td>
+                            <div><b>Eac::</b>@Counts.formatAmount(i.eacStudentTuitionFees)</div>
+                            <div><b>Non_Eac::</b>@Counts.formatAmount(i.nonEacStudentTuitionFees)</div>
+                        </td>
+                        <td>@Counts.formatAmount(i.accomodationFees)</td>
+                        <td>@Counts.formatAmount(i.restaurationFees)</td>
+                        <td>@Counts.formatAmount(i.otherFees)</td>
+                        <th>
+                            @if(i.minPayment!=null){
+                                @Counts.formatAmount(i.minPayment)
+                            }else{
+                                <span class="label label-info">Not set</span>
+                            }
+                        </th>
+                        <td>
+                            <div><b><i>max : </i></b> @Counts.formatAmount(i.eacStudentTuitionFees) Frw</div>
+                            <div><b><i>min : </i></b> @Counts.formatAmount(i.minEacStudentTuitionFees) Frw</div>
+                            <div><b><i>Total : </i></b> @i.totalEacStudentPayment() Frw</div>
+                        </td>
+                        <td>
+                            <div><b><i>max : </i></b> @Counts.formatAmount(i.nonEacStudentTuitionFees) Frw</div>
+                            <div><b><i>min : </i></b> @Counts.formatAmount(i.minNonEacStudentTuitionFees) Frw</div>
+                            <div><b><i>Total : </i></b> @i.totalNonEacStudentPayment() Frw</div>
+
+                        </td>
+@*                        <td>@i.totalSum()</td>*@
+                        <td>
+                            @if(i.transcript){
+                                <button class="btn btn-warning btn-sm btnManagePeriodTranscript" data-url="@routes.Registration.managePeriodTranscript(i.id,false)">Hide</button>
+                            }else{
+
+                                <button class="btn btn-success btn-sm btnManagePeriodTranscript" data-url="@routes.Registration.managePeriodTranscript(i.id,true)">Show</button>
+                            }
+                            @if(userType.equalsIgnoreCase("VRAC")) {
+                                @if(i.transcriptPrint) {
+                                    <button class="btn btn-warning btn-sm btnManagePeriodTranscript" data-url="@routes.Registration.managePeriodTranscriptPrint(i.id, false)">
+                                        not print</button>
+                                } else {
+                                    <button class="btn btn-info btn-sm btnManagePeriodTranscript" data-url="@routes.Registration.managePeriodTranscriptPrint(i.id, true)">
+                                        Print Trans.</button>
+                                }
+                            }
+                        </td>
+                        <td>
+                            @if(i.isClosed){
+                                <button title="Open Registration" data-toggle="tooltip" class="btn btn-primary btn-circle btn-sm  btnClose"
+                                data-url="@routes.Registration.managePeriodClosingStatus(i.id, false)">
+                                    <i class="fa fa-opera"></i>
+                                </button>
+                            }
+                            @if(!i.isClosed){
+                                <button title="Close Registration" data-toggle="tooltip" class="btn btn-circle btn-warning btn-sm  btnClose"
+                                data-url="@routes.Registration.managePeriodClosingStatus(i.id,true)"> <i class="fa fa-close"></i> </button>
+                            }
+                            <button title="Edit" data-toggle="tooltip"  class="btn btn-info btn-sm btn-circle" href="@routes.Application.updateAll(i.id, "train")" onclick="return createModal(this, self.event);"><i class="fa fa-pencil"></i>
+                            </button>
+                            <button title="Delete" data-toggle="tooltip"  class="btn btn-danger btn-sm btn-circle" onclick="createDel(this)" value="@routes.Application.deleteAll(i.id, "train")"><i class="fa fa-bitbucket"></i>
+                            </button>
+
+                        </td>
+
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script >
+        $('.validate-form').parsley();
+
+        $(document).on('click','.btnManagePeriodTranscript',function () {
+            var btn=$(this);
+            btn.button('loading');
+           $.ajax({
+               url:btn.attr('data-url'),
+               method:'POST',
+               success:function () {
+                   btn.button('reset');
+                   I('.hosted').click();
+               },error:function () {
+                   btn.button('reset');
+               }
+           })
+        });
+
+        $(document).on('click','.btnClose',function () {
+            var btn=$(this);
+            btn.button('loading');
+           $.ajax({
+               url:btn.attr('data-url'),
+               method:'POST',
+               success:function () {
+                   btn.button('reset');
+                   I('.hosted').click();
+               },error:function () {
+                   btn.button('reset');
+               }
+           })
+        });
+
+        $(document).find('[data-toggle="tooltip"]').tooltip();
+</script>
+
+<script >
+  $('.validate-form').parsley();
+  $(document).on('click','#btnDeactivate',function () {
+    var button=$(this);
+//           alert('you clicked me');
+    $.ajax({
+      url:button.attr('data-url'),
+      type:'post',
+      success:function () {
+        $('.hosted').click();
+      },
+      error:function () {
+//                   alert('Internal server error please try again');
+      }
+    })
+  });
+</script>
+
+

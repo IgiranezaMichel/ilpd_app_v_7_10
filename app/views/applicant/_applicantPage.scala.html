@@ -1,0 +1,225 @@
+@(currentPage: com.avaje.ebean.Page[Applicant])
+@import scala.Predef; var inc = 1;
+@import scala.Predef;var ext = "";var name = "";
+<div>
+    <table class="table table-striped table-bordered table-hover table-condensed">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th colspan="2">Profile</th>
+                <th>Name</th>
+                <th>Reg No</th>
+                <th>Status</th>
+                @if(session.containsKey("Finance")) {
+                    <th>Accommodation</th>
+                    <th>Restoration</th>
+                    <th>Amount to pay</th>
+                    <th>Amount paid</th>
+                    <th>Amount remain</th>
+                } else {
+                    <th>Period</th>
+                    <th>National Id</th>
+                    <th>Update</th>
+                    <th>Docs</th>
+                    <th>Upload</th>
+                }
+                </tr>
+        </thead>
+        <tbody>
+        @for(app: Applicant <- currentPage.getList) {
+            @if(app.deleteStatus == false && !app.applied.applicationStatus.equalsIgnoreCase("derefered") && !app.applied.applicationStatus.equalsIgnoreCase("rejected")) {
+                <tr>
+                    <td>@inc</td>
+                    <td>
+                        <div class="user-header">
+                            <img style="width: 30px !important; height: 30px !important;" src="@routes.Assets.at(if(!app.profile.equals("")) {
+                                "uploads/" + app.profile
+                            } else {
+                                "images/boys.jpg"
+                            })" class="img-circle hover-opacity">
+                        </div>
+                        <button class="btn btn-info btn-sm btn-circle" onclick="createModal(this, self.event)" href="@routes.Application.updateAll(app.id, "update-appProfile")"><i class="fa fa-upload"></i></button>
+                    </td>
+                    <td>
+                    @if(app.toString.trim.equalsIgnoreCase("")) {
+                        <span class="label label-default">Not found</span>
+                    } else {
+                        <span>@app.toString</span>
+                    }
+                    </td>
+                    <td>
+                    @if(app.toString().trim().equalsIgnoreCase("") && app.student == null && session.containsKey("Finance") && app.applied.applicationStatus.equalsIgnoreCase("accepted")) {
+                        <button type="button" data-url="@routes.Application.makeStudent(app.id)" class="btn btn-warning btn-flat js-regNumber btn-sm">
+                            Enforce Reg No
+                        </button>
+                    } else {
+                        @if(app.student == null) {
+                            <button type="button" data-url="@routes.Application.makeStudent(app.id)" class="btn btn-info btn-flat js-regNumber btn-sm">
+                                Enforce Reg No
+                            </button>
+                        } else {
+                            <span>@app.student.regNo</span>
+                        }
+
+                    }
+                    </td>
+                    <td>@app.applied.applicationStatus</td>
+                    @if(session.containsKey("Finance")) {
+                        <td>
+                        @if(app.needAccomodation) {
+                            <span class="label label-info">Yes</span>
+                            <span>
+                                <button class="btn btn-danger btn-sm btnDisableAccommodation btn-flat" data-url="@routes.Registration.disableAccommodation(app.id)"><i class="ion-android-cancel"></i>
+                                    Disable</button>
+                            </span>
+                        } else {
+                            <span class="label label-info">NO</span>
+                            <span>
+                                <button class="btn btn-default btn-sm btnEnableAccommodation btn-flat" data-url="@routes.Registration.enableAccommodation(app.id)"><i class="ion-checkmark-circled"></i>
+                                    Enable</button>
+                            </span>
+                        }
+                        </td>
+                        <td>
+                        @if(app.needCatering) {
+                            <span class="label label-info">Yes</span>
+                            <span>
+                                <button class="btn btn-danger btn-sm btnDisableRestoration btn-flat" data-url="@routes.Registration.disableRestoration(app.id)"><i class="ion-android-cancel"></i>
+                                    Disable</button>
+                            </span>
+                        } else {
+                            <span class="label label-info">NO</span>
+                            <span>
+                                <button class="btn btn-default btn-sm btnEnableRestoration btn-flat" data-url="@routes.Registration.enableRestoration(app.id)"><i class="ion-checkmark-circled"></i>
+                                    Enable</button>
+                            </span>
+                        }
+                        </td>
+                        <td>@Counts.formatAmount(app.getAmountToPay) </td>
+                        <td>@Counts.formatAmount(app.getTotalAmountPaid)</td>
+                        <td>
+                            @if(app.getTotalAmountRemain > 0.0) {
+                                <span class="label label-default" style="font-size: 14px">@Counts.formatAmount(app.getTotalAmountRemain)</span>
+                            }else{
+                                @if(app.getTotalAmountPaid > app.getAmountToPay) {
+                                    <span class="label label-danger" style="font-size: 14px">
+                                        Over pay - @Counts.formatAmount(app.getTotalAmountPaid - app.getAmountToPay) </span>
+                                }
+                                @if(app.getTotalAmountRemain == 0.0) {
+                                    <span class="label label-success" style="font-size: 14px">  0.0</span>
+                                }
+                                }
+                        </td>
+                    } else {
+                        <td>@app.applied.training.tNames</td>
+                        <td>@app.nationalDentity</td>
+                        <td>
+                            <a href="@routes.ApplicantController.getApplicant(app.id)" target="_blank" class="btn btn-ilpd btn-sm btn-circle">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        </td>
+                        <td>
+                        <button class="btn btn-ilpd btn-sm btn-circle js-info"
+                            title="Edit" data-url="@routes.ApplicantController.addDocuments(app.id)">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-ilpd btn-sm btn-circle" data-toggle="modal" data-target="#modal-default_@app.id">
+                                <i class="fa fa-upload"></i>
+                            </button>
+                            <div class="modal fade" id="modal-default_@app.id">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title">Upload document</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="@routes.Registration.updateFile(app.id)" method="POST" id="formPort" name="forms" enctype="multipart/form-data" onsubmit="return allForms(this)">
+                                                <div class="box box-info">
+                                                    <input type="hidden" name="applicantId" value="@app.id">
+                                                    <div class="box-header text-left resp-width">
+                                                        <i class="fa fa-file-image-o"></i>
+                                                        <h3 class="box-title"> Please attach only image or pdf documents</h3>
+                                                    </div>
+                                                    <div class="box-body">
+                                                        <div class="dinger">
+                                                        @for(i <- AcademicFiles.byProgram(app.applied.training.iMode.campusProgram.program.id,app.id)) {
+                                                            @if( app != null && Attachment.checker(app.id,i.id) != null && true && !Attachment.checker(app.id,i.id).attachName.equalsIgnoreCase("") && !Attachment.checker(app.id,i.id).attachName.equalsIgnoreCase(" ")){
+                                                                <div class="attach-box col-md-12">
+                                                                    <label>@i.fileName @if(i.required) {<em>*</em>}</label>
+                                                                    @( name = Attachment.checker(app.id,i.id).attachName )
+                                                                    @( ext = name.substring(name.lastIndexOf('.') + 1) )
+                                                                    @if( ext.equalsIgnoreCase("pdf") ){
+                                                                        <object data="@routes.Assets.at("uploads/" + name )" type="application/pdf" width="100%" height="290px">
+                                                                            <embed src="http://yoursite.com/the.pdf" type="application/pdf">
+                                                                            <p>This browser does not support PDFs. Please download the PDF to view it: <a href="http://yoursite.com/the.pdf">
+                                                                                Download PDF</a>.</p>
+                                                                            </embed>
+                                                                        </object>
+                                                                    }else{
+                                                                        <div class="imBox"><img src="@routes.Assets.at("uploads/"+name)" alt=""></div>
+                                                                    }
+                                                                </div>
+                                                                <div class="form-group has-feedback others">
+                                                                    <div class="form-group has-feedback others">
+                                                                        <label>@i.fileName @if(i.required) {
+                                                                            <em>*</em>
+                                                                        }
+                                                                        </label>
+                                                                        <button type="button" class="btn btn-info btn-block" max="10000" onclick="changeIt(this)" type="text" @if(!i.required) {
+                                                                            escape="1"}><i class="fa fa-upload"></i> Upload</button>
+                                                                        <label class="control-label" for="inputSuccess"><i class="fa fa-check"></i>
+                                                                            Input with success</label>
+                                                                        <input type="file" class="file-input" style="display: none" max="100000" name="@i.uniqueName" data-escape="1" /></div>
+                                                                </div>
+                                                            }
+                                                        }
+                                                        </div>
+                                                    </div>
+                                                    <div class="box-footer clearfix">
+                                                        <button type="submit" class="pull-right btn btn-success" id="meBut"> Upload document
+                                                            <i class="fa fa-arrow-circle-right"></i> </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    }
+                </tr>
+                @(inc = inc + 1)
+            }
+        }
+        </tbody>
+    </table>
+    <div id="pagination" class="paginationDiv pull-right">
+        <ul class="pagination">
+            @if(currentPage.hasPrev) {
+                <li class="prev">
+                    <a onclick="getPage('@routes.ApplicantController.allApplicants(currentPage.getPageIndex-1,"partial")')">&larr; </a>
+                </li>
+            } else {
+                <li class="prev disabled">
+                    <a>&larr;</a>
+                </li>
+            }
+            <li class="current">
+                <a>@currentPage.getDisplayXtoYofZ(" - ", " / ")</a>
+            </li>
+            @if(currentPage.hasNext) {
+                <li class="next">
+                    <a onclick="getPage('@routes.ApplicantController.allApplicants(currentPage.getPageIndex+1,"partial")')" >&rarr; </a>
+                </li>
+            } else {
+                <li class="next disabled">
+                    <a>&rarr;</a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+@( program : Program )
+
+@if( program != null ) {
+
+  <div class="loginForm">
+    <form action="@routes.UpdateForm.updateProgram(program.id)" method="POST" onsubmit="return allForms(this)">
+      <div class="box box-info">
+        <div class="box-header text-left resp-width with-border">
+          <i class="glyphicon glyphicon-edit"></i>
+          <h3 class="box-title">Edit program</h3>
+        </div>
+        <div class="box-body">
+          <div class="has-feedback">
+            @if(program.cle) {
+                <!-- drag handle -->
+              <span class="handle">
+                <i class="fa fa-ellipsis-v"></i>
+                <i class="fa fa-ellipsis-v"></i>
+              </span>
+                <!-- checkbox -->
+              <input type="checkbox" name="cle" checked>
+                <!-- todo text -->
+              <span class="text">Require attendance certificate</span>
+                <!-- Emphasis label -->
+            }else{
+                <!-- drag handle -->
+              <span class="handle">
+                <i class="fa fa-ellipsis-v"></i>
+                <i class="fa fa-ellipsis-v"></i>
+              </span>
+                <!-- checkbox -->
+              <input type="checkbox" name="cle">
+                <!-- todo text -->
+              <span class="text">Require attendance certificate</span>
+                <!-- Emphasis label -->
+            }
+          </div>
+      <div class="form-group has-feedback">
+        <hr />
+        <p>Program name</p>
+        <input type="text" value="@program.programName" class="form-control" name="programName" autocomplete="off"  placeholder="Program name"/>
+      </div>
+      <div class="form-group has-feedback">
+        <p>Program acronym</p>
+        <input type="text" value="@program.programAcronym" class="form-control" name="programAcronym" autocomplete="off" placeholder="Program acronym"/>
+      </div>
+        </div>
+        <div class="box-footer clearfix">
+          <button type="submit" class="pull-right btn btn-default"> Update
+            <i class="fa fa-check-circle"></i></button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+}

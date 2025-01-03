@@ -1,0 +1,32 @@
+@(user : Users, student1 : Student )
+@if( student1 != null ){
+    <div class="loginForm">
+        <form action="@routes.UpdateForm.appealExemption(Applicant.finderByUser(user.id).id)" method="POST" onsubmit="return allForms(this)">
+            <div class="box box-info">
+                <div class="box-header with-border text-left resp-width">
+                    <i class="fa fa-pencil"></i>
+                    <h3 class="box-title">Appeal for Internship exemption</h3>
+                </div>
+                <input type="hidden" name="appType" value="exemption">
+                <div class="box-body">
+                    <div class="form-group has-feedback">
+                        <p>Enter your reason to appeal</p>
+                        <textarea class="form-control" name="reason" autocomplete="off"></textarea>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <p>Enter your reason to appeal</p>
+                        <input type="file" name="attachment" autocomplete="off"/>
+                    </div>
+                    <p>NB: During application, student said has @Applicant.finderByUser(user.id).experienceDraft year(s) of experience and Registrar confirmed
+                        @Applicant.finderByUser(user.id).experience years of experience</p>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default"> Submit your appeal
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+}else{
+    <div>Error With Reference</div>
+}

@@ -1,0 +1,288 @@
+@( stu : Student , assignmentGroup: List[com.avaje.ebean.SqlRow], assignmentGroupTwo: List[com.avaje.ebean.SqlRow] , assignmentInd: List[Assignment]);
+@import scala.Predef;var inc=1;
+<section class="content">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="box box-warning">
+        <div class="box-header with-border">
+          <h3 class="box-title"><i class="ion-android-people text-yellow"></i> Un submitted group assignments/Research</h3>
+        </div>
+        <div class="box-body">
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <th>End date</th>
+                <th>Assignment/Research title</th>
+                <th>Download</th>
+                <th>My Group</th>
+                <th>Submit</th>
+            </tr>
+              @for( i <- assignmentGroup ) {
+                @if(GroupSubmission.byAssignment(i.getLong("group_id"), i.getLong("id"), stu.id) != null) {
+                  <tr>
+                    <td>
+                      @Assignment.finderById(i.getLong("id")).endDate.format("dd/MM/YYYY")
+                  @*  @if(Counts.dateIsBefore(i.getDate("end_date"))) {
+                      <span class="label label-warning" title="Date is expired">  @i.getDate("end_date").format("dd/MM/YYYY")</span>
+                    } else {
+                      <span class="label label-info" title="@Counts.daysLeft(i.getDate("end_date")) days Left to submit it.">  @i.getDate("end_date").format("dd/MM/YYYY")</span>
+                    } *@
+                    </td>
+                    <td>@i.getString("assignment_title")
+                      @if(i.getString("types").equalsIgnoreCase("assignment")) {
+                        <span style="color: blue;"> @i.getString("types") </span>
+                      }
+                      @if(i.getString("types").equalsIgnoreCase("research")) {
+                        <span style="color: red;"> @i.getString("types") </span>
+                      } </td>
+                    <td><a href="@routes.Application.downloadAssign(i.getLong("id"), true)" class="btn btn-block btn-link text-green">
+                      Download</a></td>
+                    <td>
+                      <div class="user-block">
+                        <span class="username">
+                          <a href="#"> @Component.finderById(i.getLong("component_id")).compName </a>
+                          <a href="#" class="pull-right btn-box-tool">
+                            <i class="fa fa-times"></i>
+                          </a>
+                        </span>
+                        @if(Groups.getName(i.getLong("group_id")) != null) {
+                          <span class="description">@Groups.getName(i.getLong("group_id"))</span>
+                        }
+
+                        @* else{
+                        <span class="description">@GroupMembers.getName(stu.id, Assignment.finderById(i.getLong("id")).component.id)</span>
+                        } *@
+                      </div>
+                    </td>
+                    <td>
+                      <span class="has-feedback">
+                      @if(Groups.getName(i.getLong("group_id")) != null) {
+                        <button class="btn btn-primary btn-sm" value="@routes.Application.getSubGroupForm(i.getLong("id"), Groups.getGroup(i.getLong("group_id")).id, true)" onclick="answers(this, event)">
+                          Submit <i class="fa fa-arrow-circle-right"></i>
+                        </button>
+                      } else {
+                        @* <button class="btn btn-primary btn-sm" value="@routes.Application.getSubGroupForm(i.getLong("id"), GroupMembers.getGroup(stu.id, Assignment.finderById(i.getLong("id")).component.id).id, true)" onclick="answers(this, event)">
+                        Submit <i class="fa fa-arrow-circle-right"></i>
+                        </button> *@
+                        Not Found
+                      }
+                      </span>
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody></table>
+        </div>
+      </div>
+      <div class="box box-success">
+        <div class="box-header">
+          <h3 class="box-title">
+            <i class="ion-ios-people text-green"></i> Submitted group assignments/Research exercise
+          </h3>
+        </div>
+        <div class="box-body table-responsive">
+          <table class="table table-condensed">
+            <tbody>
+              <tr>
+              <th>Assignment/Research title</th>
+              <th>Component</th>
+            </tr>
+              @for( i <- assignmentGroupTwo ) {
+                  <tr>
+                    <td>@i.getString("assignment_title")
+                      @if(i.getString("types").equalsIgnoreCase("assignment")) {
+                        <span style="color: blue;"> @i.getString("types") </span>
+                      }
+                      @if(i.getString("types").equalsIgnoreCase("research")) {
+                        <span style="color: red;"> @i.getString("types") </span>
+                      }
+                    </td>
+                    <td>@Component.finderById(i.getLong("component_id")).compName</td>
+                  </tr>
+                }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="box box-warning">
+        <div class="box-header with-border">
+          <h3 class="box-title"><i class="ion-load-a text-yellow"></i>
+            Un submitted individual assignments/Research exercise</h3>
+        </div>
+        <div class="box-body">
+          <table class="table table-bordered">
+            <tbody><tr>
+              <th>End date</th>
+              <th>Assignment/Research title</th>
+              <th>Component</th>
+              <th>Download</th>
+              <th>Days left</th>
+              <th>Submit</th>
+            </tr>
+              @for( i <- assignmentInd ) {
+                @if(stu.inResit) {
+                  @if(i.notDoneReseat(stu.id) && i.types.equalsIgnoreCase("resitResearch")) {
+                    <tr>
+                      <td>
+                      @if(Counts.dateIsBefore(i.endDate)) {
+                        <span class="label label-warning" title="Date is expired">  @i.endDate.format("dd/MM/YYYY")</span>
+                      } else {
+                        <span class="label label-primary" title="Still some time to do it please be carefully.">  @i.endDate.format("dd/MM/YYYY")</span>
+                      }
+
+                      </td>
+                      <td>@i.assignmentTitle
+                        @if(i.types.equalsIgnoreCase("assignment")) {
+                          <span style="color: blue;"> @i.types </span>
+                        }
+                        @if(i.types.equalsIgnoreCase("research")) {
+                          <span style="color: red;"> @i.types </span>
+                        }/ @i.max</td>
+                      <td>@i.component.compName</td>
+                      <td>
+                        <a href="@routes.Application.downloadAssign(i.id, true)" class="btn btn-block btn-link text-green">
+                          Download</a>
+                      </td>
+                      <td>
+                        <span class="badge @i.expireColor()">@i.leftDays() Days</span>
+                      </td>
+                      <td>
+                        <div class="has-feedback inline-bl">
+                          <button class="btn btn-primary btn-sm" value="@routes.Application.getSubForm(i.id, false)" onclick="answers(this, event)">
+                            Submit  <i class="fa fa-arrow-circle-right"></i></button>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                }else{
+                  @if(i.notDone(stu.id) && !i.types.equalsIgnoreCase("resitResearch")) {
+                    <tr>
+                      <td>
+                      @if(Counts.dateIsBefore(i.endDate)) {
+                        <span class="label label-warning" title="Date is expired">  @i.endDate.format("dd/MM/YYYY")</span>
+                      } else {
+                        <span class="label label-primary" title="Still some time to do it please be carefully.">  @i.endDate.format("dd/MM/YYYY")</span>
+                      }
+
+                      </td>
+                      <td>@i.assignmentTitle
+                        @if(i.types.equalsIgnoreCase("assignment")) {
+                          <span style="color: blue;"> @i.types </span>
+                        }
+                        @if(i.types.equalsIgnoreCase("research")) {
+                          <span style="color: red;"> @i.types </span>
+                        }/ @i.max</td>
+                      <td>@i.component.compName</td>
+                      <td>
+                        <a href="@routes.Application.downloadAssign(i.id, true)" class="btn btn-block btn-link text-green">
+                          Download</a>
+                      </td>
+                      <td>
+                        <span class="badge @i.expireColor()">@i.leftDays() Days</span>
+                      </td>
+                      <td>
+                        <div class="has-feedback inline-bl">
+                          <button class="btn btn-primary btn-sm" value="@routes.Application.getSubForm(i.id, false)" onclick="answers(this, event)">
+                            Submit  <i class="fa fa-arrow-circle-right"></i></button>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="box box-success">
+        <div class="box-header">
+          <h3 class="box-title"><i class="fa fa-check text-green"></i> Submitted individual assignments/Research exercise</h3>
+        </div>
+        <div class="box-body  table-responsive">
+          <table class="table table-condensed">
+            <tbody>
+              <tr>
+                <th>#</th>
+                <th>Date</th>
+              <th>Assignment/Research title</th>
+              <th>Component</th>
+              <th>Status</th>
+              <th>Download</th>
+            </tr>
+              @for( i <- Submission.submissionListIndividual(stu.id) ) {
+                @if(i.status.equalsIgnoreCase("viewed") || i.status.equalsIgnoreCase("submitted")) {
+                  <tr>
+                    <td>@inc</td>
+                    <td>@i.date.format("YYYY/MM/dd hh:mm:ss")</td>
+                    <td>@i.assignment.assignmentTitle
+                      @if(i.assignment.types.equalsIgnoreCase("assignment")) {
+                        <span style="color: blue;"> @i.assignment.types </span>
+                      }
+                      @if(i.assignment.types.equalsIgnoreCase("research")) {
+                        <span style="color: red;"> @i.assignment.types </span>
+                      }
+                    </td>
+                    <td>@i.assignment.component.compName</td>
+                    <td>
+                    @if(i.status.equalsIgnoreCase("viewed")) {
+                      <span class="label label-default text-green">@i.status <i class="ion-android-done-all"></i> </span>
+                    } else {
+                      <span class="label label-default">@i.status <i class="ion-android-done"></i> </span>
+                    }
+                    </td>
+                    <td>
+                      <a href="@routes.Application.downloadAssign(i.id,false)" class="btn btn-block btn-link text-green">Download</a>
+                    </td>
+                  </tr>
+                  @(inc = inc +1)
+                }
+              }
+             </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="box box-success">
+      <div class="box-header">
+        <h3 class="box-title"><i class="fa fa-check text-green"></i> Indivudual assignment result and claim/Research exersise</h3>
+      </div>
+      <div class="box-body  table-responsive">
+        <table class="table table-condensed">
+          <tbody>
+            <tr>
+              <th>Assignment/Research</th>
+              <th>Type</th>
+              <th>Component</th>
+              <th>Result</th>
+              <th>Claim</th>
+            </tr>
+            @for( i <- Student.myIndividualAssignmentsResult(stu.id) ) {
+              <tr>
+                <td>@i.assignment.assignmentTitle
+                  @if(i.assignment.types.equalsIgnoreCase("assignment")) {
+                    <span style="color: blue;"> @i.assignment.types </span>
+                  }
+                  @if(i.assignment.types.equalsIgnoreCase("research")) {
+                    <span style="color: red;"> @i.assignment.types </span>
+                  }
+                </td>
+                @if(i.assignment.grouped){
+                <td>Group assignment</td>
+                }else{
+                <td>Individual assignment</td>
+                }
+                <td>@i.assignment.component.compName</td>
+                <td>@i.result / @i.assignment.max</td>
+                  <td><button class="btn btn-info btn-sm btn-circle" href="@routes.Application.updateAll(i.id,"claim-marks-ass")" onclick="return createModal(this , self.event);"><i class="fa fa-plus-circle"></i></button></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

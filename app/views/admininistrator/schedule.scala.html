@@ -1,0 +1,226 @@
+@(currentPage: com.avaje.ebean.Page[Schedule], lect: List[Lecture], room: List[Room], training: List[Training], comps: List[Component])
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    View Time Table by Trainings and Date ranges
+                    <span class="pull-right"><i class="fa fa-plus-circle"></i></span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+            <div class="row">
+                @for(t <- training) {
+                    @for(tr <- DateRange.all()) {
+                        @if(Schedule.isExists(t.id, tr.id)) {
+                            <div class="col-md-4 " style="padding-left: 20px;
+                                padding-right: 20px;
+                                padding-top: 10px">
+                                <p style="font-size: 13px">
+                                    <a style="font-size: 13px !important;" target="_blank" href="@routes.Application.getTimetable(t.id, tr.id)">@t.tNames()
+                                        - @tr.toString()</a>
+                                </p>
+                            </div>
+                        }
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div align="right" class="left-form">
+    <button id="meBut" class="btn btn-ilpd btn-flat" onclick="addNew(this, event)">
+        <i class="fa fa-plus"></i> Set schedule
+    </button>
+    <div class="loginForm" id="form1" no-prop="true">
+        <form action="@routes.Registration.saveSchedule()" method="POST" onsubmit="return allForms(this)" enctype="multipart/form-data">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-envelope"></i>
+                    <h3 class="box-title">New schedule settings</h3>
+                </div>
+                <div class="box-body text-left">
+                    <div class="form-group has-feedback">
+                        <label for="campus">Choose campus</label>
+                        <select style="width: 100% !important;" name="campus" id="campus" class="form-control select2" required>
+                            <option value="">--select--</option>
+                            @for(campus : Campus <- Campus.all()) {
+                                <option value="@campus.id">@campus.campusName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback">
+                            <label for="iMode">Choose training/Intake</label>
+                            <select style="width: 100% !important;" name="iMode" id="iMode" class="form-control iMode select2" required>
+                                <option value="">--select--</option>
+                            </select>
+                    </div>
+                    <div class="form-group has-feedback">
+                            <label for="component">Choose component</label>
+                            <select style="width: 100% !important;" name="component" id="component" class="form-control select2" required>
+                                <option value="">--select--</option>
+                            </select>
+                    </div>
+                    <div class="form-group has-feedback">
+                            <label for="component">Choose component type</label>
+                            <select style="width: 100% !important;" name="componentType" class="form-control select2" required>
+                                <option value="">--Select component type--</option>
+                                <option value="Component">Component</option>
+                                <option value="Moot coot">Moot coot</option>
+                                <option value="Internship">Internship</option>
+                                <option value="Research paper">Research paper</option>
+                            </select>
+                    </div>
+                    <div class="form-group has-feedback others">
+                        <label style="display: block;">Will component have assignment/research ?</label>
+                        <div class="myRadio">
+                            <span class="t-radio"><input type="radio" name="assignment" value="yes" checked>
+                                <label for="radioMale">YES</label>
+                            </span>
+                            <span class="t-radio"><input type="radio" name="assignment" value="no">
+                                <label for="radioFemale">NO</label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback others">
+                        <label style="display: block;">Will component have exam ?</label>
+                        <div class="myRadio">
+                            <span class="t-radio"><input type="radio" name="exam" value="yes" checked>
+                                <label for="radioMale">YES</label>
+                            </span>
+                            <span class="t-radio"><input type="radio" name="exam" value="no">
+                                <label for="radioFemale">NO</label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <select style="width: 100% !important;" name="rooms" class="form-control select2" data-t="targeting(this,'#componentID','compName')" href="/Administrator/roomComping/">
+                            <option value="">-- Choose Room --</option>
+                            @for(i <- room) {
+                                <option value="@i.id">@i.roomName (@i.roomCode -> @i.campus.campusName )</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <select style="width: 100% !important;" name="lect" class="form-control select2">
+                            <option value="">-- Choose lecture --</option>
+                            @for(i <- lect) {
+                                <option value="@i.id">@i.fName @i.lName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <select style="width: 100% !important;" name="dateRange" class="form-control select2" id="dateRange">
+                            <option value="">-- Choose date range --</option>
+                            @for(d <- DateRange.all()) {
+                                <option value="@d.id">@d.toString</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="startDate">Start date</label>
+                        <input type="text" id="startDate" name="startDate" class="form-control datepicker">
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="endDate">End date</label>
+                        <input type="text" id="endDate" name="endDate" class="form-control datepicker">
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Starting hour:</label>
+                                <input type="time" name="startHour" class="form-control timepicker">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Stopage hour:</label>
+                                <input type="time" name="endHour" class="form-control timepicker">
+                            </div>
+                        </div>
+                            <!-- /.input group -->
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default">Save schedule
+                        <i class="fa fa-arrow-circle-right"></i> </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="divResult">
+        @admininistrator._Schedules.render(currentPage)
+        </div>
+    </div>
+</div>
+
+
+<script>
+        //Date picker
+        $('.datepicker').datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            format: 'dd-mm-yyyy'
+        });
+        $(function () {
+            $(document).on('change', '#campus', function () {
+                var self = $(this);
+                $.ajax({
+                    url: '/report/campus/' + self.val() + "/",
+                    method: 'get',
+                    dataType: 'json'
+                }).done(function (response) {
+                    var iMode = $('.iMode');
+                    iMode.html('');
+                    iMode.append($('<option>', {
+                        value: '',
+                        text: '--select--'
+                    }));
+
+                    $.each(response, function (index, item) {
+
+                        iMode.append($('<option>', {
+                            value: item.id,
+                            text: item.print
+                        }));
+
+                    });
+                })
+            });
+
+
+            $(document).on('change', '#iMode', function () {
+                var self = $(this);
+                $.ajax({
+                    url: '/report/iMode/' + self.val() + "/",
+                    method: 'get',
+                    dataType: 'json'
+                }).done(function (response) {
+                    var comp = $('#component');
+                    comp.html('');
+                    comp.append($('<option>', {
+                        value: '',
+                        text: '--select--'
+                    }));
+
+                    $.each(response, function (index, item) {
+                        comp.append($('<option>', {
+                            value: item.id,
+                            text:item.comp_name +" ( "+ item.program_acronym+" )"
+                        }));
+                        console.log("Index:" + index + " ,Value:" + item.comp_name)
+                    });
+                })
+            });
+        })
+
+        $("#module_report_form").parsley();
+</script>
+<script>
+        $(function () {
+            $('.select2').select2()
+        })
+</script>

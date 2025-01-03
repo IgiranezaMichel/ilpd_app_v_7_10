@@ -1,0 +1,109 @@
+@(app: Applied, title : String)
+@import scala.Predef;var inc = 1;
+@main(app.applicant.familyName + " admission letter", "") {
+<div class="container">
+    <div style="font-family: 'Book Antiqua' !important; size: 12px !important; text-align: justify !important;" class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <a href="@routes.Reports.printAdmission(app.id)" target="_blank" class="btn btn-success btn-block no-print"><i class="fa fa-book"></i> Print Pdf</a>
+            <br>
+            <div class="box box-ilpd" id="myBox">
+                <div class="box-header with-border">
+                    <table class="table" style="border: none;">
+                        <tr>
+                            <td style="border-right: 2px solid #E200E2;
+                                vertical-align: middle;
+                                border-top: none;">
+                                <span>
+                                    <i class="fa fa-circle"></i>
+                                    <i class="fa fa-circle" style="color: #E200E2!important;"></i>
+                                    <i class="fa fa-circle" style="color: #E200E2;"></i>
+                                </span>
+                            </td>
+                            <td style="vertical-align: top;
+                                border-top: none;">
+                                <span>
+                                    Institute of Legal Practice
+                                    and Development
+                                </span>
+                            </td>
+                            <td style="vertical-align: bottom; border-top: none;">
+                                <small>
+                                    <em class="text-left">Excellence in Legal Practice</em>
+                                </small>
+                            </td>
+                            <td style="border-top: none;">
+                                <img src="@routes.Assets.at("images/smLogo.png")" alt="" class="img-responsive pull-right" style="width: 50px">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="box-body " style="font-family: 'Book Antiqua' !important; padding: 20px; margin-right: 20px !important; margin-left: 20px !important;">
+                    <div style="margin-right: 20px !important; margin-left: 20px !important;" class="row">
+                        <div class="col-md-12 text-bold" style="line-height: 2margin-left: 20px; !important; margin-right: 20px !important;">
+                            @if(app.training.iMode.campusProgram.program.cle) {
+                                <span class="pull-left"> OFFICE OF DTR/COORDINATOR </span>
+                            }
+                            @if(!app.training.iMode.campusProgram.program.cle) {
+                                <span><center> OFFICE OF THE ACADEMIC REGISTRAR</center></span>
+                            }
+                            <span class="pull-right">Date: @app.applicant.date.format("MMM dd,yyyy")</span> <br>
+                            <span>Student name: @app.applicant.toString</span> <br>
+                            @if(app.applicant.student != null){
+                                <span>Student Reg No @app.applicant.student.regNo</span> <br>
+                            }else{
+
+                            }
+
+                            <span>Dear @app.applicant.toString,</span> <br>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 20px; line-height: 2; margin-left: 20px !important; margin-right: 20px !important;">
+                        <div class="col-md-12">
+                            <p> <u>Re:</u> FINAL ADMISSION TO THE POSTGRADUATE DIPLOMA IN @app.training.iMode.campusProgram.program.programName.toUpperCase() PROGRAM</p>
+                            <p>
+
+                            <p>We are pleased to inform you that you are admitted to the program of Post Graduate Diploma in @app.training.iMode.campusProgram.program.programName.toUpperCase()
+                            /@app.training.iMode.intake.intakeName. </p>
+
+                            <p>Congratulations for the achievement. We are looking forward to seeing you. </p>
+
+                            <p>Sincerely,</p>
+
+                            <p>
+                            <img src="@routes.Assets.at("uploads/"+ProfileInfo.unique().registrarSignature)" style="height: 100px" alt=""><br/>
+                            Mugisha Richard<br/>
+                            Academic Registrar<br/>
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer" style="font-family: 'Book Antiqua',seriflay run !important;">
+                    <p class="text-center">
+                        @ProfileInfo.unique().address <br>
+                        E: <a href="@ProfileInfo.unique().email">@ProfileInfo.unique().email</a> / <a href="@ProfileInfo.unique().website" target="_blank">@ProfileInfo.unique().website</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script>
+            var doc = new jsPDF();
+            var specialElementHandlers = {
+                '#editor': function (element, renderer) {
+                    return true;
+                }
+            };
+
+            $('#cmd').click(function () {
+                doc.fromHTML($('#content').html(), 15, 15, {
+                    'width': 170,
+                    'elementHandlers': specialElementHandlers
+                });
+                doc.save('sample-file.pdf');
+            });
+    </script>
+
+}

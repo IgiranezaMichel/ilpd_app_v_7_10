@@ -1,0 +1,33 @@
+@( stu : Student , group : Groups, assignment: Assignment)
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title"><i class="fa fa-book"></i> @assignment.assignmentTitle</h3>
+    </div>
+    <form action="@routes.Application.GroupSubmitAssignment(assignment.id, group.id)" method="POST" onsubmit="return allForms(this)">
+        <div class="box-body box-profile">
+            <div class="maxH">
+                <div align="center">
+                    <span class="round-image"><img src="@routes.Assets.at(Vld.imagePro(""))"></span>
+                </div>
+                <h6 class="profile-username text-center">@assignment.component.compName</h6>
+
+                <p class="text-muted text-center">@assignment.component.compName</p>
+                <ul class="list-group list-group-unbordered">
+                    <li class="list-group-item  has-feedback">
+                        <b>Attachment</b> <span class="pull-right pull">
+                        <button onclick="navig(this,event,false)" class="badge bg-green opener" type="button"> <i class="fa fa-send-o"></i> Upload
+                        </button>
+                        <input type="file" class="hide" name="attachment"></span>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Add Comment</b> <span class="pull-right has-feedback"><button class="badge bg-green" onclick="navig(this,event,true)"> <i class="fa fa-keyboard-o"></i></button></span>
+                        <div class="form-group has-feedback" style="display: none;margin-top:5px">
+                            <textarea name="comment" class="form-control" placeholder="Enter submission comment" rows="4"></textarea>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block"><b>Submit</b></button>
+        </div>
+    </form>
+</div>

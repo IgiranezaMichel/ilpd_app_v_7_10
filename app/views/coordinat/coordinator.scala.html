@@ -1,0 +1,11 @@
+@(anounceRoles : List[AnounceRole], userType : String, user : Users , anns : List[Announce] )
+@main("Coordinator page","admin.css"){
+    @header(anounceRoles, userType, true  , user )
+    @leftMenu("Coordinator",user)
+    <div class="content-wrapper">
+    @coordinatorContent.render(user)
+
+        @communication.render(anns)
+    </div>
+    @footer(user)
+}

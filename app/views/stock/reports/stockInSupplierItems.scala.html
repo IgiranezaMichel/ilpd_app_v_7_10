@@ -1,0 +1,74 @@
+@(supplier:String,supplieds:List[models.stock.Supplied],string:String)
+
+@import scala.Predef;var inc=1;var depDate=new Date();
+
+@main(string,"") {
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="invoice">
+                    <div class="row">
+                        <div class="row no-print">
+                            <div class="col-xs-12">
+                            @shared.printButton.render()
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 table-responsive">
+                            <h4 class="text-blue">
+                                @string
+                                <small class="pull-right">Date: @(new Date().format("dd-MM,yyyy"))</small>
+                            </h4>
+                            <table class="table table-hover table-striped" id="example">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Date</th>
+                                        <th>Name</th>
+                                        <th>Category</th>
+                                        <th>Type</th>
+                                        <td>Price</td>
+                                        <th>Unit measure</th>
+                                        <th>Qty</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @for(g <- supplieds) {
+                                    <tr>
+                                        <td>@inc</td>
+                                        <td>@g.date.format("dd-MM-yyy")</td>
+                                        <td>@g.item.name</td>
+                                        <td>@g.item.category.name</td>
+                                        <td>@g.item.iType</td>
+                                        <td>@g.item.unitMeasure</td>
+                                        <td>@g.unitPrice</td>
+                                        <td>
+                                        @if(g.suppliedQty > 0) {
+                                            @g.suppliedQty
+                                        }else{
+                                            0
+                                        }
+                                        </td>
+                                    </tr>
+                                    @(inc=inc+1)
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                    </div>
+                    @views.html.reports.footer.render()
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+
+
+

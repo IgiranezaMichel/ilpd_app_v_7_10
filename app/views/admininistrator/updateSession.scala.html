@@ -1,0 +1,36 @@
+@( sess : models.Session )
+
+@if( sess != null ) {
+
+  <div class="loginForm">
+    <form action="@routes.UpdateForm.updateSession(sess.id)"method="POST"onsubmit="return allForms(this)">
+      <div class="box box-info">
+        <div class="box-header text-left resp-width">
+          <i class="fa fa-envelope"></i>
+
+          <h3 class="box-title">Update session</h3>
+        </div>
+        <div class="box-body">
+      <div class="form-group has-feedback">
+        <p>Session name</p>
+        <input type="text" class="form-control" name="sessionName" autocomplete="off"value="@sess.sessionName" placeholder="Update session"/>
+      </div>
+      <div class="form-group has-feedback">
+        <p>start day</p>
+        <input class="form-control" name="sessionStart" value="@sess.sessionStart" placeholder="Update start day">
+      </div>
+      <div class="form-group has-feedback">
+        <p>End day</p>
+        <input class="form-control" name="sessionEnd" value="@sess.sessionEnd" placeholder="Update end day">
+      </div>
+  </div>
+  <div class="box-footer clearfix">
+    <button type="submit" class="pull-right btn btn-default">Update
+      <i class="fa fa-arrow-circle-right"></i></button>
+  </div>
+  </div>
+    </form>
+  </div>
+
+
+}

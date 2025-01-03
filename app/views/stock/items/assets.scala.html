@@ -1,0 +1,127 @@
+@(items: List[models.stock.Item], categories: List[models.stock.Category])
+@import scala.Predef;var inc=1;var depDate=new Date();var remain = 0; var date = new Date().format("yyyy-MM-dd");
+<div align="right" class="left-form">
+    <button id="meBut" class="btn btn-ilpd" onclick="addNew(this, event)">
+        <i class="fa fa-plus"></i>
+        Add new asset
+    </button>
+    <div class="loginForm" id="form1" no-prop="true">
+        <div class="box box-ilpd">
+            <div class="box-header with-border text-left resp-width">
+                <i class="fa fa-plus"></i>
+                <h3 class="box-title">Add new asset</h3>
+            </div>
+            <form action="@routes.ItemsController.save()" method="POST" onsubmit="return allForms(this)" >
+                <div class="box-body text-left">
+                    <label for=""> Select item category</label>
+                    <div class="form-group">
+                        <select style="width: 100% !important;" name="category" class="form-control select2">
+                            <option value="">--Select item category--</option>
+                            @for(ix <- categories) {
+                                <option value="@ix.id">@ix.name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" required class="form-control" id="name" name="name" placeholder="Item name">
+                    </div>
+                    <input type="hidden" name="type" value="Non-consumable">
+                    <div class="form-group">
+                        <input type="text" required class="form-control" id="unitMeasure" name="unitMeasure" placeholder="Unit measure">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" min="0" required class="form-control" id="min" name="min" placeholder="Minimum">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" min="0" required class="form-control" id="max" name="max" placeholder="Maximum">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" min="0" class="form-control" id="beginingQty" name="beginingQty" placeholder="Begining quantity">
+                    </div>
+                    <label for=""> Enter depreciation rate (%)</label>
+                    <div class="form-group">
+                        <input type="text" min="0" value="" class="form-control" id="depleciationMinMonths" name="depleciationMinMonths" placeholder="Depreciation rate (%)">
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-ilpd">Save changes
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-ilpd">
+            <div class="box-header with-border">
+                <h3 class="box-title">Items</h3>
+            </div>
+                <!-- /.box-header -->
+            <div class="box-body">
+                <div class="">
+                    <table class="table table table-hover table-striped table-condensed manageTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Category</th>
+                                <th>Unit measure</th>
+                                <th>Qty</th>
+                                <th>Depr. rate</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for(item:models.stock.Item <- items) {
+                            @(remain = item.getBeginningStockQty(Counts.getTomorrow().toDate.format("yyyy-MM-dd")))
+                            <tr>
+                                <td>@item.name</td>
+                                <td>@(item.iType)</td>
+                                <td>@item.category.name</td>
+                                <td>@item.unitMeasure</td>
+                                <td>
+                                @if((remain) > 0) {
+                                    @Counts.formatAmount(remain)
+                                }else{
+                                    0
+                                }
+                                </td>
+                                <td>@item.depleciationMinMonths %</td>
+                                <td>
+                                    <button href="@routes.ItemsController.editAsset(item.id)" onclick="createModal(this, self.event)" class="btn btn-link " title="Edit this record">
+                                        <i class="ion-compose"></i>
+                                    </button>
+                                    <button onclick="createDel(this)" value="@routes.ItemsController.delete(item.id)" class="btn btn-link text-red" title="Delete this record">
+                                        <i class="ion-android-delete"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+        $('.manageTable').DataTable();
+        $(function () {
+            $(document).on('change','.selecType',function (e) {
+                if ($(this).val()!=="Consumable"){
+                    $(".hideItemsYear").removeClass('div-hide');
+                }else{
+                    $(".hideItemsYear").addClass('div-hide');
+                }
+            });
+        });
+</script>
+<script>
+        $(function () {
+            $('.select2').select2()
+        })
+</script>

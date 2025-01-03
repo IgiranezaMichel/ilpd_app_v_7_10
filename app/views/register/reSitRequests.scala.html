@@ -1,0 +1,38 @@
+@( requests : List[ReSitReTakeRequest] )
+@import scala.Predef; var inc = 1
+<div class="panel panel-success">
+    <div class="panel-heading">Manage pending re-sits</div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Reg No</th>
+                        <th>Student name</th>
+                        <th>Request date</th>
+                        <th>Comment</th>
+                        <th>Decision</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for( i <- requests ){
+                    <tr>
+                        <td>@inc</td>
+                        <td> @i.student.regNo </td>
+                        <td>@i.student.familyName @i.student.firstName</td>
+                        <td>@i.requestDate.format("dd/MM/yyyy")</td>
+                        <td> @i.comment</td>
+                        <td>
+                            <button class="btn btn-info btn-sm btn-circle" href="@routes.Application.updateAll(i.id, "resitAppealDecision")" onclick="return createModal(this, self.event);"><i class="fa fa-refresh"></i></button>
+                        </td>
+                    </tr>
+                    @(inc = inc + 1)
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

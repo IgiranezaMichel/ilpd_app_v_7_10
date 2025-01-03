@@ -1,0 +1,41 @@
+@(iMode: IntakeSessionMode,intakes:List[Intake],sessions : List[models.SessionMode] , cProgs : List[CampusProgram])
+<div class="loginForm" id="form1" no-prop="true">
+    <div class="box box-info">
+        <div class="box-header text-left resp-width with-border">
+            <i class="glyphicon glyphicon-edit"></i>
+            <h3 class="box-title">Edit Assign Intake to study modes ...</h3>
+        </div>
+        <form action="@routes.UpdateForm.intakeSessionMode(iMode.id)" method="POST" onsubmit="return allForms(this)">
+            <div class="box-body">
+                <div class="form-group has-feedback">
+                    <select name="myIntake" class="form-control">
+                        <option value="">-- Choose Intake --</option>
+                        @for( ip <- intakes ){
+                            <option value="@ip.id" @if(iMode.intake.id.equals(ip.id)){selected}>@ip.intakeName</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group has-feedback">
+                    <select name="mySmode" class="form-control">
+                        <option value="">-- Choose Session & mode --</option>
+                        @for( ip <- sessions ){
+                            <option value="@ip.id" @if(iMode.sessionMode.id.equals(ip.id)){selected}>@ip.print()</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group has-feedback">
+                    <select name="myCprogram" class="form-control" id="program">
+                        <option value="">-- Choose campus & program --</option>
+                        @for( ip <- cProgs ){
+                            <option value="@ip.id"  @if(iMode.campusProgram.id.equals(ip.id)){selected}>@ip.print()</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="box-footer clearfix">
+                <button type="submit" class="pull-right btn btn-info">Update
+                    <i class="fa fa-arrow-circle-right"></i></button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+@( user : Users , list : List[ChatMessage] , unread : Integer )
+@import scala.Predef;var classe = "";
+<div class='element innerEl' no-prop="true" data-id="@user.id" id="user@user.id">
+
+
+  <div class="box direct-chat">
+    <div class="box-header with-border text-left">
+      <h3 class="box-title" style="cursor: pointer;"><img src="@routes.Assets.at(Vld.imagePro(user.profile))" class="sm-img" alt="User Image"> <span class="u-title">
+        @if(user.role.equalsIgnoreCase("Employee")) {
+          @user.employee.employeeFirstName @user.employee.employeeLastName
+        }
+        @if(user.role.equalsIgnoreCase("student") && Student.byUserId(user.id) != null) {
+          @Student.byUserId(user.id).firstName @Student.byUserId(user.id).familyName
+        }
+      </span></h3>
+
+      <div class="box-tools pull-right">
+        <span data-toggle="tooltip" title="" class="badge" data-original-title="3 New Messages">@unread</span>
+        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+        </button>
+        <button type="button" class="btn btn-box-tool" data-toggle="tooltip" title="" data-widget="chat-pane-toggle" data-original-title="Contacts">
+          <i class="fa fa-comments"></i></button>
+        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+      </div>
+    </div>
+    <div class="box-body">
+      <div class="direct-chat-messages">
+        @for( lst <- list ){
+          @if( lst.sendTo.equals(user) ){
+            @(classe = "right" )
+          }else{
+            @(classe = "" )
+          }
+        <div class="direct-chat-msg @classe">
+          <div class="direct-chat-info clearfix">
+            <span class="direct-chat-name pull-right">@(lst.sendFrom.email) XXX</span>
+            <span class="direct-chat-timestamp pull-left">@(lst.date.format("dd-MM-yyyy h:m:s"))</span>
+          </div>
+          <img class="direct-chat-img" src="@routes.Assets.at(Vld.imagePro(lst.sendFrom.profile))" alt="Message User Image">
+          <div class="direct-chat-text">
+            @lst.content
+          </div>
+        </div>
+
+        }
+      </div>
+    </div>
+    <div class="box-footer">
+      <form action="@routes.Application.sendMessage(user.id)" method="post" class="has-feedback chat-form">
+        <input type="text" name="content" placeholder="Type Message ..." class="form-control text-chat" autocomplete="off">
+        <button class="send-btn-chat no-default" type="submit"><i class="fa fa-send text-green"></i></button>
+      </form>
+    </div>
+  </div>
+
+</div>

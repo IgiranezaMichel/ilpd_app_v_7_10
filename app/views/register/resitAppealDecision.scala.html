@@ -1,0 +1,64 @@
+@( request : ReSitReTakeRequest, number : Int,  modules : List[Module] )
+@import scala.Predef; var averageOneMarks = 0.0; var totalResit = 0.0
+@if( request != null ){
+    <div class="loginForm">
+        <form action="@routes.UpdateForm.resitModulesDecision(request.id)"method="POST"onsubmit="return allForms(this)">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-envelope"></i>
+                    <h3 class="box-title">Re-sit modules approval form</h3>
+                </div>
+                <div class="box-body">
+                    <div class="box-body">
+                        <table class="table table-striped table-bordered table-hover">
+                            <p>Module(s) to resit</p>
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Module name</th>
+                                    <th>Marks</th>
+                                    <th>Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @for( module <- modules){
+                                @(averageOneMarks = module.allModuleAverage(request.student.id))
+                                @if(averageOneMarks < ProfileInfo.unique().scoreThree) {
+                                    <tr>
+                                        <td>@module.moduleCode</td>
+                                        <td>@module.moduleName</td>
+                                        <td>@Student.rounding(averageOneMarks) %</td>
+                                        <td>@Counts.formatAmount(module.resitAmount)</td>
+                                    </tr>
+                                    @(totalResit = totalResit + module.resitAmount)
+                                }
+                            }
+                            </tbody>
+                            <tr>
+                                <td colspan="4">Total cost</td>
+                                <td>@Counts.formatAmount(totalResit)</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <p>Make decision</p>
+                        <select name="status" class="form-control">
+                            <option value="approved">Approve request</option>
+                            <option value="rejected">Reject request</option>
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <p>Enter comment if any</p>
+                        <textarea type="text" data-escape="1" class="form-control" name="commentRegistrar" autocomplete="off"></textarea>
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default"> Confirm decision
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+}else{
+    <div>Error with reference</div>
+}

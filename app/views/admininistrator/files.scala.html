@@ -1,0 +1,103 @@
+@(q :String , prog : List[Program] )
+<div align="right" class="left-form">
+  <button id="meBut" class="btn btn-primary" onclick="addNew(this,event)"><i class="fa fa-plus"></i> New required files</button>
+  <div class="loginForm" id="form1" no-prop="true">
+    <form action="@routes.Registration.saveFiles()"method="POST"onsubmit="return allForms(this)" enctype="multipart/form-data">
+      <div class="box box-info">
+        <div class="box-header text-left resp-width">
+          <i class="fa fa-envelope"></i>
+
+          <h3 class="box-title">Add new Academic Files</h3>
+        </div>
+        <div class="box-body">
+      <div class="form-group has-feedback">
+        <select class="form-control" name="prog" id="SELECT_Program" max="3000" onchange="return changeProgram2(this)">
+          <option value="">-- Select Program --</option>
+          @for( i <- prog ){
+            <option value="@i.id">@i.programName</option>
+          }
+          </select>
+      </div>
+      <div class="form-group has-feedback">
+        <select class="first-check form-control" name="trainingId" id="trainingId">
+          <option value="">-- select intake --</option>
+        </select>
+      </div>
+      <div class="form-group has-feedback">
+        <select class="form-control" name="sessionId" id="SELECT_Session" max="3000">
+          <option value="">-- Select Session --</option>
+          @for( i <- Session.all() ){
+            <option value="@i.id">@i.sessionName</option>
+          }
+          </select>
+      </div>
+      <div class="form-group has-feedback">
+        <input class="form-control" name="fileName" id="CAUCAPO" max="3000" placeholder="File Name">
+      </div>
+      <div class="form-group has-feedback">
+        <select class="form-control" name="required" id="SISINGO" max="3000">
+          <option value="">-- File Requiring? --</option>
+          <option value="true">File Required</option>
+          <option value="false">File not Required</option>
+          </select>
+      </div>
+      <div class="form-group has-feedback">
+        <textarea class="form-control" name="description"  id="BABAYA_TEXT" max="30000" placeholder="Description"></textarea>
+      </div>
+  </div>
+  <div class="box-footer clearfix">
+    <button type="submit" class="pull-right btn btn-default">Save
+      <i class="fa fa-arrow-circle-right"></i></button>
+  </div>
+</div>
+        </form>
+  </div>
+</div>
+
+<div class="panel panel-success">
+  <div class="panel-heading">Academic files</div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>Program</th>
+            <th>Session</th>
+            <th>File Names</th>
+            <th>File Required</th>
+            <th>Update</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          @import scala.Predef; var x = 0;var p = 0;var xp = 0;var m=0;
+
+          @for( mi <- prog ) {
+            @( x = 0 )
+            @for(i <- AcademicFiles.byProBy(mi.id,q)) {
+              <tr>
+                @if( x == 0 ){
+                  <td rowspan="@AcademicFiles.byProBy(mi.id,q).length">@mi.programName</td>
+                  @( x = x + 1 )
+                }
+                <td>
+                @if(i.session==null){
+                  <span class="label label-warning">Not found</span>
+                }else{
+                  @i.session.sessionName
+                }
+                </td>
+                <td>@i.fileName</td>
+                <td>@i.required</td>
+                <td><button class="btn btn-info btn-sm btn-circle" href="@routes.Application.updateAll(i.id, "files")" onclick="return createModal(this , self.event);"><i class="fa fa-pencil"></i></button></td>
+                <td><button class="btn btn-danger btn-sm btn-circle" onclick="createDel(this)" value="@routes.Application.deleteAll(i.id, "files")"><i class="fa fa-bitbucket"></i></button></td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+

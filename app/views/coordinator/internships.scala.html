@@ -1,0 +1,48 @@
+@(internships: List[Internship])
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-ilpd">
+            <div class="box-header with-border">
+                <h3 class="box-title">List of uploaded internships</h3>
+            </div>
+                <!-- /.box-header -->
+            <div class="box-body">
+                <div class="">
+                    <table class="table table table-hover table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                <th style="width: 15%">Student</th>
+                                <th style="width: 15%">Reg No</th>
+                                <th style="width: 15%">Period</th>
+                                <th>Description</th>
+                                <th>File</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for(m <- internships) {
+                                <tr>
+                                    <td>@m.student.toString</td>
+                                    <td>@m.student.regNo</td>
+                                    <td>@m.student.training.tNames()</td>
+                                    <td>@m.description</td>
+                                    <td>
+                                        <a target="_blank" href="@routes.Application.updateAll(m.id, "downloadInternship")"
+                                        class="btn btn-ilpd" title="Download">
+                                            <i class="fa fa-download"></i>
+                                            Download
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

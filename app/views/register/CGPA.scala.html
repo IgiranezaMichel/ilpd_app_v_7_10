@@ -1,0 +1,99 @@
+<div align="center">
+    <form  class="loginForm" method="POST" action="@routes.Application.updateCumulative()" enctype="multipart/form-data" onsubmit="return allForms(this)">
+    <style>
+        .my-box{
+            position: relative;
+            border-radius: 3px;
+            background: #ffffff;
+            border-top: 3px solid #d2d6de;
+            margin-bottom: 20px;
+            width: 170%;
+            margin-left: -35% !important;
+        }
+    </style>
+        <div class="my-box box-info center-block">
+            <div class="my-box text-left resp-width">
+                <h3 class="box-title"><i class="fa fa-cogs"></i>CGPA Range</h3>
+                <h6><i>CGPA Range</i></h6>
+            </div>
+            <div  style="text-align: left !important; width: 170% !important; margin-left: -35% !important;">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>A minimum</th>
+                        <th>A maximum</th>
+                        <th>B+ minimum</th>
+                        <th>B+ maximum</th>
+                        <th>B minimum</th>
+                        <th>B maximum</th>
+                        <th>C+ minimum</th>
+                        <th>C+ maximum</th>
+                        <th>C minimum</th>
+                        <th>C maximum</th>
+                        <th>D minimum</th>
+                        <th>D maximum</th>
+                        <th>E minimum</th>
+                        <th>E maximum</th>
+                        <th>F minimum</th>
+                        <th>F maximum</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="aMin" value="@ProfileInfo.unique().aMin"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="aMax" value="@ProfileInfo.unique().aMax"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="bPlusMin" value="@ProfileInfo.unique().bPlusMin"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="bPlusMax" value="@ProfileInfo.unique().bPlusMax"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="bMin" value="@ProfileInfo.unique().bMin"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="bMax" value="@ProfileInfo.unique().bMax"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="cPlusMin" value="@ProfileInfo.unique().cPlusMin"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="cPlusMax" value="@ProfileInfo.unique().cPlusMax"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="cMin" value="@ProfileInfo.unique().cMin"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="cMax" value="@ProfileInfo.unique().cMax"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="dMin" value="@ProfileInfo.unique().dMin"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="dMax" value="@ProfileInfo.unique().dMax"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="eMin" value="@ProfileInfo.unique().eMin"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="eMax" value="@ProfileInfo.unique().eMax"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="fMin" value="@ProfileInfo.unique().fMin"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="fMax" value="@ProfileInfo.unique().fMax"/>
+                        </td>
+                    </tr>
+                </table>
+                <input type="text" name="maximumResit" class="form-control" value="@ProfileInfo.unique().maximumResit">
+            </div>
+            <div class="box-footer clearfix">
+                <button type="submit" class="btn-block btn btn-warning"> Update settings
+                    <i class="fa fa-arrow-circle-right"></i></button>
+            </div>
+        </div>
+    </form>
+</div>
+

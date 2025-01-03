@@ -1,0 +1,16 @@
+@(view : Html , global : Boolean )
+
+@subMain(global){
+  <section class="content bg-light percentHeighted col-md-11 col-centered" no-prop="true">
+    <div class="col-md-3">
+    </div>
+    <!-- /.error-page -->
+    <div class="col-md-6">
+    @if( view != null ){
+      @view
+    }
+    </div>
+    <div class="col-md-3">
+    </div>
+  </section>
+}

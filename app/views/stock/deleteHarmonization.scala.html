@@ -1,0 +1,19 @@
+@(item : models.stock.Item)
+@import models.stock.Supplier
+<div class="loginForm" id="form1" no-prop="true">
+    <div class="box box-ilpd">
+        <div class="box-header with-border text-left resp-width">
+            <i class="ion-compose"></i>
+            <h3 class="box-title">Delete this item</h3>
+        </div>
+        <form action="@routes.HUnitController.comfirmDeleteItem()" method="POST" onsubmit="return allForms(this)" >
+            <div class="box-body text-left">
+                <input type="hidden" name="itemID" value="@item.id">
+            </div>
+            <div class="box-footer clearfix">
+                <button type="submit" class="pull-right btn btn-ilpd"> Delete item
+                    <i class="fa fa-trash-o"></i></button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,81 @@
+@(groups: List[models.stock.Group])
+<div align="right" class="left-form">
+    <button id="meBut" class="btn btn-ilpd" onclick="addNew(this, event)">
+        <i class="fa fa-plus"></i>
+        Add new group
+    </button>
+    <div class="loginForm" id="form1" no-prop="true">
+        <div class="box box-ilpd">
+            <div class="box-header with-border text-left resp-width">
+                <i class="fa fa-plus"></i> Add new
+                <h3 class="box-title">Add new group</h3>
+            </div>
+            <form  action="@routes.GroupController.save()"  method="POST" onsubmit="return allForms(this)" >
+                <div class="box-body">
+                    <div class="form-group">
+                        <input type="text" required class="form-control" id="name" name="name" placeholder="Group name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" required class="form-control" id="acronym" name="acronym" placeholder="Group acronym">
+                    </div>
+                    <div class="form-group">
+                        <textarea name="description" id="description" required class="form-control" placeholder="Group decription"></textarea>
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-ilpd">Save
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-ilpd">
+            <div class="box-header with-border">
+                <h3 class="box-title">Category groups
+                </h3>
+            </div>
+                <!-- /.box-header -->
+            <div class="box-body">
+                <div class="">
+                    <table class="table table table-hover table-striped table-condensed manageTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Acronym</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for(group <- groups) {
+                                <tr>
+                                    <td> @group.name</td>
+                                    <td>@group.acronym</td>
+                                    <td>@group.description</td>
+                                    <td>
+                                        <button href="@routes.GroupController.find(group.id)"  onclick="createModal(this, self.event)" class="btn btn-link " title="Edit this record">
+                                            <i class="ion-compose"></i>
+                                        </button>
+                                        <button onclick="createDel(this)" value="@routes.GroupController.delete(group.id)" class="btn btn-link text-red" title="Delete this record">
+                                            <i class="ion-android-delete"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+            table = $('.manageTable').DataTable();
+
+</script>

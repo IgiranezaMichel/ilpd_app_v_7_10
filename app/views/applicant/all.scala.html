@@ -1,0 +1,116 @@
+@(currentPage: com.avaje.ebean.Page[Applicant])
+<div class="box box-ilpd">
+    <div class="box-header with-border">
+        <div class="col-sm-12">
+            <h4 class="box-title">All applicants</h4>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="result"></div>
+        <div>
+            <form method="get" class="form-inline"
+            id="searchForm" action="@routes.ApplicantController.allApplicants(0, "partial")">
+                <div class="form-group">
+                    <select class="form-control" onchange="getPage('@routes.ApplicantController.allApplicants(0, "partial")')" name="pageSize" id="pageSize">
+                        <option value="8">8</option>
+                        <option value="10" selected>10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="search" id="searchText" name="search" class="form-control" placeholder="Search here..">
+                </div>
+                <button id="searchBtn" type="submit" class="btn btn-ilpd btn-flat">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+        <div class="divResult">
+        @applicant._applicantPage.render(currentPage)
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">
+                    <i class="fa fa-edit"></i>
+                    Applicant details
+                </h4>
+            </div>
+            <form action="@routes.ApplicantController.updateApplicant()" method="post" id="updateApplicant">
+                <div class="modal-body">
+                    <div class="modal-loading div-hide text-center">
+                        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="edit-result">
+
+                    </div>
+                </div>
+                <div class="modal-footer editFooter">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="btnUpdate" type="submit" class="btn btn-ilpd">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="regNumberModal">
+    <form method="POST" action="" id="makeStudentForm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">
+                        To Enforce Reg number, please fill the form below</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group" >
+                        <input class="form-control" name="sponsorInstutute" placeholder="Enter sponsored Institution"/>
+                    </div>
+                    <div class="form-group" >
+                        <input class="form-control" name="shelfNumber" placeholder="Enter shelf number"/>
+                    </div>
+                    <div class="form-group" >
+                        <textarea class="form-control" name="comments" placeholder="Enter your comments"></textarea>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal">
+                        Close</button>
+                    <button type="submit" class="btn btn-ilpd btn-flat" id="btnMakeStudent">
+                        Enforce reg number</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="changeModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title my-title"></h4>
+            </div>
+            <div class="modal-body">
+                <p id="bodyMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" id="btnSubmitChange" data-dismiss="modal">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+        var dftUrl = '@routes.ApplicantController.allApplicants(0, "partial")';
+
+</script>

@@ -1,0 +1,12 @@
+@(anounceRoles : List[AnounceRole], userType : String, user : Users)
+@main("Budget manager page",""){
+    @(user.role="Budget Manager")
+    @header(anounceRoles, userType, loged = true  , user )
+    @leftMenu("Manager",user)
+    <div class="content-wrapper">
+        <div class="data-deposit" style="padding:5px;">
+        </div>
+
+    </div>
+    @footer(user)
+}

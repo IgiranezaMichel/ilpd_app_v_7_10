@@ -1,0 +1,45 @@
+@( codes : String )
+
+
+@main("Link expired","!main" ){
+
+  <style>
+    body{
+      text-align: center;
+      margin: 50px auto;
+    }
+  </style>
+
+  <div style="display: inline-block;width: 70%;text-align: left;">
+
+
+  <ul class="timeline">
+
+    <li>
+      <i class="fa fa-envelope bg-blue"></i>
+
+      <div class="timeline-item">
+        <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
+
+        <h3 class="timeline-header"><a href="#">Support Team</a> <i class="fa fa-warning"></i> sent you an email but it is expired please renew</h3>
+
+        <div class="timeline-body">
+          Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
+          weebly ning heekya handango imeem plugg dopplr jibjab, movity
+          jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
+          quora plaxo ideeli hulu weebly balihoo...
+        </div>
+        <div class="timeline-footer">
+          <a href="@routes.Application.index()" class="btn btn-primary"><i class="fa fa-home"></i> Go back to homepage</a>
+          <label style="position:relative;min-width: 400px;display: inline-block">
+            <a href="@routes.Application.getEmailForReset" class="btn btn-danger" onclick="return resetP(this)"><i class="fa fa-user"></i> Resend Link</a>
+          </label>
+        </div>
+      </div>
+    </li>
+
+  </ul>
+
+
+  </div>
+}

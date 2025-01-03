@@ -1,0 +1,32 @@
+@( applicant : Applicant )
+
+@if(applicant != null ) {
+
+    <div class="loginForm">
+        <form action="@routes.ApplicantController.appProfile(applicant.id)" class="validate-form" method="POST" onsubmit="return allForms(this)">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-envelope"></i>
+                    <h3 class="box-title">Change student profile</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group has-feedback">
+                        <input type="file" name="profile"/>
+                            <center><img style="width: 200px !important; height: 200px !important;" src="@routes.Assets.at(if(!applicant.profile.equals("")) {
+                                "uploads/" + applicant.profile
+                            } else {
+                                "images/boys.jpg"
+                            })" alt="User Image"></center>
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default"> Update profile
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+}
+<script >
+        $('.validate-form').parsley();
+</script>

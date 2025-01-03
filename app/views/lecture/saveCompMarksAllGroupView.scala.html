@@ -1,0 +1,42 @@
+@(assignment : Assignment)
+<div class="user-block">
+    <span class="username">
+        <a href="#">Marks result for assignment @assignment.assignmentTitle</a>
+        <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
+    </span>
+</div>
+<br>
+<div class="box box-danger">
+    <div class="box-header with-border">
+        <div class="box-title">
+            <br><br>
+            <br>
+            <div>
+                Component:
+                <b>[</b> <b>@assignment.component.compName / out of: @assignment.max</b>  <b>]</b>
+            </div>
+            <br>
+            <div>
+                Module:
+                <b>[</b><b>@assignment.component.module.moduleName</b>  <b>]</b>
+            </div>
+
+        </div>
+    </div>
+    <form action="@routes.Registration.saveSubAssignmentSameMarkGroup(assignment.id)" onsubmit="return allForms(this)">
+        <input type="hidden" name="assignmentId" value="@assignment.id">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <input type="text" class="form-control" name="result" placeholder="Assignment marks" number="true">
+                </div>
+                <div class="col-md-12">
+                    <button class="btn btn-default btn-block">
+                        <i class="ion-android-checkmark-circle">
+
+                        </i> Save marks </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

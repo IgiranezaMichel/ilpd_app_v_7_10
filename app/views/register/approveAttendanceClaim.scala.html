@@ -1,0 +1,68 @@
+@( attendance : Attendance )
+@if( attendance != null ){
+    <div class="loginForm">
+        <form action="@routes.UpdateForm.submitAttendanceClaimApproval(attendance.id)"metfees="POST"onsubmit="return allForms(this)">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-envelope"></i>
+                    <h3 class="box-title">Submit your attendance approval</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group has-feedback">
+                        <p>Attendance claim comment</p>
+                        <label>@attendance.comment</label>
+                    </div>
+                    <input type="hidden" value="@attendance.comment" name="comment">
+                    @if(attendance.attended){
+                    <div class="form-group has-feedback others">
+                        <label style="display: block;">AM Attendance</label>
+                            <span class="t-radio"><input type="radio" name="attended" value="true" checked>
+                                <label for="radioMale">Attended</label>
+                            </span>
+                            <span class="t-radio"><input type="radio" name="attended" value="false">
+                                <label for="radioFemale">Not Attended</label>
+                            </span>
+                    </div>
+                    }else{
+                        <div class="form-group has-feedback others">
+                            <label style="display: block;">AM Attendance</label>
+                            <span class="t-radio"><input type="radio" name="attended" value="true">
+                                <label for="radioMale">Attended</label>
+                            </span>
+                            <span class="t-radio"><input type="radio" name="attended" value="false" checked>
+                                <label for="radioFemale">Not Attended</label>
+                            </span>
+                        </div>
+                    }
+                    @if(attendance.attendedp){
+                    <div class="form-group has-feedback others">
+                        <label style="display: block;">AM Attendance</label>
+                            <span class="t-radio"><input type="radio" name="attendedp" value="true" checked>
+                                <label for="radioMale">Attended</label>
+                            </span>
+                            <span class="t-radio"><input type="radio" name="attendedp" value="false">
+                                <label for="radioFemale">Not Attended</label>
+                            </span>
+                    </div>
+                    }else{
+                        <div class="form-group has-feedback others">
+                            <label style="display: block;">AM Attendance</label>
+                            <span class="t-radio"><input type="radio" name="attendedp" value="true">
+                                <label for="radioMale">Attended</label>
+                            </span>
+                            <span class="t-radio"><input type="radio" name="attendedp" value="false" checked>
+                                <label for="radioFemale">Not Attended</label>
+                            </span>
+                        </div>
+                    }
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default"> Approve attendance
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+}else{
+    <div>Error With Reference</div>
+}

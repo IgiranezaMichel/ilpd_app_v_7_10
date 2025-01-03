@@ -1,0 +1,46 @@
+@( ev : EvQuestion )
+
+
+    <div class="loginForm">
+        <form action="@routes.UpdateForm.updateEvQuestion(ev.id)" method="POST" onsubmit="return allForms(this)">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-envelope"></i>
+
+                    <h3 class="box-title">Update evaluation question</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group has-feedback">
+                        <label  for="category">Choose category</label>
+                        <select class="form-control" id="category" name="category.id">
+                            <option value="">-- Choose category -- </option>
+                            @for( i : EvCategory <- EvCategory.finder.all() ){
+                                <option value="@i.id" @if(ev.category.id.equals(i.id)){ selected="selected" } >@i.content</option>
+                            }
+                        </select>
+                    </div>
+
+
+                    <div class="form-group has-feedback">
+                        <label for="type-c">Choose question type</label>
+                        <select name="textarea" id="type-c" class="form-control">
+                            <option value="">-- Choose question type --</option>
+                            <option value="true">-- Text --</option>
+                            <option value="false">-- Select marks --</option>
+
+                        </select>
+                    </div>
+
+
+                    <div class="form-group has-feedback">
+                        <p>Question</p>
+                        <textarea type="text" class="form-control" name="question" autocomplete="off" placeholder="Update question">@ev.question</textarea>
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default">Update
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>

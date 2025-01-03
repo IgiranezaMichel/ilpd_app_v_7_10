@@ -1,0 +1,10 @@
+@(anounceRoles : List[AnounceRole], userType : String, user : Users ,anns : List[Announce] )
+@main("Instructor page",""){
+    @header(anounceRoles, userType, true  , user )
+    @leftMenu("Instructor",user)
+    <div class="content-wrapper">
+    @lectureContent.render(user)
+        @communication.render(anns)
+    </div>
+    @footer(user)
+}

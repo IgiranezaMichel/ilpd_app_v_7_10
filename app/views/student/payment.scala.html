@@ -1,0 +1,553 @@
+@(payments: List[Payment], applicant: Applicant, banks: List[BankAccount], refundRequests: List[RefundRequest])
+@import scala.Predef;var sum = 0.0;
+
+<div class="row content">
+    <div class="col-md-12">
+
+
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse11">
+                            Payment status   <i class="fa fa-minus-circle pull-right text-aqua"></i>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse11" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-history"></i> Payment history</h3>
+                                <div class="box-tools">
+                                    <div align="right" class="left-form">
+                                        <button id="meBut" class="btn btn-primary" onclick="addNew(this, event)">
+                                            <i class="fa fa-plus-circle"></i> Add payment</button>
+                                        <div class="loginForm" id="form1" no-prop="true">
+
+                                            <form action="@routes.PaymentController.savePayment()" method="POST" onsubmit="return allForms(this)" autocomplete="off">
+                                                <div class="box box-info">
+                                                    <div class="box-header text-left resp-width with-border">
+                                                        <i class="fa fa-plus-circle"></i>
+                                                        <h3 class="box-title">New payment</h3>
+                                                    </div>
+                                                    <div class="box-body text-left">
+                                                        <div class="form-group has-feedback">
+                                                            <label for="bank">Choose bank you payed on</label>
+                                                            <select name="bankName" id="bank" class="form-control">
+                                                                <option value="">-- Select bank account --</option>
+                                                                @for(bank <- banks) {
+                                                                    <option value="@bank.id">@bank.bankName
+                                                                        ( @bank.accountNumber )</option>
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group has-feedback">
+                                                            <label for="slipNumber">Enter transaction number</label>
+                                                            <input type="text" placeholder="Transaction number" name="slipNumber" id="slipNumber" class="form-control"/>
+                                                        </div>
+                                                        <div class="form-group has-feedback">
+                                                            <label for="paymentType">Payment type</label>
+                                                            <select name="paymentType" id="paymentType" class="form-control">
+                                                                <option value="">---select---</option>
+                                                                <option value="bank slip"> Bank slip</option>
+                                                                <option value="swift message"> Swift message</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="form-group has-feedback">
+                                                            <label class="check-container">
+                                                                <input type="checkbox" escape="1" name="check" onchange="mgt(this)">
+                                                                <span class="checkmark"></span>
+                                                                <label for="amount">
+                                                                    Tuition fees
+                                                                        <span class="label label-info">
+                                                                        @Counts.formatAmount(Applied.getAppliedByApplicant(applicant).training.schoolFees)
+                                                                    Rwf</span>
+                                                                </label>
+                                                            </label>
+
+                                                            <input type="number" min="0"
+                                                            class="form-control hider restrict-numbers-only" escape="1" name="feesAmount"
+                                                            autocomplete="off" id="amount" max="@Applied.getAppliedByApplicant(applicant).training.schoolFees"
+                                                            placeholder="Tuition fees amount"/>
+                                                        </div>
+                                                        @if(applicant.needAccomodation) {
+                                                            <div class="form-group has-feedback">
+                                                                <label class="check-container">
+                                                                    <input type="checkbox" escape="1" name="check" onchange="mgt(this)">
+                                                                    <span class="checkmark"></span>
+                                                                    <label for="acc"> Accommodation fees
+                                                                        <span class="label label-info">
+                                                                            @Counts.formatAmount(Applied.getApplied(applicant.user).training.accomodationFees) Rwf
+                                                                        </span>
+                                                                    </label>
+                                                                </label>
+                                                                <input type="number" class="form-control hider restrict-numbers-only" min="0"
+                                                                name="accomodationAmount" autocomplete="off" id="acc"
+                                                                max="@Applied.getApplied(applicant.user).training.accomodationFees"
+                                                                placeholder="Accommodation fees amount"/>
+                                                            </div>
+                                                        }
+
+                                                        @if(applicant.needCatering) {
+                                                            <div class="form-group has-feedback">
+                                                                <label class="check-container">
+                                                                    <input type="checkbox" escape="1" name="check" onchange="mgt(this)">
+                                                                    <span class="checkmark"></span>
+                                                                    <label for="res"> Restauration fees
+                                                                        <span class="label label-info">
+                                                                        @Counts.formatAmount(Applied.getApplied(applicant.user).training.restaurationFees) Rwf
+                                                                        </span>
+                                                                    </label>
+                                                                </label>
+                                                                <input type="number" min="0" class="form-control hider" name="restaurantAmount" autocomplete="off" id="res" max="@Applied.getApplied(applicant.user).training.restaurationFees" placeholder="Restaurant fees amount."/>
+                                                            </div>
+                                                        }
+
+                                                        @if(applicant.student!=null && applicant.student.status.equalsIgnoreCase("retake") && applicant.student.failCount > 1) {
+                                                            <div class="form-group has-feedback">
+                                                                <label class="check-container">
+                                                                    <input type="checkbox" escape="1" name="check" onchange="mgt(this)">
+                                                                    <span class="checkmark"></span>
+                                                                    <label for="retakeAmount"> Retake amount
+                                                                        <span class="label label-info">
+                                                                            @Counts.formatAmount(applicant.student.getRemainRetakeAmountToPay) Rwf
+                                                                        </span>
+                                                                    </label>
+                                                                </label>
+                                                                <input type="number" min="0" class="form-control hider"
+                                                                name="retakeAmount" autocomplete="off" id="retakeAmount"
+                                                                placeholder="Retake amount."/>
+                                                            </div>
+                                                        }
+
+                                                        @if(Applied.getApplied(applicant.user).training.otherFees > 0.0) {
+                                                            <div class="form-group has-feedback">
+                                                                <label class="check-container">
+                                                                    <input type="checkbox" escape="1" name="check" onchange="mgt(this)">
+                                                                    <span class="checkmark"></span>
+                                                                    <label for="otherFees">Graduation fees
+                                                                        <span class="label label-info">
+                                                                        @Counts.formatAmount(Applied.getAppliedByApplicant(applicant).training.otherFees) Rwf
+                                                                        </span>
+                                                                    </label>
+                                                                </label>
+                                                                <input type="number" min="0" class="form-control hider restrict-numbers-only"
+                                                                escape="1" name="otherFees" autocomplete="off" id="otherFees"
+                                                                max="@Applied.getAppliedByApplicant(applicant).training.otherFees"
+                                                                placeholder="Graduation fees amount"/>
+                                                                <label for="">Specification/Comment</label>
+                                                                <textarea class="form-control" data-escape="1" placeholder="EX: For Graduation fees" name="comment"></textarea>
+                                                            </div>
+                                                        }
+
+                                                        <div class="form-group has-feedback">
+                                                            <label for="photo">
+                                                                Attachment</label>
+                                                            <br>
+                                                            <input type="file" class="hide" name="photo" id="image-upload"/>
+                                                            <button type="button" class="btn btn-info btn-block" onclick="I('#image-upload').click()">
+                                                                Add payment proof </button>
+                                                            <span id="error" class="text-red"></span>
+                                                        </div>
+
+                                                        <div class="form-group">
+
+                                                                <!-- Trigger the modal with a button -->
+                                                            <button type="button" id="myBtnLauncher"
+                                                            class="btn btn-default btn-sm center-block btn-block"
+                                                            data-toggle="modal" data-target="#myModal"
+                                                            data-backdrop="false" data-keyboard="false">
+                                                                Click for file preview
+                                                            </button>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="box-footer clearfix">
+                                                        <button disabled id="btnConfirm" type="submit" class="pull-right btn btn-primary">
+                                                            Confirm
+                                                            <i class="fa fa-check-circle-o"></i> </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                <!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped table-condensed table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Payment type</th>
+                                                <th>Bank</th>
+                                                <th>Trans.No</th>
+                                                <th>Application fees</th>
+                                                <th>Tuition fees</th>
+                                                <th>Accommodation</th>
+                                                <th>Restoration</th>
+                                                <th>Graduation fees</th>
+                                                <th>Comment</th>
+                                                <th>Retake</th>
+                                                <th>Bankslip</th>
+                                                <th style="width: 40px">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        @for(payment <- payments) {
+                                            @(sum = sum + payment.feesAmount)
+                                            <tr>
+                                                <td>@payment.date.format("MMM dd,yyyy - hh:mm:ss")</td>
+                                                <td>
+                                                @if(payment.paymentType.equalsIgnoreCase("bank slip")) {
+                                                    <span class="label label-primary">@payment.paymentType</span>
+                                                } else {
+                                                    <span class="label label-default">@payment.paymentType</span>
+                                                }
+
+                                                </td>
+                                                <td>@payment.printBank()</td>
+                                                <td>@payment.slipNumber</td>
+                                                <td>@Counts.formatAmount(payment.applicationFees)</td>
+                                                <td>@Counts.formatAmount(payment.feesAmount)</td>
+                                                <td>@Counts.formatAmount(payment.accomodationAmount)</td>
+                                                <td>@Counts.formatAmount(payment.restaurantAmount)</td>
+                                                <td>@Counts.formatAmount(payment.otherFees)</td>
+                                                <td>@payment.comment</td>
+                                                <td>@Counts.formatAmount(payment.retakeAmount)</td>
+                                                <td>
+                                                   @* <a title="Download" href="@routes.Application.downloadFinanceAttachment(payment.id)" data-id="@payment.id" class="btn btn-default btn-flat"><i class="fa fa-download"></i>
+                                                        Download</a>  *@
+                                                    @if(payment.attachment == null || payment.attachment.equalsIgnoreCase("") || payment.attachment.equalsIgnoreCase(" ") || payment.attachment.equalsIgnoreCase("null")) {
+                                                        @*   <button class="btn btn-default btn-sm btn-print" onclick="createModal(this,self.event)" href="@routes.Application.uploadPayment(payment.id)"><i class="fa fa-upload"></i>
+                                                            Attach </button>*@
+                                                        <button class="btn-print bg-red no-border" onclick="createModal(this,self.event)" href="@routes.Application.updateAll(payment.id,"payment")">
+                                                            Attach <i class="fa fa-upload"></i></button>
+
+                                                    }else{
+                                                        <a class="btn-print" href="@routes.Application.downloadFinanceAttachment(payment.id)"><i class="fa fa-download"></i> Download
+                                                        </a>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if(payment.status == "pending") {
+                                                        <span class="label label-warning"><i class="fa fa-refresh"></i>
+                                                            Pending</span>
+                                                    }
+                                                    @if(payment.status == "rejected") {
+                                                        <span class="label label-danger"><i class="fa fa-remove"></i>
+                                                            Rejected</span>
+                                                    }
+                                                    @if(payment.status == "approved") {
+                                                        <span class="label label-success"><i class="fa fa-check-circle-o"></i>
+                                                            Approved</span>
+                                                    } </td>
+                                            </tr>
+                                        }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                                <!-- /.box-body -->
+                            <div class="box-footer clearfix">
+                                <div class="col-md-6">
+                                        <!-- Modal -->
+                                    <div id="myModal" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+                                                <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Image preview</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div id="image-preview" style="text-align: center;
+                                                        overflow: scroll;
+                                                        display: none" class="text-center center-block">
+                                                        <img id="image" src="#" alt="your image" />
+                                                    </div>
+                                                    <div>
+                                                        <object id="pdf-preview" data="" type="application/pdf" width="100%" height="300px">
+                                                            <embed src="http://yoursite.com/the.pdf" type="application/pdf">
+                                                            This browser does not support PDFs. Please download the PDF to view it:
+                                                            <a href="http://yoursite.com/the.pdf">Download PDF</a>.
+                                                            </embed>
+                                                        </object>
+
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" id="closeBtn" class="btn btn-default" data-dismiss="modal">
+                                                        Close</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    @if(Applied.getApplied(applicant.user).training.otherFees > 0.0) {
+                                        <div class="alert alert-info alert-dismissable">
+                                            <div class="close" data-dismiss="alert">&times;</div>
+                                            <p>
+                                                <i class="fa fa-warning"></i>
+                                                You will need to pay Graduation fees i.e
+                                                <b>
+                                                    @Applied.getApplied(applicant.user).training.otherFeesSpec
+                                                    ( @Counts.formatAmount(Applied.getApplied(applicant.user).training.otherFees) Rwf)
+                                                </b>
+                                            </p>
+                                        </div>
+                                    }
+                                    @if(Applied.getApplied(applicant.user).training.minPayment != null) {
+                                        <div class="alert alert-info alert-dismissable">
+                                            <div class="close" data-dismiss="alert">&times;</div>
+                                            <p>
+                                                <i class="fa fa-warning"></i>
+                                                You will need to pay the Minimum amount of
+                                                <b>
+                                                    ( @Counts.formatAmount(Applied.getApplied(applicant.user).training.minPayment) Rwf)
+                                                </b>
+                                                in order to be approved as student.
+                                            </p>
+                                        </div>
+                                    }
+                                    @if(applicant.student!=null && applicant.student.status.equalsIgnoreCase("retake") && applicant.student.failCount > 1) {
+                                        <div class="alert alert-warning alert-dismissable">
+                                            <div class="close" data-dismiss="alert">&times;</div>
+                                            <p>
+                                                <i class="fa fa-warning"></i>
+                                                You will need to pay the extra amount for retake
+                                            </p>
+                                            <p>
+                                                Amount to pay: @Counts.formatAmount(applicant.student.getRetakeAmountToPay) Rwf
+                                            </p>
+                                            <p>
+                                                Amount paid: @Counts.formatAmount(applicant.student.getRetakeAmountPaid) Rwf
+                                            </p>
+                                            <p>
+                                                Amount remain: @Counts.formatAmount(applicant.student.getRemainRetakeAmountToPay) Rwf
+                                            </p>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><span>
+                                            Total amount to pay </span>
+                                            <span class="label label-info pull-right">
+                                                @Counts.formatAmount(applicant.getAmountToPay) RWF
+                                            </span>
+                                        </li>
+
+                                        @if(applicant.account != null) {
+                                            <li class="list-group-item"><span>
+                                                Total amount paid</span>
+                                                <span class="label label-success pull-right">
+                                                    @Counts.formatAmount(applicant.getTotalAmountPaid + ILDPLibrary.cleanedLibrary(applicant.id)) RWF
+                                                </span>
+                                            </li>
+
+                                            @if(applicant.account != null) {
+                                                <li class="list-group-item"><span>
+                                                    Library charges </span>
+                                                    <span class="label label-warning pull-right">
+                                                        @Counts.formatAmount(ILDPLibrary.libraryCharges(applicant.id)) RWF
+                                                    </span>
+                                                </li>
+                                            }
+                                            <li class="list-group-item">
+                                            @if(applicant.getTotalAmountRemain() > 0) {
+                                                <span>Total amount remain</span>
+                                            }else{
+
+                                                <span>Total amount to be refunded</span>
+                                            }
+
+                                                <div class="pull-right">
+                                                    <span class="label label-danger">
+                                                        @if(applicant.getTotalAmountRemain() < 0){
+                                                        @Counts.formatAmount((applicant.getTotalAmountRemain() * -1) - Refund.getTotalInReFunded(applicant.account.id))
+                                                        }else{
+
+                                                           @Counts.formatAmount(applicant.getTotalAmountRemain())
+                                                        } RWF
+                                                    </span>
+                                                    @if(applicant.account.amount > 0) {
+                                                        <button class="btn btn-primary box-shadow-default btn-sm"
+                                                        href="@routes.PaymentController.studentRefund()" onclick="return createModal(this, event);">
+                                                            <i class="fa fa-refresh"></i> Request refund
+                                                        </button>
+                                                    }
+                                                </div>
+
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse22">
+                            Refunds requests history   <i class="fa fa-plus-circle pull-right text-aqua"></i>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse22" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="box box-ilpd">
+                            <div class="box-header with-border">
+                                <h4 class="box-title">My refunds history</h4>
+                            </div>
+                            <div class="box-body">
+                            @if(refundRequests.nonEmpty) {
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    @for(r <- refundRequests) {
+                                        <tr>
+                                            <td>@r.date.format("MMM dd,yyyy")</td>
+                                            <td>@Counts.formatAmount(r.amount)</td>
+                                            <td>
+                                            @if(r.status) {
+                                                <span class="label label-success">Approved</span>
+                                            } else {
+                                                <span class="label label-info">Pending</span>
+                                            }
+                                            </td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            } else {
+                                <div class="alert alert-info">
+                                    <h4 class="text-center"><i class="fa fa-info-circle"></i>
+                                        Nothing to show you !! It seems like nothing you've requested.</h4>
+                                </div>
+                            }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            $('#myBtnLauncher').hide(10);
+        });
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    if (checkExtension() === "pdf") {
+                        $("#image-preview").hide(10);
+                        $("#pdf-preview").show(10);
+                        $('#pdf-preview').attr('data', e.target.result);
+                    } else {
+                        $("#image-preview").show(10);
+                        $("#pdf-preview").hide(10);
+                        $('#image').attr('src', e.target.result);
+                    }
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#image-upload").change(function () {
+            if (this.value) {
+                readURL(this);
+                validateMe(this);
+                /* $('#myBtnLauncher').show(10);*/
+            } else {
+                $('#myBtnLauncher').hide(10);
+            }
+        });
+
+        $('#myBtnLauncher').unbind('click').bind('click', function () {
+            $('#myModal').modal('show');
+        });
+
+        function checkExtension() {
+            return $('#image-upload').val().split('.').pop().toLowerCase();
+        }
+
+        function validateMe(input) {
+            var btn = $('#btnConfirm');
+            $("#error").html("");
+            $('#myBtnLauncher').hide(10);
+            btn.attr('disabled', 'true');
+            var a = 0;
+            var ext = $('#image-upload').val().split('.').pop().toLowerCase();
+            if ($.inArray(ext, ['png', 'jpg', 'jpeg', 'pdf']) === -1) {
+                $("#error").html("File is not allowed consider uploading .png,.jpg,.jpeg,.pdf only.");
+                return false;
+            } else {
+                var size = input.files[0].size;
+                if (size > 2097152) {
+                    $("#error").html("File size is greater than 2MB");
+                    return false;
+                } else {
+                    a = 1;
+                    $("#error").html("");
+                }
+            }
+            if (a === 1) {
+                btn.removeAttr('disabled');
+                $('#myBtnLauncher').show(10);
+                return true;
+            }
+        }
+
+
+        var $collapse = $(document).find('.collapse');
+        $collapse.on('hidden.bs.collapse', function () {
+            $(this).parent("div").find(".panel-heading").find(".panel-title").find(".fa").removeClass("fa fa-minus-circle").addClass("fa fa-plus-circle");
+        });
+        $collapse.on('shown.bs.collapse', function () {
+            $(this).parent("div").find(".panel-heading").find(".panel-title").find(".fa").removeClass("fa fa-plus-circle").addClass("fa fa-minus-circle");
+        });
+</script>
+<script>
+        restrictChars('.restrict-numbers-only', '1234567890');
+        restrictChars('.restrict-money', '1234567890£.');
+        restrictChars('.restrict-lowercase', 'abcdefghijklmnopqrstuvwxyz');
+        restrictChars('.restrict-uppercase', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+        restrictChars('.restrict-uppercase-and-lowercase', 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
+        restrictChars('.restrict-numbers-uppercase-lowercase-spaces', '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ');
+
+        function restrictChars(selector, allowedChars) {
+            $(selector).on('keypress', function(event) {
+                const chr = String.fromCharCode(event.which);
+                if (allowedChars.indexOf(chr) < 0) {
+                    return false;
+                }
+            });
+
+            $(selector).on('keydown keyup change', function(event) {
+                let val = $(this).val();
+                let pattern = '[^'+allowedChars+']';
+                let regexp = new RegExp(pattern, 'g');
+                $(this).val( $(this).val().replace(regexp, '') );
+            });
+        }
+</script>

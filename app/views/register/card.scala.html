@@ -1,0 +1,43 @@
+@( stu : Student , option : Boolean )
+@if(option){
+  <style>body{padding:50px;}
+  .floated2:after, .floated-div:after {
+   display: none;
+  }
+  </style>
+}
+<script src="@routes.Assets.at("js/pdf/html2canvas.min.js")"></script>
+<div class="floated-div @if(!option){default-toggle}" id="floated" no-prop="true" @if(option){style="display: block;position: relative;border: 2px solid #ca138c;border-radius: 2px" } >
+  <div class="pull-left no-print">
+    <a @if(option){onclick="printDiv(this.parentNode.parentNode,this);return false"} href="@routes.Application.printCard(stu.id)" class="fonter btn btn-link" target="_blank"><i class="fa fa-print"></i></a>
+  </div>
+  <div class="card-header">
+    <div class="card-logo"><img src="@routes.Assets.at("images/smLogo.png")"></div>
+    <div class="head">@ProfileInfo.unique().profileName</div>
+  </div>
+<div class="col-md-12 col-centered text-center">
+  <span class="dlp-head">
+  @stu.training.iMode.campusProgram.program.programAcronym STUDENT CARD </span></div>
+  <div class="card-content">
+    <div class="profiler pull-left">
+      <div class="embeding">
+        <img src="@routes.Assets.at("uploads/"+stu.applicant.profile)">
+      </div>
+    </div>
+    <div class="strong-text card-context">
+      <div>Name : @stu.toString</div>
+      <div class="give-data">@stu.training.tNames()</div>
+      <div>Registration : <span class="give-number">@stu.regNo</span></div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div class="inline-bl pull-left">Issue date:<span> <input style="background: #5a5eaa; border: #5a5eaa;" class="picker-x" type="text" name="issueDate" /></span></div><span class="pull-right">Expiration date: <input style="background: #5a5eaa; border: #5a5eaa;" class="picker-x" type="text" name="exDate" /></span>
+  </div>
+</div>
+<script>
+  $(function () {
+      $(".picker-x").datepicker();
+  })
+</script>
+
+

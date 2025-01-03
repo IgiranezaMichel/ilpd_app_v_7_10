@@ -1,0 +1,33 @@
+@( supplier : models.stock.Supplier )
+
+<div class="loginForm" id="form1" no-prop="true">
+    <div class="box box-ilpd">
+        <div class="box-header with-border text-left resp-width">
+            <i class="ion-compose"></i>
+            <h3 class="box-title">Edit supplier</h3>
+        </div>
+        <form action="@routes.EmployeesController.updateSupplier(supplier.id)" method="POST" onsubmit="return allForms(this)">
+            <div class="box-body  width-100">
+                <div class="form-group width-100">
+                    <input type="text" value="@supplier.name" class="form-control" id="name" name="name" placeholder="Supplier name">
+                </div>
+                <div class="form-group width-100">
+                    <input type="email"  value="@supplier.email" class="form-control" id="email" name="email" placeholder="Supplier email">
+                </div>
+                <div class="form-group width-100">
+                    <input type="text" value="@supplier.address" class="form-control" id="address" name="address" placeholder="Supplier address">
+                </div>
+                <div class="form-group width-100">
+                    <input type="text" value="@supplier.phone" class="form-control" id="phone" name="phone" placeholder="Supplier phone">
+                </div>
+                <div class="form-group width-100">
+                    <input type="text" value="@supplier.tinNumber" class="form-control" id="tinNumber" name="tinNumber" placeholder="Tin number">
+                </div>
+            </div>
+            <div class="box-footer clearfix">
+                <button type="submit" class="pull-right btn btn-ilpd">Update supplier
+                    <i class="fa fa-arrow-circle-right"></i></button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+@( attendance : Attendance )
+@if( attendance != null ){
+    <div class="loginForm">
+        <form action="@routes.UpdateForm.submitAttendanceClaim(attendance.id)"metfees="POST"onsubmit="return allForms(this)">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-envelope"></i>
+                    <h3 class="box-title">Submit your attendance approval</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group has-feedback">
+                        <p>Enter your comment</p>
+                        <textarea type="text" class="form-control" name="comment" autocomplete="off"></textarea>
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default"> Send attendance
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+}else{
+    <div>Error With Reference</div>
+}

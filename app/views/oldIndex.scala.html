@@ -1,0 +1,99 @@
+@( lang : Map[String,String])
+
+<section class="body-data">
+  <div class="home-place margin-top"id="homePlace">
+    <div class="content-place min-h">
+
+      <div class="responsiver">
+        <div class="homeInfo">
+          <div class="innerInfo">
+            <b id="strong">@ProfileInfo.unique().profileName</b>
+            @ProfileInfo.unique().aboutInfo</div>
+        </div>
+        <div class="slider">
+
+
+
+        </div>
+      </div>
+
+      <div class="forHome">
+        <div class="headerLogo logoImage"></div>
+        <form class="loginForm favBg"method="POST"action="@routes.Application.performLogin()"onsubmit="return validate(this,function(res,f){hoss.login(f)});">
+          <div id="h"class="img-path"><h1>@lang.get("signin")</h1>@lang.get("tocont")</div>
+          <br/>
+          <div class="form-group">
+            <input type="text" class="form-input" name="email" autocomplete="off"  id="F_Text" autofocus/>
+            <label for="F_Text" class="animated-label">@lang.get("user")</label>
+          </div>
+          <br/>
+          <div class="form-group">
+            <input type="password" class="form-input" name="password" autocomplete="off"  id="P_Text"/>
+            <label for="P_Text" class="animated-label">@lang.get("pass")</label>
+          </div>
+          <div class="errorLog">Couldn't find your validated account</div>
+          <a href="#"id="forgot">@lang.get("forgot") ?</a>
+          <div id="buttonHandle">
+            <a href="@routes.Registration.studentRegForm()"id="moreX"onclick="return createModal(this , self.event,true);">@lang.get("new")?</a>
+            <input type="submit"name="first"value="@lang.get("signin")"id="meBut"/>
+          </div>
+
+        </form>
+      </div>
+
+
+    </div>
+  </div>
+
+
+  <div class="separator"><div class="inline">CONTACT US FORM HERE</div></div>
+
+  <div class="content-place contactus"id="contact">
+
+    <table class="contactus-form">
+      <tr>
+        <td><div class="form-group">
+          <span></span>
+          <input type="text" class="form-input" name="password"  id="FULL_Text"/>
+          <label for="FULL_Text" class="animated-label">@lang.get("e_full")<i class="required">*</i></label>
+        </div></td>
+        <td>
+          <div class="form-group">
+            <span></span>
+            <input type="email" class="form-input" name="password"  id="VALID_Text"/>
+            <label for="VALID_Text" class="animated-label">@lang.get("mail")<i class="required">*</i></label>
+          </div>
+        </td>
+        <td>
+          <div class="form-group">
+            <span></span>
+            <input type="text" class="form-input" name="password"  id="LOC_Text"/>
+            <label for="LOC_Text" class="animated-label">@lang.get("site")</label>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          <div class="form-group">
+            <span></span>
+            <textarea class="form-input" name="password"  id="MESSAGE_Text"rows="11"></textarea>
+            <label for="MESSAGE_Text" class="animated-label">@lang.get("sub")<i class="required">*</i></label>
+          </div>
+        </td>
+      </tr>
+      <tr><td colspan="3"style="position:relative"><button type="submit" id="meBut" class="button-contact">@lang.get("cont")</button></td></tr>
+    </table>
+
+    <div class="web-info">
+      <label class="label-text">@ProfileInfo.unique().aboutInfo</label>
+      <div class="social-media">
+        <a href="http://www.facebook.com" class="fb-icon" target="_blank"></a>
+        <a href="http://www.net.com" class="net-icon" target="_blank"></a>
+        <a href="http://www.twitter.com" class="twitter-icon" target="_blank"></a>
+        <a href="http://plus.google.com" class="plus-icon" target="_blank"></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="separator"></div>
+</section>

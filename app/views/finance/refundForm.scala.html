@@ -1,0 +1,62 @@
+@( applicant: Applicant ,refundRequest: RefundRequest )
+
+@if( applicant != null ){
+
+    <div class="loginForm">
+        <form action="@routes.PaymentController.refundStudent()" method="POST" onsubmit="return allForms(this)">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-refresh"></i>
+
+                    <h3 class="box-title">Refund student</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group has-feedback">
+                        <p>Student name</p>
+                        <input type="hidden" name="id" value="@applicant.id">
+                        <input type="hidden" name="request" value="@refundRequest.id">
+                        <input type="text" class="form-control" name="name" autocomplete="off"  value="@applicant.toString()" readonly/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <p>Student registration No</p>
+                        <input required type="text" class="form-control" name="regNumber" autocomplete="off" placeholder="Update Bank acronym" value="@applicant.regNo()" readonly/>
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <p>Refund amount</p>
+                        <input required max="@refundRequest.amount" value="@refundRequest.amount" type="number" class="form-control" name="amount" autocomplete="off" placeholder="@Counts.formatAmount(refundRequest.amount) amount requested"/>
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <p>Refund from</p>
+                        <select required name="bankAccount" id="bankAccount" class="form-control">
+                            <option value="">-- Bank account --</option>
+                            @for(bank:BankAccount <- BankAccount.all()){
+                                <option value="@bank.id">@bank.bankAcronym [@bank.accountNumber]</option>
+                            }
+                        </select>
+                    </div>
+
+
+                    <div class="form-group has-feedback">
+                        <p>Refund to; Account name: </p>
+                       <p> <strong>@refundRequest.accountUserName </strong></p>
+                        <p>Account number: <strong>@refundRequest.accountNumber</strong></p>
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <p>Check number</p>
+                        <input required type="text" class="form-control" name="checkNumber" autocomplete="off" placeholder="Check number"/>
+                    </div>
+
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default">Confirm refund
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+}

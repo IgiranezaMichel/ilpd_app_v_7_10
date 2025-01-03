@@ -1,0 +1,35 @@
+@(t:Training)
+@import scala.Predef;var g="";
+
+<div class="loginForm">
+    <form action="@routes.UpdateForm.updateData("graduation",t.id)" method="POST" onsubmit="return allForms(this)">
+        <div class="box box-ilpd">
+            <div class="box-header text-left resp-width">
+                <i class="fa fa-pencil"></i>
+                <h3 class="box-title">Update graduation date</h3>
+            </div>
+            <div class="box-body">
+                <div class="form-group has-feedback">
+                    <p>Graduation date</p>
+                    @if(t.graduation!=null){
+                        @(g=t.graduation.format("MM-dd-yyyy"))
+                    }
+                        <input type="text" class="form-control date" name="graduation" autocomplete="off" id="eDate"
+                    placeholder="Enter date" value="@g"/>
+                </div>
+            </div>
+            <div class="box-footer clearfix">
+                <button type="submit" class="pull-right btn btn-ilpd">Save changes
+                    <i class="fa fa-arrow-circle-right"></i></button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+      $('.date').datepicker({
+          autoclose: true,
+          todayHighlight: true,
+          format:'mm-dd-yyyy'
+      });
+</script>

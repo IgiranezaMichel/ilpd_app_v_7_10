@@ -1,0 +1,194 @@
+@(students:List[Student], training: Training , modules:List[Module], title : String)
+@import scala.Predef;var inc2 = 1; var tot = 0; var catMarks=0.0;var reMarks=0.0;var total = 0.0;var totalModule = 0.0; var totalMootCourt = 0.0; var totalInternship = 0.0; var examMarks=0.0;var resitExamMarks=0.0;var inc= 0; var percentMarks =0.0; var inc1 = 1; var averageOneMarks = 0.0
+@main("Student transcripts",""){
+<section class="content-header">
+    <div class="row no-print">
+        <div class="col-xs-12">
+            <button onclick="printReport();" class="btn btn-ilpd btn-flat box-shadow-normal" style="margin-right: 5% !important;">
+                <i class="fa fa-print"></i> Print transcript
+            </button>
+        </div>
+    </div>
+</section>
+@for(student <- students){
+@(total=0.0)
+<div style="padding-left: 10% !important; padding-right: 10% !important;" class="col-md-10 col-centered container">
+    <div class="box box-ilpd" id="myBox">
+        <div class="box-header with-border">
+            @shared.ildpHeader.render()
+            <h4 class="box-title">
+                <small><span>Reg Number: <b> @student.regNo</b></span></small>
+                <br>
+                <small><span>Student name: <b> @student.toString</b></span></small>
+                <br/>
+                <small><span>Program: <b> @student.training.printProgram()</b></span></small>
+            </h4>
+            <h4 class="text-center" style="text-transform: capitalize">@title</h4></small>
+            <h4 class="box-title">
+                The student scored as follows:
+            </h4>
+        </div>
+        <div class="box-body">
+            <hr/>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Module name</th>
+                        <th>Code</th>
+                        <th>Credits</th>
+                        <th>Marks %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for(mod <- modules) {
+                    @(catMarks=Counts.getStudentCatMarksModule(student.id, mod.id))
+                    @(reMarks=Counts.getStudentResearchMarksModule(student.id,mod.id))
+                    @(examMarks=SubMark.componetExamResultModule(student.id, mod.id, student.training.id))
+                    @(resitExamMarks = SubMark.reSitExamResultModule(student.id, mod.id))
+                    @(averageOneMarks = mod.allModuleAverage(student.id))
+                    <tr @if(averageOneMarks < ProfileInfo.unique().scoreThree){style="color: red;"}>
+                        <td>@inc1</td>
+                        <td>@mod.moduleName</td>
+                        <td>@mod.moduleCode</td>
+                        <td>@mod.credits </td>
+                        <td>
+                            @* C, R & E *@
+                            @if(SubMark.byDualInResitModule(student.id, mod.id) == null && AssignmentResult.numberAssignmentDone(student.id, mod.id, student.training.id) > 0.0 && AssignmentResult.numberResearchDone(student.id, mod.id, student.training.id)> 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, mod.id) > 0) {
+                                @(Student.rounding(catMarks + reMarks + examMarks))
+                                @(percentMarks = percentMarks + (catMarks + reMarks + examMarks))
+                            }
+                            @* C & E *@
+                            @if(SubMark.byDualInResitModule(student.id, mod.id) == null && AssignmentResult.numberAssignmentDone(student.id, mod.id, student.training.id) > 0.0 && AssignmentResult.numberResearchDone(student.id, mod.id, student.training.id) <= 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, mod.id) > 0.0) {
+                                @Student.rounding(((catMarks + examMarks) * 100) / (mod.catMax + mod.examMax))
+                                @(percentMarks = percentMarks + (((catMarks + examMarks) * 100) / (mod.catMax + mod.examMax)))
+                            }
+                            @* C & R *@
+                            @if(SubMark.byDualInResitModule(student.id, mod.id) == null && AssignmentResult.numberAssignmentDone(student.id, mod.id, student.training.id) > 0.0 && AssignmentResult.numberResearchDone(student.id, mod.id, student.training.id)> 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, mod.id) <= 0.0) {
+                                @Student.rounding(((catMarks + reMarks) * 100) / (mod.catMax + mod.reMax))
+                                @(percentMarks = percentMarks + (((catMarks + reMarks) * 100) / (mod.catMax + mod.reMax)))
+                            }
+                            @* C *@
+                            @if(SubMark.byDualInResitModule(student.id, mod.id) == null && AssignmentResult.numberAssignmentDone(student.id, mod.id, student.training.id) > 0.0 && AssignmentResult.numberResearchDone(student.id, mod.id, student.training.id) <= 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, mod.id) <= 0.0) {
+                                @Student.rounding((catMarks * 100) / mod.catMax)
+                                @(percentMarks = percentMarks + ((catMarks * 100) / mod.catMax))
+                            }
+                            @* R & E *@
+                            @if(SubMark.byDualInResitModule(student.id, mod.id) == null && AssignmentResult.numberAssignmentDone(student.id, mod.id, student.training.id) <= 0.0 && AssignmentResult.numberResearchDone(student.id, mod.id, student.training.id)> 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, mod.id) > 0.0) {
+                                @Student.rounding(((reMarks + examMarks) * 100) / (mod.reMax + mod.examMax))
+                                @(percentMarks = percentMarks + (((reMarks + examMarks) * 100) / (mod.reMax + mod.examMax)))
+                            }
+                            @* R *@
+                            @if(SubMark.byDualInResitModule(student.id, mod.id) == null && AssignmentResult.numberAssignmentDone(student.id, mod.id, student.training.id) <= 0.0 && AssignmentResult.numberResearchDone(student.id, mod.id, student.training.id)> 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, mod.id) <= 0.0) {
+                                @Student.rounding((reMarks * 100) / mod.reMax)
+                                @(percentMarks = percentMarks + ((reMarks * 100) / mod.reMax))
+                            }
+                            @* E *@
+                            @if(SubMark.byDualInResitModule(student.id, mod.id) == null && AssignmentResult.numberAssignmentDone(student.id, mod.id, student.training.id) <= 0.0 && AssignmentResult.numberResearchDone(student.id, mod.id, student.training.id) <= 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, mod.id) > 0.0) {
+                                @Student.rounding((examMarks * 100) / mod.examMax)
+                                @(percentMarks = percentMarks + ((examMarks * 100) / mod.examMax))
+                            }
+                            @* RE-SIT *@
+                            @if(SubMark.byDualInResitModule(student.id, mod.id) != null) {
+                                <span style="color: #9c079c !important;">
+                                @if(((examMarks * 100) / mod.examMax) < ProfileInfo.unique().scoreThree) {
+                                    @Student.rounding((examMarks * 100) / mod.examMax)
+                                }else{
+                                    @Student.rounding(ProfileInfo.unique().scoreThree)
+                                }</span>
+                            }
+                            @if(SubMark.byDualInResitModule(student.id, mod.id) == null && AssignmentResult.numberAssignmentDone(student.id, mod.id, student.training.id) <= 0.0 && AssignmentResult.numberResearchDone(student.id, mod.id, student.training.id) <= 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, mod.id) <= 0.0) {
+                                N/A
+                            }else{
+                                @if(inc2 == 1) {
+                                    @(tot = tot + 1)
+                                }
+                            }
+                            @if(student.training.iMode.campusProgram.program == mod.program) {
+                                @(total = total + mod.allModuleAverage(student.id))
+                            }
+                        </td>
+                    </tr>
+                    @if(SubMark.mootModule(student.id, mod.id) != null) {
+                        @(totalModule = totalModule + (mod.allModuleAverage(student.id) / 8))
+                    }
+                    @if(SubMark.internshipResults(student.id, mod.id) != null ) {
+                        @(totalInternship = totalInternship + ((mod.allModuleAverage(student.id) * 15)/100))
+                    }
+                    @if(SubMark.mootCourtResults(student.id, mod.id) != null ) {
+                        @(totalMootCourt = totalMootCourt + ((mod.allModuleAverage(student.id) * 15)/100))
+                    }
+                    @(inc1 = inc1 + 1)
+                }
+
+                    @(inc=inc+1)
+                    @(inc2=inc2+1)
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="4">Percentage </th>
+                        <th>
+                            @Student.rounding(total/tot) %</th>
+                    </tr>
+                    @if(student.training.hasGraduatedFinal) {
+                        <tr>
+                            <th colspan="4">Final grade </th>
+                            <th>
+                            @student.status</th>
+                        </tr>
+                    }
+                </tfoot>
+            </table>
+            <div>
+                <p style="font-family: 'Source Sans Pro', sans-serif !important;font-size: 12px">
+                    Date of graduation: @if(student.training.graduation.format("MMM dd , yyyy")){
+                    @student.training.graduation.format("MMM dd , yyyy")
+                }
+                </p>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <small><p class="box-title" style="font-family: 'Source Sans Pro', sans-serif !important;font-size: 12px"> <u><b>Keys</b></u> </p></small>
+                            <small><p style="font-family: 'Source Sans Pro', sans-serif !important;font-size: 12px"><b>Distinction: @ProfileInfo.unique().distinctionMin - @ProfileInfo.unique().distinctionMax</b></p></small>
+                            <small><p style="font-family: 'Source Sans Pro', sans-serif !important;font-size: 12px"><b>Merit: @ProfileInfo.unique().meritMin - @ProfileInfo.unique().meritMax </b> </p></small>
+                            <small><p style="font-family: 'Source Sans Pro', sans-serif !important;font-size: 12px"><b>Satisfactory: @ProfileInfo.unique().satisfactoryMin - @ProfileInfo.unique().satisfactoryMax</b> </p></small>
+                            <small><p style="font-family: 'Source Sans Pro', sans-serif !important;font-size: 12px"><b>PASS: @ProfileInfo.unique().passMin - @ProfileInfo.unique().passMax </b> </p></small>
+                            <small><p style="font-family: 'Source Sans Pro', sans-serif !important;font-size: 12px; margin-bottom: -10px"><b>FAIL: @ProfileInfo.unique().failMin - @ProfileInfo.unique().failMax </b> </p></small>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="pull-right" style="margin-bottom: -20px !important;">
+                                <img src="@routes.Assets.at("uploads/"+ProfileInfo.unique().registrarSignature)" style="height: 100px" alt="">
+                                <img src="@routes.Assets.at("uploads/"+ProfileInfo.unique().stamp)" style="height: 150px; margin-left: 2px" alt="Stamp">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    @if(student.status.equalsIgnoreCase("RETAKE-MODULES")) {
+                        <h6 style="text-align: left;" class="text-blue">
+                            <i class="fa fa-info-circle"></i>
+                            Modules in red color, means you are retaking.
+                        </h6>
+                    }
+                    @views.html.reports.footerTranscript.render()
+                    <h6 style="text-align: center;" class="text-red">
+                        <i class="fa fa-info-circle"></i>
+                        This report has generated by ILPD MIS, It is valid only if it is stamped and signed
+                    </h6>
+                </div>
+                <div class="col-xs-12">
+                    <p class="main-footer text-center">
+                        <small>P.O. Box 49, Avenue des Sports, Nyanza, Southern Province, Rwanda
+                            <br>
+                            E: info@@ilpd.ac.rw / W: www.ilpd.ac.rw</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+}
+

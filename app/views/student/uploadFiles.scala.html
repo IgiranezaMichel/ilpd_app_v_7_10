@@ -1,0 +1,84 @@
+@( me : Applicant , num : Long , status :Boolean )
+  @import scala.Predef;var ext = "";var name = "";
+  <div class="separated" title="Attach Requirements">
+    <form action="@routes.Registration.saveApplication("9")" method="POST" id="formPort" name="forms" enctype="multipart/form-data">
+      <div class="box box-info">
+        <div class="box-header text-left resp-width">
+          <i class="fa fa-file-image-o"></i>
+          <h3 class="box-title">6.Please attach all required files (Please upload only image or pdf document)</h3>
+        </div>
+        <div class="box-body">
+          <div class="dinger">
+          @for(i <- AcademicFiles.byProgram(num,me.id)) {
+            @if( me != null && Attachment.checker(me.id,i.id) != null && status ){
+              <div class="attach-box col-md-6">
+
+                <label>@i.fileName @if(i.required) {<em>*</em>}</label>
+                @( name = Attachment.checker(me.id,i.id).attachName )
+                @( ext = name.substring(name.lastIndexOf('.') + 1) )
+                @if( ext.equalsIgnoreCase("pdf") ){
+                  <object data="@routes.Assets.at("uploads/" + name )" type="application/pdf" width="100%" height="290px">
+                    <embed src="http://yoursite.com/the.pdf" type="application/pdf">
+                    <p>This browser does not support PDFs. Please download the PDF to view it: <a href="http://yoursite.com/the.pdf">
+                      Download PDF</a>.</p>
+                    </embed>
+                  </object>
+                }else{
+                  <div class="imBox"><img src="@routes.Assets.at("uploads/"+name)" alt=""></div>
+                }
+              </div>
+            }else{
+              <div class="form-group has-feedback others">
+                <div class="form-group has-feedback others">
+                  <label>@i.fileName @if(i.required) {<em>*</em>}
+                  </label>
+                  <button type="button" class="btn btn-info btn-block" max="10000" onclick="changeIt(this)" type="text" @if(!i.required) {escape="1"}><i class="fa fa-upload"></i> Upload</button>
+                  <label class="control-label" for="inputSuccess"><i class="fa fa-check"></i> Input with success</label>
+                  <input type="file" class="file-input" style="display:none" max="100000" name="@i.uniqueName" @if(me != null && Attachment.checker(me.id, i.id) != null) {escape="1"}/></div>
+              </div>
+            }
+          }
+          </div>
+        </div>
+        <div class="box-footer clearfix">
+          <button type="submit" class="pull-right btn btn-success" id="meBut">Finish
+            <i class="fa fa-arrow-circle-right"></i> </button>
+        </div>
+      </div>
+      <div class="modal modal-area" style="position:fixed ; border-radius:7px ; display:none ;">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+                        Application submission warning! <button type="button" class="close" aria-label="Close"><i class='fa fa-close'></i></button>
+                    </div>
+            <div class="modal-body">
+              <h3>Are you sure to submit your application ?</h3>
+              <span class="naepo">Submitted information will be saved temporarly</span>
+            </div>
+            <div class="modal-footer">
+              <div class="button-space">
+                <button class="btn btn-info okButton" id="okButton" type="button" onClick="forceReload()">Yes am sure</button>
+                <button class="cancelButton btn btn-default" type="button" type="button">No submit later</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <script>
+    forceReload(){
+      if(environment.production) {
+        const form = document.createElement('form');
+        form.method = "POST";
+        form.action = location.href;
+        document.body.appendChild(form);
+        form.submit();
+      } else {
+        window.location.reload();
+      }
+    }
+  </script>

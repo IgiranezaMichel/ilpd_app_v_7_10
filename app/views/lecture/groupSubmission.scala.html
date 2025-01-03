@@ -1,0 +1,51 @@
+@( lst : List[GroupSubmission], ass : Assignment )
+@import scala.Predef;var inc=1; var ginc = 0;
+<div>
+  <div class="box-body no-padding">
+    <table class="table table-condensed">
+      <tbody><tr>
+        <th style="width: 10px">#</th>
+        <th>Reg number</th>
+        <th>Assignment/Research</th>
+        <th>Group name</th>
+        <th>Download</th>
+        <th>
+          <a href="@routes.LectureController.addSameMarksGroup(ass.id)" onclick="viewSubmit(this,event)" class="btn btn-default pull-right"><i class="fa fa-plus"></i> Same marks</a>
+          <a href="@routes.LectureController.cancelGroupSubmission(ass.id)" onclick="viewSubmit(this,event)" class="btn btn-info pull-right"><i class="fa fa-refresh"></i> Cancel</a>
+        </th>
+      </tr>
+        @for( i <- lst ) {
+          <tr class="fetcher-x">
+            <th>@inc</th>
+            <td>
+              @if(i.student.regNo != null) {
+                @i.student.regNo
+              }else{
+                No Reg No
+              }
+            </td>
+            <td>@i.assignment.assignmentTitle
+              @if(i.assignment.types.equalsIgnoreCase("assignment")) {
+                <span style="color: blue;"> Assignment
+                </span>
+              }
+              @if(i.assignment.types.equalsIgnoreCase("research")) {
+                <span style="color: blue;"> Research
+                </span>
+              }
+
+            </td>
+            <td>@i.groups.groupName</td>
+                <td>
+                <a href="@routes.Application.downloadAssignGroup(i.id)" onclick="event.stopPropagation()" class="btn btn-link"><i class="fa fa-download"></i>
+                  @i.attachment</a>
+              </td>
+            <td>
+            <a href="@routes.LectureController.addMarksGroup(i.id)" onclick="viewSubmit(this,event)" class="btn btn-default"><i class="fa fa-plus"></i> Add marks</a>
+            </td>
+          </tr>
+          @(inc=inc+1)
+        }
+      </tbody></table>
+  </div>
+</div>

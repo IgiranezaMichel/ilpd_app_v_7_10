@@ -1,0 +1,95 @@
+@(requests: List[models.stock.Request])
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-ilpd">
+            <div class="box-header with-border">
+                <h3 class="box-title">List of Staff requests</h3>
+            </div>
+                <!-- /.box-header -->
+            <div class="box-body">
+                <div class="">
+                    @if(requests.size > 0) {
+                        <table class="table table table-bordered table-hover table-striped table-condensed manageTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Request date</th>
+                                    <th>Staff / unit</th>
+                                    <th>Items</th>
+                                    <th>Details</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @for(r <- requests) {
+                                <tr>
+                                    <td>@r.id</td>
+                                    <td>@r.date.format("dd/MM/yyy , HH:mm")</td>
+                                    <td>@r.employee.print() / @r.employee.unit.acronym</td>
+                                    <td>@models.stock.StockMovement.totalRequest(r)</td>
+                                    <td>
+                                        <button onclick="setUrl('@routes.HUnitController.details(r.id,"getRequest")')" class="btn btn-sm btn-info " data-toggle="modal" data-target="#requestDetailsModal"> More <i class="fa fa-arrow-circle-right"></i>
+                                    </button>
+                                    </td>
+                                    <td>
+                                    @if(r.status.equalsIgnoreCase("pending")) {
+                                        <span class="label label-info ">Pending</span>
+                                    } else {
+                                        @if(r.status.equalsIgnoreCase("approved")) {
+                                            <span class="label label-success ">Approved</span>
+                                        } else {
+                                            <span class="label label-default">@r.status</span>
+                                        }
+                                    }
+                                    </td>
+                                </tr>
+                            }
+
+                            </tbody>
+                        </table>
+                    } else {
+
+                        <div class="alert alert-info">
+                            <h4>No request available to show.</h4>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+    <!-- Modal -->
+<div id="requestDetailsModal" class="modal fade" role="dialog">
+    <div class="modal-dialog  modal-lg">
+            <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Details for the request</h4>
+            </div>
+            <div class="modal-body ">
+                <div class="modal-loading div-hide" style="width: 50px;
+                    margin: auto;
+                    padding-top: 50px;
+                    padding-bottom: 50px;">
+                    <img src="@routes.Assets.at("images/loader2.gif")" alt="Loading.." style="width: 50px !important;
+                        height: 50px !important;">
+                    @*<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>*@
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="bodyResult">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script >
+        $('.manageTable').DataTable();
+</script>

@@ -1,0 +1,80 @@
+@(trainings: List[Training])
+
+@main("Choose period", "", scripts) {
+    <div class="content">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="result"></div>
+            </div>
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="box box-ilpd">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">Periods</h4>
+                    </div>
+                    <form action="@routes.HomeController.resetStudentAccount()" method="post" id="submitRestForm">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label for="training" class="control-label-important">Period</label>
+                                <div>
+                                    <select required name="training" class="form-control" id="training">
+                                        <option value="">--select--</option>
+                                        @for(training <- trainings) {
+                                            <option value="@training.id">@training.tNames()</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <button id="btnSubmit" class="btn btn-ilpd btn-block">
+                                <i class="fa fa-check-circle"></i>  Reset student amount to pay
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@scripts = {
+    <script>
+            $(document).ready(function () {
+                $(document).on('submit', '#submitRestForm', function () {
+
+                    var form = $(this);
+                    var result=$('.result');
+                    var btn=$('#btnSubmit');
+                    btn.button('loading');
+                    $.ajax({
+                        url: form.attr('action'),
+                        method: form.attr('method'),
+                        data: form.serialize()
+                    }).done(function (data) {
+                        btn.button('reset');
+                        result.html('<div class="alert alert-success">' +
+                                '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                                '<strong><i class="glyphicon glyphicon-ok-sign"></i></strong> '
+                                + data + '</div>');
+                        $(".alert-success").delay(500).show(10, function () {
+                            $(this).delay(3000).hide(10, function () {
+                                $(this).remove();
+                            });
+                        }); // /.alert
+                    }).fail(function () {
+                        btn.button('reset');
+                        result.html('<div class="alert alert-danger">' +
+                                '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                                '<strong><i class="glyphicon glyphicon-ok-sign"></i></strong> ' + "Unable to complete action please try again." + '</div>');
+
+                        $(".alert-danger").delay(500).show(10, function () {
+                            $(this).delay(3000).hide(10, function () {
+                                $(this).remove();
+                            });
+                        }); // /.alert
+                    });
+                    return false;
+                });
+            });
+    </script>
+}

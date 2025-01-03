@@ -1,0 +1,368 @@
+@(applicant :Applicant  , uTyp : String )
+@import scala.Predef;var myp = 0;var finalCheck = true;var status = "";var actSave = "";var session = "";var intake = "";var mainId = Long.parseLong("10");
+@import scala.Predef;var comment = "";var date = "";var tClass = "";var className="bg-green";var textColor="text-green";var faFa="fa-check";var applied=applicant.applied;var disabled="";
+@if( applied != null ){
+    @( status = applied.applicationStatus )
+    @( actSave = String.valueOf(routes.Application.makeStudent(applicant.id)) )
+    @( session = applied.training.iMode.sessionMode.session.sessionName )
+    @( intake = applied.training.iMode.intake.intakeName )
+    @( mainId = applied.id )
+    @( comment = applied.statusComment )
+    @( date = applied.applicationDate )
+    @( tClass = applied.training.tNames() )
+}
+<div class="verify"></div>
+<section>
+    <div class="col-md-12">
+        <div class="col-md-6">
+            <div class="box box-info">
+                <div class="receiveImage"><img src="@routes.Assets.at(Counts.profileImage(applicant.profile))"></div>
+                <div class="box-header text-left resp-width with-border">
+                    <i class="fa fa-user"></i>
+                    <h3 class="box-title">Identification</h3>
+                </div>
+                <div class="box-body">
+                    <ul class="timeline timelines">
+                        <li class="timeline-item timelines-item"><i class="fa fa-check bg-aqua"></i>
+                            <div class="timeline-item timelines-item">
+                                <label class="time">@applicant.firstName @applicant.familyName</label>
+                                <h3 class="timeline-header timelines-header no-border">Full Names</h3>
+                            </div></li>
+                        <li><i class="fa fa-check bg-aqua"></i>
+                            <div class="timeline-item timelines-item">
+                                <label class="time">@session</label>
+                                <h3 class="timeline-header timelines-header no-border">Study Mode</h3>
+                            </div>
+                        </li>
+
+
+                        <li><i class="fa fa-check bg-aqua"></i>
+                            <div class="timeline-item timelines-item">
+                                <label class="time">@intake</label>
+                                <h3 class="timeline-header timelines-header no-border">Study Intake</h3>
+                            </div></li>
+
+                        <li><i class="fa fa-check bg-aqua"></i>
+                            <div class="timeline-item timelines-item">
+                                <label class="time">@tClass</label>
+                                <h3 class="timeline-header timelines-header no-border">period</h3>
+                            </div>
+                        </li>
+
+
+
+
+                        <li>
+                            <i class="fa fa-check bg-aqua"></i>
+                            <div class="timeline-item timelines-item">
+                                <label class="time">@applicant.nationalDentity</label>
+                                <h3 class="timeline-header timelines-header no-border">National ID</h3>
+                            </div>
+                        </li>
+
+
+
+
+                        <li>
+                            @if(!Counts.isHaflyPaid(applicant)){
+                                @(className="bg-red")
+                                @(textColor="text-red")
+                                @(faFa="fa fa-close")
+                                @(disabled="disabled")
+                            }
+                            <i class="fa @faFa @className"></i>
+                            <div class="timeline-item timelines-item">
+                                <label class="time">
+                                @if(Counts.isHaflyPaid(applicant)){
+                                    <span class="label label-success">
+                                        @Counts.formatAmount(applicant.account.amountPaid)
+                                    </span>
+                                }else{
+                                    <span class="label label-danger">
+                                        @Counts.formatAmount(applicant.account.amountPaid)
+                                    </span>
+                                }
+                                </label>
+                                <h3 class="timeline-header timelines-header no-border @textColor">Financial status</h3>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width with-border" style="padding-left: 25px;">
+                    <i class="fa fa-file-archive-o"></i>
+                    <h3 class="box-title">Required Documents</h3>
+                </div>
+                <div class="box-body">
+                    <div class="double-content">
+                        <ul class="timeline timelines">
+                        @for(i:Attachment <- applicant.myFiles() ) {
+                            @if( i.amV() == null ){
+                                @( finalCheck = false )
+                            }
+                            <li> @Html(Vld.identifier( i.amV() ))
+                            <div class="timeline-item timelines-item sm">
+                                <label class="time">
+                                    @if(i.amV() != null && status.equals("accepted") ){
+                                        <input type="checkbox" value="@routes.Application.shelfer(i.amV().id)" class="shelf" @if(i.amV().shelfed){checked}>
+                                    }
+                                <a class="down" href="@routes.Application.downloader(i.id)"><i class="fa fa-download"></i></a>&nbsp;&nbsp;  @register.button.render(i.amV())
+                                </label>
+                                <h3 class="timeline-header timelines-header no-border"><a href="@routes.Application.detailedView(i.id,uTyp)" class="filing"> @i.file.fileName</a> </h3>
+                            </div></li>
+
+                        }
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-6">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width with-border">
+                    <i class="fa fa-file-archive-o"></i>
+                    <h3 class="box-title">Decision</h3>
+                </div>
+                <div class="box-body">
+                    <div class="double">
+                        <div style="position: relative">
+                        @if( status.equals("")  ) {
+                            <form onsubmit="return validate(this,function(v,f){hoss.finalize(f)});" action="@routes.Application.updateAppStatus(mainId,applied == null)" method="POST" no-prop="true">
+
+                                <input name="applicationStatus" type="hidden" id="daba">
+                                <span class="has-feedback" style="display: block">
+                                    <div class="floated1 default-toggle" id="floated" no-prop="true">
+                                        <ul class="small-x-ul">
+                                        @for(i:Attachment <- applicant.myFiles() ) {
+
+                                            @if( i.amV() == null ){
+                                                @( finalCheck = false )
+                                            }
+                                            <li> @Html(Vld.identifier(i.amV()))
+                                            <label class="right-label">&nbsp;&nbsp;  @register.button(i.amV())</label>
+                                            <span class="spanner"><a href="#@routes.Application.detailedView(i.id,uTyp)"> @i.file.fileName</a> </span>
+                                            </li>
+
+                                        }
+                                        </ul>
+                                        <span style="position:relative;display: block">
+                                            <textarea class="form-control" name="statusComment" rows="6" placeholder="Enter your Comment" style="margin-top:4px"></textarea>
+                                        </span>
+                                        <button class="btn btn-block btn-success aprox" type="submit" style="border-radius:0px;margin-top:4px;">
+                                            <i class="fa fa-save"></i> Submit Approval
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button dText="@ProfileInfo.unique().defaultText" class="btn  btn-success clicks" value="accepted" classes="default-toggle floated1" type="button" @if(!finalCheck){disabled="true"}>
+                                            <i class="fa fa-check"></i> Accept</button>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button dText="@ProfileInfo.unique().cancelText" class="btn btn-block btn-danger clicks" value="rejected" classes="default-toggle floated" type="button" @if(!finalCheck){disabled="true"}>
+                                            <i class="fa fa-bitbucket"></i> Reject</button>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button dText="@ProfileInfo.unique().deferText" class="btn btn-block btn-warning clicks" value="derefered" classes="default-toggle floated2" type="button" @if(!finalCheck){disabled="true"}>
+                                            <i class="fa fa-clipboard"></i> Defer</button>
+                                    </div>
+
+                                </span>
+                            </form>
+                        } else {
+
+                            <button disabled="true" class="btn btn-default" style="text-align:center">
+                                <i class="@if(status.equals("accepted")) {fa fa-check-circle} else {fa fa-remove}"></i> @status
+                            </button>
+
+                            <a href="@routes.Registration.rejectProvisionallyAcceptedApplication(applied.id)" class="btn btn-danger btn-flat pull-right" id="btnReject1"><i class="fa fa-close"></i> Reject</a>
+                            <div>
+                                <h4>Approve reason</h4>
+                                <div>@comment</div>
+                            </div>
+
+                        }
+                        </div>
+                    </div>
+
+                </div>
+
+                <script>
+                        var allx = document.querySelectorAll(".clicks");
+                        clicks( allx );
+                        var shelf = document.querySelectorAll(".shelf");
+                        shelfer( shelf );
+                </script>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box box-success">
+                @if( status.equals("accepted") ) {
+                    <div class="box-header text-left resp-width with-border">
+                        <i class="fa fa-pencil"></i>
+                        <h3 class="box-title">Confirm and generate reg no</h3>
+                    </div>
+                }
+                    <div class="box-body">
+                    @if( !status.equals("accepted") ) {
+                        @( myp = 1 )
+                        <div class="">
+                            <span>
+                                <span style="color: red;font-size:22px;">
+                                    <i class="fa fa-warning"></i>
+                                </span>
+                                After verification of required document, you are required to to first verify physical documents before
+                                generating student registration number and shelf these presented documents.
+                            </span>
+                        </div>
+
+                    }else{
+
+                        <div class="double-content">
+                        @if(applicant!=null && applicant.student != null) {
+                            <span class="closure">Student Registered And Application Documents Shelfed</span>
+                            <span class="closure"> <b>Reg N<sup><u>o</u></sup>:</b> @applicant.student.regNo</span>
+                        } else {
+                            <button @disabled id="btnApproveStudent" class="btn btn-success btn-block btn-flat">
+                                <i class="fa fa-check-circle"></i>
+                               Click here to approve student
+                            </button>
+                        }
+                        </div>
+                    }
+                    </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="makeStudentModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-check-circle"></i>
+                Approve student
+                </h4>
+            </div>
+            <form action="@actSave" method="post" id="makeStudentForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="comments">Comment</label>
+                        <textarea placeholder="Some comments here" name="comments" id="comments" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="shelfNumber">Shelf number</label>
+                        <input placeholder="Enter the shelf number" type="text" name="shelfNumber" id="shelfNumber" class="form-control"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-flat" data-dismiss="modal"><i class="fa fa-remove"></i> Cancel</button>
+                    <button type="submit" data-loading-text="Loading..." class="btn btn-success btn-flat" id="btnMakeStudent"><i class="fa fa-check-circle"></i> Generate Reg.Number</button>
+                </div>
+            </form>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="rejectModal1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-question"></i> Are you sure that you want to reject this application ?</h4>
+            </div>
+            <form action="#" method="post" id="rejectForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="comment">Why do you want to reject this application</label>
+                        <textarea name="comment" id="comment" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Cancel</button>
+                    <button type="submit" data-loading-text="Loading..." class="btn btn-danger" id="btnSubmitForm"><i class="fa fa-check-circle-o"></i> Yes i'm sure.</button>
+                </div>
+            </form>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script >
+        $(document).on('click','#btnReject1',function (e) {
+            e.preventDefault();
+
+            $('#rejectModal1').modal('show');
+            var url=$(this).attr('href');
+            var form=$('#rejectForm');
+
+            form.unbind('submit').bind('submit',function (e) {
+                var $btn = $('#btnSubmitForm');
+                e.preventDefault();
+                $btn.button('loading');
+                $.ajax({
+                    url:url,
+                    data:form.serialize(),
+                    type:form.attr('method'),
+                    success:function (response) {
+                        $btn.button('reset');
+                        $('#rejectModal1').modal('hide');
+                        I(".hosted").click();
+                    },
+                    error:function (response) {
+                        $btn.button('reset');
+                        alert("Some error happened please try again");
+                    }
+                });
+                return false;
+            });
+
+            return false;
+        });
+
+        $(document).on('click','#btnApproveStudent',function (e) {
+            $('#makeStudentModal').modal('show');
+            var form=$('#makeStudentForm');
+            form.unbind('submit').bind('submit',function (e) {
+                var url=form.attr('action');
+                var $btn = $('#btnMakeStudent');
+                e.preventDefault();
+                $btn.button('loading');
+                $.ajax({
+                    url:url,
+                    data:form.serialize(),
+                    type:form.attr('method'),
+                    success:function (response) {
+                        $btn.button('reset');
+                        $('#makeStudentModal').modal('hide');
+                        I(".hosted").click();
+                    },
+                    error:function (response) {
+                        $btn.button('reset');
+                        alert("Some error occured please try again");
+                    }
+                });
+                return false;
+            });
+        });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+

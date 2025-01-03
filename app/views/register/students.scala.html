@@ -1,0 +1,62 @@
+@(students: List[Student])
+
+@main("Students payments", "") {
+    <section class="content-header">
+        <h1>
+            Students
+            <small>all</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Students</a></li>
+            <li class="active">List of students</li>
+        </ol>
+    </section>
+        <!-- Main content -->
+    <div class="content" style="padding-left: 20px ">
+        <div class="box box-primary">
+            <div class="box-header with-border" style="padding: 20px">
+                <h4 class="box-title"><i class="fa fa-list-ul"></i> All students and payment history</h4>
+                <div class="pull-right box-tools">
+                    <form action="#">
+                        <div class="form-group">
+                            <input type="text" name="search" class="form-control" placeholder="Search here">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Reg Number</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Program</th>
+                                <th>Campus</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for(student <- students) {
+                            <tr>
+                                <td>@student.regNo</td>
+                                <td>@student.applicant.toString</td>
+                                <td>@student.applicant.user.email</td>
+                                <td>@student.training.iMode.campusProgram.program.programAcronym</td>
+                                <td>@student.training.iMode.campusProgram.campus.campusName</td>
+                                <td>
+                                    <a href="@routes.Application.getStudentPaymentHistory(student.id)" target="_blank" class="btn btn-link btn-xs"><i class="fa fa-history"></i> Payment History</a>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+

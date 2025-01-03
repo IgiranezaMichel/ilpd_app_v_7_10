@@ -1,0 +1,341 @@
+@(me : Applied)
+@main("Applicant form", "") {
+<div class="container">
+    <h1><center>APPLICATION FORM</center></h1>
+    <div class="separated" Names && Address required="@if(me != null && !me.applicant.firstName.equals("")) {done} else {true}">
+            <div class="box box-primary">
+
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-pencil"></i>
+
+                    <h3 class="box-title">1.NAMES && ADDRESS</h3>
+                </div>
+                <div class="box-body">
+                    <div class="col-md-6">
+                        <div class="form-group has-feedback">
+                            <label>First/Given name(s)</label>
+                            <input class="form-control" type="text" readonly="true" readonly="true" name="firstName" @if(me != null) {
+                                value="@me.applicant.firstName"} placeholder="First/Given name(s)">
+                        </div>
+                        <div class="form-group has-feedback others">
+                            <label>Surname/Family name</label>
+                            <input class="form-control" type="text" readonly="true" name="familyName" @if(me != null) {
+                                value="@me.applicant.familyName"} placeholder="Surname/Family name">
+                        </div>
+                        <div class="form-group has-feedback others">
+                            <label>Father's name</label>
+                            <input placeholder="Name of your father" class="form-control" type="text" readonly="true" name="fatherName" @if(me != null) {
+                                value="@me.applicant.fatherName"}>
+                        </div>
+                        <div class="form-group has-feedback others">
+                            <label>Mother's name</label>
+                            <input placeholder="Name of your mother" class="form-control" type="text" readonly="true" name="motherName" @if(me != null) {
+                                value="@me.applicant.motherName"}>
+                        </div>
+                        <div class="form-group has-feedback others">
+                            <label>Country </label>
+                            <select class="form-control" readonly="true" name="country" @if(me != null) {
+                                value="@me.applicant.country"
+                            } onchange="grouper(this)">
+                                <option value=""></option>
+                                @for(i : Country <- Country.all()) {
+                                    <option value="@i.id" code="@i.phonecode" @if(me != null && me.applicant.country.equals(i.nicename)) {
+                                        selected="selected"}>@i.nicename</option>
+                                }
+                            </select>
+                        </div>
+
+
+                        <div class="multi-group" id="state-foreign" @if(me != null && !me.applicant.country.equals("Rwanda")) {
+                            style="display: block"}>
+                            <div class="form-group has-feedback others">
+                                <label>City/Address </label>
+                                <input class="form-control" type="text" readonly="true" name="state" @if(me != null) {
+                                    value="@me.applicant.state"
+                                } @if(me != null && me.applicant.country.equals("Rwanda")) {
+                                    escape="1"}>
+                            </div>
+                        </div>
+                        <div class="multi-group" id="rwanda-civil" @if(me != null && me.applicant.country.equals("Rwanda")) {
+                            style="display: block"}>
+                            <div class="form-group has-feedback others">
+                                <label>Province Region </label>
+                                <select class="form-control" onchange="levels(this)" @if(me != null && !me.applicant.country.equals("Rwanda")) {
+                                    escape="1"}>
+                                    <option value=""></option>
+                                    @for(i <- Provinces.all()) {
+                                        <option value="@i.id" @if(me != null && me.applicant.chosen && me.applicant.districts != null && me.applicant.districts.provinces.id.equals(i.id)) {
+                                            selected="1"}>@i.provinceName</option>
+                                    }</select>
+                            </div>
+                            <div class="form-group has-feedback others">
+                                <label>District/City </label>
+                                <select id="district" class="form-control" name="dist" @if(me != null && !me.applicant.country.equals("Rwanda")) {
+                                    escape="1"}>
+                                @if(me != null && me.applicant.chosen && me.applicant.districts != null) {
+                                    <option value="@me.applicant.districts.id">@me.applicant.districts.districtName</option>
+                                }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback others">
+                            <label>Phone number</label>
+                            <input name="phone" class="form-control left-pad" type="text" readonly="true" number="true" @if(me.applicant.user != null) {
+                                value="@me.applicant.user.phone"} placeholder="Phone number">
+                            <span class="phone-label">+@if(me.applicant.user != null) {@me.applicant.user.code}</span>
+                        </div>
+                            <div class="form-group has-feedback others">
+                                <label>Year of Completion(A Level)</label>
+                                <select class="form-control" readonly="true">
+                                @for(i <- 2002 to 2020) {
+                                    <option value="@i" @if(me != null && me.applicant.yearCompletion.equals(i)) {
+                                        selected="true"}>@i</option>
+                                }
+                                </select>
+                            </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group has-feedback others marital" style="margin-bottom: 40px">
+                            <label>Marital Status</label>
+
+                            <span class="t-radio"><input id="sangle" name="maritalStatus" value="single" type="radio" @if(me != null && me.applicant.maritalStatus.equals("single")) {
+                                checked="checked"}>
+                                <label for="sangle">Single</label>
+                            </span>
+
+                            <span class="t-radio"><input id="marrad" name="maritalStatus" value="married" type="radio" @if(me != null && me.applicant.maritalStatus.equals("married")) {
+                                checked="checked"}>
+                                <label for="marrad">Married</label>
+                            </span>
+                            <span class="t-radio"><input id="divarced" name="maritalStatus" value="divorced" type="radio" @if(me != null && me.applicant.maritalStatus.equals("divorced")) {
+                                checked="checked"}>
+                                <label for="divarced">Divorced</label>
+                            </span>
+                            <span class="t-radio"><input id="widaw" name="maritalStatus" value="widow" type="radio" @if(me != null && me.applicant.maritalStatus.equals("widow")) {
+                                checked="checked"}>
+                                <label for="widaw">Widow/widower</label>
+                            </span>
+
+                        </div>
+                        <div class="form-group has-feedback others">
+                            <label>Nationality</label>
+                            <input class="form-control" type="text" readonly="true" name="nationality" @if(me != null) {
+                                value="@me.applicant.nationality"} placeholder="Nationality">
+                        </div>
+                        <div class="form-group has-feedback others">
+                            <label>Birth Place</label>
+                            <input class="form-control" type="text" readonly="true" name="birthPlace" @if(me != null) {
+                                value="@me.applicant.birthPlace"} placeholder="Birth place">
+                        </div>
+                        <div class="form-group has-feedback others">
+                            <label>National ID/Passport No</label>
+                            <input class="form-control" type="text" readonly="true" name="nationals" @if(me != null) {
+                                value="@me.applicant.nationalDentity"} placeholder="National Id/Passport">
+                        </div>
+                        <div class="form-group has-feedback others">
+                            <label style="display: block;">Gender</label>
+                            <div class="myRadio">
+                                <span class="t-radio"><input type="radio" id="radioMale" name="gender" value="male" @if(me != null && me.applicant.gender.equals("male")) {
+                                    checked="checked"}>
+                                    <label for="radioMale">MALE</label>
+                                </span>
+                                <span class="t-radio"><input type="radio" id="radioFemale" name="gender" value="female" @if(me != null && me.applicant.gender.equals("female")) {
+                                    checked="checked"}>
+                                    <label for="radioFemale">FEMALE</label>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback others">
+                            <label>Date & Year of Birth</label>
+                            <input class="form-control" name="birthDate" type="text" readonly="true" id="birth" onkeypress="self.event.preventDefault()" @if(me != null) { value="@me.applicant.birthDate"} placeholder="Date & Year Of Birth">
+                        </div>
+
+                        <div class="form-group has-feedback others">
+                            <label>Personal Email address</label>
+                            <input class="form-control" type="text" readonly="true" email="true" @if(me.applicant.user != null) {
+                                value="@me.applicant.user.email"} placeholder="Email address">
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <div class="separated" title="Previous Education">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-pencil"></i>
+
+                    <h3 class="box-title">2.Previous Education</h3>
+                </div>
+                <div class="box-body">
+                    <div class="col-md-12"></div>
+                    <div class="col-md-12">
+                    @if(me.applicant.applied.training.iMode.campusProgram.program.cle) {
+                        <h4>Education Background </h4>
+                        <div class="form-group has-feedback others">
+                            <label>Education Background  </label>
+                            <select required name="educationBackground" id="educationBackground" class="form-control">
+                                <option value="">--select--</option>
+                                <option value="Primary" @Counts.selected("Primary",me.applicant.educationBackground)>Primary</option>
+                                <option value="Secondary" @Counts.selected("Secondary",me.applicant.educationBackground)>Secondary</option>
+                                <option value="Bachelor" @Counts.selected("Bachelor",me.applicant.educationBackground)>Bachelor</option>
+                                <option value="Masters" @Counts.selected("Masters",me.applicant.educationBackground)>Masters</option>
+                                <option value="Other" @Counts.selected("Other",me.applicant.educationBackground)>Other</option>
+                            </select>
+                        </div>
+                    }else{
+                        <h4>Bachelor’s degree </h4>
+                        <div class="form-group has-feedback others">
+                            <label>Name of University  </label>
+                            <input class="form-control" type="text" readonly="true" name="aSchool" @if(me != null){value="@me.applicant.aSchool" }>
+                        </div>
+                        <div class="form-group has-feedback others">
+                            <label>From (Specify the starting year)</label>
+                            <input max="@(new Date().format("yyyy"))" readonly="true"  class="form-control" type="number" number="true" escape="1" name="aFromu" @if(me != null){value="@me.applicant.aFromu"}>
+                        </div>
+                        <div class="form-group has-feedback others">
+                            <label>To(Specify the ending year)</label>
+                            <input max="@(new Date().format("yyyy"))" readonly="true" class="form-control" type="number" number="true" escape="1" name="aTo" @if(me != null){value="@me.applicant.aTo"}>
+                        </div>
+                        <div class="form-group has-feedback others">
+                            <label>Working experience (In years) <em>*</em> </label>
+                            <input class="form-control" type="text" name="experienceDraft" @if(me != null){value="@me.applicant.experienceDraft" }>
+                        </div>
+                    }
+
+
+                    </div>
+
+                </div>
+            </div>
+    </div>
+
+    <div class="separated" title="Payment Info">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-pencil"></i>
+
+                    <h3 class="box-title">3.Fees Information</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group has-feedback others"><label>Who will pay your fees?</label>
+                        <div class="radio_place">
+                            <div class="myRadio">
+                                <span class="t-radio">
+                                    <input type="radio" id="ySelf" onchange="unchecker(this,'#diviser')" name="feespayment" value="myself" @if(me != null && me.feespayment.equals("myself")) {
+                                        checked="checked"}>
+                                    <label for="ySelf">Myself</label>
+                                </span>
+                                <span class="t-radio">
+                                    <input type="radio" id="spnsr" onchange="checker(this,'#diviser')" name="feespayment" value="sponsor" @if(me != null && me.feespayment.equals("sponsor")) {
+                                        checked="checked"}>
+                                    <label for="spnsr">Sponsor</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="diviser" @if(me != null && me.feespayment.equals("myself")) {
+                        style="display:none;"}>
+                        <div class="form-group has-feedback others">
+                            <label> Sponsor Name </label>
+                            <input class="form-control" type="text" readonly="true" escape="1" name="sponsorName" @if(me != null) {
+                                value="@me.sponsorName"}></div>
+                        <div class="form-group has-feedback others">
+                            <label> Sponsor phone </label>
+                            <input class="form-control" type="text" readonly="true" escape="1" name="sponsorPhone" @if(me != null) {
+                                value="@me.sponsorPhone"}></div>
+                        <div class="form-group has-feedback others">
+                            <label> Sponsor email </label>
+                            <input class="form-control" type="text" readonly="true" email="true" escape="1" name="sponsorEmail" @if(me != null) {
+                                value="@me.sponsorEmail"}></div>
+                    </div>
+                    @if(me.training.accomodationFees > 0){
+                    <div class="form-group has-feedback">
+                        <label for="">
+                            <input type="checkbox" name="needAccomodation" @if(me!=null && me.applicant.needAccomodation){checked}> I need Accomodation
+                            <span class="label label-info">@Counts.formatAmount(me.training.accomodationFees) Rwf</span>
+                        </label>
+                    </div>
+                    }
+                    @if(me.training.restaurationFees > 0){
+                    <div class="form-group has-feedback">
+                        <label for="">
+                            <input type="checkbox" name="needCatering" @if(me!=null && me.applicant.needCatering){checked}> I need restauration
+                            <span class="label label-info">@Counts.formatAmount(me.training.restaurationFees) Rwf</span>
+                        </label>
+                    </div>
+                    }
+                </div>
+            </div>
+    </div>
+
+    <div class="separated" title="Contact person">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-pencil"></i>
+
+                    <h3 class="box-title">4. Contact person in case of emergency</h3>
+                </div>
+                <div class="box-body">
+                    <div class="col-md-12">
+
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group has-feedback others">
+                            <label>Next of keen names  </label>
+                            <input class="form-control" type="text" readonly="true" name="contactPerson" @if(me != null){value="@me.contactPerson" }>
+                        </div>
+
+
+                        <div class="form-group has-feedback others">
+                            <label>Next of keen 's email</label>
+                            <input class="form-control" type="text" readonly="true" email="true" name="contactEmail" @if(me != null){value="@me.contactEmail"}>
+                        </div>
+
+
+                        <div class="form-group has-feedback others">
+                            <label>Next of keen 's phone</label>
+                            <input class="form-control" number="true" type="text" readonly="true" name="contactPhone" @if(me != null){value="@me.contactPhone"}>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="separated" title="Application purpose">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-pencil"></i>
+
+                    <h3 class="box-title">5.disability or medical</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group has-feedback others"><label>Do you have any disability?</label>
+                        <div class="radio_place">
+                            <div class="myRadio">
+                                <span class="t-radio">
+                                    <input type="radio" id="falseDisabled" onchange="unchecker(this,'#disableText')" name="d" value="myself" @if(me != null && me.feespayment.equals("myself")) {
+                                        checked="checked"}>
+                                    <label for="falseDisabled">No </label>
+                                </span>
+                                <span class="t-radio">
+                                    <input type="radio" id="trueDisabled" onchange="checker(this,'#disableText')" name="d" value="sponsor" @if(me != null && me.feespayment.equals("sponsor")) {
+                                        checked="checked"}>
+                                    <label for="trueDisabled">Yes </label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback others" id="disableText">
+                        <p>please specify here.</p>
+                        <textarea title="" class="form-control" escape="1" name="statement">@me.statement</textarea>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+}

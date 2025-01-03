@@ -1,0 +1,31 @@
+@( list : List[Groups] , gr : GroupMembers )
+
+<div class="col-md-12 col-centered"><div class="external-event bg-green has-feedback" style="cursor: pointer;">Move @gr.student.toString() from @gr.groups.groupName</div>
+  <form action="@routes.Application.moveGroupMember(gr.id)" method="POST" onsubmit="return swapGroup(this)">
+  <table class="table table-hover table-striped mid-v">
+  <tbody>
+
+    @for( i <- list ){
+
+      <tr>
+        <td style="vertical-align: middle" class="has-feedback">
+          <input type="radio" value="@i.id" name="groupId" id="cCeck@i.id">
+          <label for="cCeck@i.id" style="margin-bottom: 20px;"></label>
+        </td>
+        <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
+        <td><div class="round-image sm-round"><img src="@routes.Assets.at(Vld.imagePro(""))" alt=""></div></td>
+        <td class="mailbox-name"><a href="#"> @i.groupName </a></td>
+
+        <td class="mailbox-attachment"></td>
+      </tr>
+
+    }
+
+
+
+
+  </tbody>
+</table>
+<div class="col-md-4 col-centered"><button class="btn external-event bg-green" type="submit"><i class="fa fa-send-o"></i> Move to Selected group</button></div>
+  </form>
+</div>

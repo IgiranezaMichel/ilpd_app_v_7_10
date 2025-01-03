@@ -1,0 +1,85 @@
+@( user : Users , apcnt : Applicant , app : Applied )
+
+
+<script>
+    var allDis = document.querySelectorAll(".discount");
+    var nti = I(".note-label");
+    if( nti ) nti.textContent = allDis.length;
+
+    var al = document.querySelectorAll(".warn-sign a");
+    for(var ix=0;ix<al.length;ix++){
+        al[ix].onclick = function(e){
+            e.preventDefault();
+            hoss.ajax({page:this.href,o:I("#userTab0")},1,2,function(res){
+                var depos = I(".data-deposit");
+                hide(depos.querySelectorAll(".tabcontents"));
+                show( I("#userTab0") );
+            });
+        }
+    }
+</script>
+<ul class="timeline">
+@if( apcnt != null && user != null ){
+
+    <li class="timeline-item">
+
+        <i class="fa hideOver">@views.html.profile.render(user)</i>
+
+        <div class="timeline-item">
+            <span>@apcnt.firstName @apcnt.familyName</span>  <span class="right-floated">@apcnt.date</span>
+
+
+        <h3 class="timeline-header no-border">
+            Once your position has closed, this letter should be sent out to all applicants notifying them that their application was received and forwarded to the committee and giving them a timeline of when you are hopeful to conduct interviews.
+        </h3>
+        </div>
+    </li>
+
+}
+
+
+@if( apcnt != null && app != null ){
+
+    <li class="notify discount">
+        <i class="fa hideOver">@views.html.profile.render(user)</i>
+
+
+        <div class="timeline-item">
+            <label class="time">@apcnt.firstName @apcnt.familyName</label>  <span class="right-floated">@apcnt.date</span>
+
+            <h3 class="timeline-header no-border">your application is now pending for ad/dd approvalYour application is now pending for AD/DD Approval. For more details,
+            please contact your Regional Passport Office</h3>
+        </div>
+    </li>
+
+}
+
+    @if( apcnt != null && app != null){
+
+        @for( ix <- Attachment.byApp(apcnt.id) ){
+            @if( Verification.finderByAtt(ix.id) != null && !Verification.finderByAtt(ix.id).status){
+        <li>
+
+            <i class="fa hideOver">@views.html.profile.render(user)</i>
+
+            <div class="timeline-item">
+              <h3 class="timeline-header no-border">
+
+                  <label class="time">@apcnt.firstName @apcnt.familyName</label>  <span class="right-floated">@apcnt.date</span>
+
+                  <div class="warn-sign">
+                    <div class="warning"><i class="icon-warning-sign"></i>Document Attachment Warning</div>
+                        <div class="note-picture"><div><img src="@routes.Assets.at("uploads/"+ix.attachName)"></div></div>
+                    <span class="sping"><span class="head">@ix.file.fileName</span>@Verification.finderByAtt(ix.id).userComment
+                        <a href="@routes.Application.resetApp(Verification.finderByAtt(ix.id).id)"><i class="icon-warning-sign"></i>Resubmit Form</a></span>
+                        </div>
+
+            </h3>
+            </div>
+        </li>
+            }
+        }
+
+    }
+
+</ul>

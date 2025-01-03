@@ -1,0 +1,74 @@
+@( prog : List[Program] )
+<div align="right"  class="left-form">
+  <button id="meBut" class="btn btn-primary" onclick="addNew(this,event)"><i class="fa fa-plus"></i> New program</button>
+  <div class="loginForm" id="form1" no-prop="true">
+    <form action="@routes.Registration.saveProgram()" method="POST" onsubmit="return allForms(this)">
+      <div class="box box-info">
+        <div class="box-header text-left resp-width with-border">
+          <i class="fa fa-plus-circle"></i>
+          <h3 class="box-title">New program</h3>
+        </div>
+        <div class="box-body">
+      <div class="has-feedback">
+          <!-- drag handle -->
+        <span class="handle">
+          <i class="fa fa-ellipsis-v"></i>
+          <i class="fa fa-ellipsis-v"></i>
+        </span>
+          <!-- checkbox -->
+        <input type="checkbox" value="true" name="cle">
+          <!-- todo text -->
+        <span class="text">Does this program require attendance certificate</span>
+          <!-- Emphasis label -->
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" name="programName" autocomplete="off"  id="MINANI" max="3000" placeholder="Enter program name"/>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" name="programAcronym" autocomplete="off"  id="MAKAMBO" placeholder="Enter program acronym"/>
+      </div>
+      </div>
+      <div class="box-footer clearfix">
+        <button type="submit" class="pull-right btn btn-default">Save
+          <i class="fa fa-check-circle"></i></button>
+      </div>
+  </div>
+    </form>
+  </div>
+</div>
+
+<div class="panel panel-success">
+  <div class="panel-heading">Currently registered program</div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>Program name</th>
+            <th>Program acronym</th>
+            <th>Attendance certificate </th>
+            <th>Update</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+        @for( pro <- prog ){
+          <tr>
+            <td>@pro.programName</td>
+            <td>@pro.programAcronym</td>
+            @if(pro.cle) {
+              <td><small class="label label-warning">required</small></td>
+            }else{
+              <td><small class="label label-primary">Not required</small></td>
+            }
+            <td><button class="btn btn-info btn-sm btn-circle" onclick="createModal(this,self.event)" href="@routes.Application.updateAll(pro.id,"program")"><i class="fa fa-pencil"></i></button></td>
+            <td><button class="btn btn-danger btn-sm btn-circle" onclick="createDel(this)" value="@routes.Application.deleteAll(pro.id,"pro")"><i class="fa fa-bitbucket"></i></button></td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+

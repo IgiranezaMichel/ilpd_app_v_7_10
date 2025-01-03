@@ -1,0 +1,103 @@
+@(movements: List[models.stock.StockMovement], startDate: String, endDate: String, title: String)
+@import scala.Predef;var inc = 1;
+
+@main("Items reports", "") {
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <section class="content-header"></section>
+                <div class="invoice">
+                    <div class="row">
+                        <div class="row no-print">
+                            <div class="col-xs-12">
+                            @shared.printButton.render()
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <div style="border-bottom: 1px solid silver;
+                                margin-bottom: 10px;">
+                                <table class="table" style="border: none;">
+                                    <thead>
+                                        <tr>
+                                            <td style="border-right: 2px solid #E200E2;
+                                                vertical-align: middle">
+                                                <span>
+                                                    <i class="fa fa-circle"></i>
+                                                    <i class="fa fa-circle" style="color: #E200E2;"></i>
+                                                    <i class="fa fa-circle" style="color: #E200E2;"></i>
+                                                </span>
+                                            </td>
+                                            <td style="vertical-align: top">
+                                                <span>
+                                                    Institute of Legal Practice <br>
+                                                    and Development
+                                                </span>
+                                            </td>
+                                            <td style="vertical-align: bottom">
+                                                <small>
+                                                    <em class="text-left">Excellence in Legal Practice</em>
+                                                </small>
+                                            </td>
+                                            <td>
+                                                <img src="@routes.Assets.at("images/smLogo.png")" alt="" class="img-responsive pull-right" style="width: 50px">
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 table-responsive">
+                            <h4 class="text-blue"><i class="fa fa-list-ol"></i>
+                                 <b>[ @title ]</b> from <b>@startDate</b>
+                                to <b>@endDate</b>
+                                <small class="pull-right">Date: @(new Date().format("dd/MM.yyyy"))</small>
+                            </h4>
+                            <table class="table  table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Date</th>
+                                        <th>Item</th>
+                                        <th>Qty</th>
+                                        <th>Location</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @for(m <- movements) {
+                                        <tr>
+                                            <td>@inc</td>
+                                            <td>@m.date.format("dd/MM/yyyy")</td>
+                                            <td>@m.item.name</td>
+                                            <td>@m.confirmedQty</td>
+                                            <td>@m.locationName()</td>
+
+                                        </tr>
+                                        @(inc = inc + 1)
+
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @views.html.reports.footer.render()
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <p class="main-footer text-center">
+                                <small>P.O. Box 49, Avenue des Sports, Nyanza, Southern Province, Rwanda
+                                    <br>
+                                    E: info@@ilpd.ac.rw / W: www.ilpd.ac.rw</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<script type="text/javascript">
+        window.print();
+</script>

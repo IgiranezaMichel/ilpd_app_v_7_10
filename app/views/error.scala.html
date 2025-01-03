@@ -1,0 +1,32 @@
+@(string: String)
+
+@main("Not found",""){
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <section class="content">
+                    <div class="error-page">
+                        <div class="container">
+                            <div class="row" style="border: 2px solid red;padding: 20px">
+                            <div>
+                                <div class="col-md-offset-3 col-md-1">
+                                    <h1>
+                                        <i class="fa fa-warning text-red"></i>
+                                    </h1>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="error-content">
+                                        <h4>@string</h4>
+                                        <p> The data you were trying to look does not exist.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                        <!-- /.error-page -->
+                </section>
+            </div>
+        </div>
+    </div>
+}

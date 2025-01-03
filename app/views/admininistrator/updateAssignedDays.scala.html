@@ -1,0 +1,34 @@
+@(daySession: DaySession,sessions : List[models.Session],days : List[Days])
+
+<div class="loginForm" id="form1" no-prop="true">
+    <div class="box box-info">
+        <div class="box-header text-left resp-width">
+            <i class="fa fa-envelope"></i>
+            <h3 class="box-title">Assign day to session ...</h3>
+        </div>
+        <form action="@routes.UpdateForm.updateAssignedDays(daySession.id)" method="POST" onsubmit="return allForms(this)">
+            <div class="box-body">
+                <div class="form-group has-feedback">
+                    <select name="mySession" class="form-control">
+                        <option value="">-- Choose session --</option>
+                        @for( ip <- sessions ){
+                            <option value="@ip.id" @if(daySession.session.id.equals(ip.id)){selected}>@ip.sessionName</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group has-feedback">
+                    <select name="myDay" class="form-control" id="program">
+                        <option value="">-- Choose day name --</option>
+                        @for( ip <- days ){
+                            <option value="@ip.id" @if(daySession.day.id.equals(ip.id)){selected}>@ip.dayName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="box-footer clearfix">
+                <button type="submit" class="pull-right btn btn-default">Update
+                    <i class="fa fa-arrow-circle-right"></i></button>
+            </div>
+        </form>
+    </div>
+</div>

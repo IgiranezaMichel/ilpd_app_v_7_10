@@ -1,0 +1,74 @@
+<div align="center">
+    <form  class="loginForm"method="POST"action="@routes.Application.updateCumulativeRange()" enctype="multipart/form-data" onsubmit="return allForms(this)">
+        <style>
+        .my-box{
+            position: relative;
+            border-radius: 3px;
+            background: #ffffff;
+            border-top: 3px solid #d2d6de;
+            margin-bottom: 20px;
+            width: 170%;
+            margin-left: -35% !important;
+        }
+    </style>
+        <div class="my-box box-info center-block">
+            <div class="my-box text-left resp-width">
+                <h3 class="box-title"><i class="fa fa-cogs"></i>Cumulative grade point average (CGPA)</h3>
+                <h6><i>Cumulative grade point average (CGPA)</i></h6>
+            </div>
+            <div  style="text-align: left !important; width: 170% !important; margin-left: -35% !important;">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Distinction Min</th>
+                        <th>Distinction Max</th>
+                        <th>Merit Min</th>
+                        <th>Merit Max</th>
+                        <th>Satisfactory Min</th>
+                        <th>Satisfactory Max</th>
+                        <th>Pass Min</th>
+                        <th>Pass Max</th>
+                        <th>Fail Min</th>
+                        <th>Fail Max</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="distinctionMin" value="@ProfileInfo.unique().distinctionMin"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="distinctionMax" value="@ProfileInfo.unique().distinctionMax"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="meritMin" value="@ProfileInfo.unique().meritMin"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="meritMax" value="@ProfileInfo.unique().meritMax"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="satisfactoryMin" value="@ProfileInfo.unique().satisfactoryMin"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="satisfactoryMax" value="@ProfileInfo.unique().satisfactoryMax"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="passMin" value="@ProfileInfo.unique().passMin"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="passMax" value="@ProfileInfo.unique().passMax"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="failMin" value="@ProfileInfo.unique().failMin"/>
+                        </td>
+                        <td>
+                            <input style="width: 40px !important;" type="text" name="failMax" value="@ProfileInfo.unique().failMax"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="box-footer clearfix">
+                <button type="submit" class="btn-block btn btn-warning"> Update settings
+                    <i class="fa fa-arrow-circle-right"></i></button>
+            </div>
+        </div>
+    </form>
+</div>
+

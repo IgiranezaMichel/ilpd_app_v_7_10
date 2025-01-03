@@ -1,0 +1,86 @@
+@(locations: List[models.stock.Location])
+<div align="right" class="left-form">
+    <button id="meBut" class="btn btn-ilpd" onclick="addNew(this, event)">
+        <i class="fa fa-plus"></i>
+        Add new location
+    </button>
+    <div class="loginForm" id="form1" no-prop="true">
+        <div class="box box-ilpd">
+            <div class="box-header with-border text-left resp-width">
+                <i class="fa fa-plus"></i>
+                <h3 class="box-title">Add new location</h3>
+            </div>
+            <form  action="@routes.UnitController.saveOrdUpdateLocation()"  method="POST" onsubmit="return allForms(this)" >
+                <div class="box-body">
+                    <div class="form-group">
+                        <select class="form-control" name="block" id="block">
+                            <option value="">--select block --</option>
+                            @for(b<-models.stock.Block.all()){
+                                <option value="@b.id">@b.name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" required class="form-control" id="name" name="name" placeholder="Location name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" required class="form-control" id="acronym" name="acronym" placeholder="Location acronym">
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-ilpd">Save changes
+                        <i class="fa fa-arrow-circle-right"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-ilpd">
+            <div class="box-header with-border">
+                <h3 class="box-title">Saved locations
+                </h3>
+            </div>
+                <!-- /.box-header -->
+            <div class="box-body">
+                <div class="">
+                    <table class="table table-bordered table table-hover table-striped table-condensed manageTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Block</th>
+                                <th>Acronym</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for(b <- locations) {
+                            <tr>
+                                <td>@b.name</td>
+                                <td title="@b.block.name">@b.block.acronym</td>
+                                <td>@b.acronym</td>
+                                <td>
+                                    <button href="@routes.Application.updateAll(b.id,"location")"  onclick="createModal(this, self.event)" class="btn btn-link " title="Edit this record">
+                                        <i class="ion-compose"></i>
+                                    </button>
+                                    <button onclick="createDel(this)" value="@routes.Application.deleteAll(b.id,"location")" class="btn btn-link text-red" title="Delete this record">
+                                        <i class="ion-android-delete"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+        table = $('.manageTable').DataTable();
+</script>

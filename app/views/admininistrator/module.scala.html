@@ -1,0 +1,161 @@
+@( modules : List[Module] , progs : List[Program] )
+<div align="right" class="left-form">
+    <button id="meBut" class="btn btn-primary" onclick="addNew(this,event)"><i class="fa fa-plus"></i> New module</button>
+    <div class="loginForm" id="form1" no-prop="true">
+        <form action="@routes.Registration.saveModule()" method="POST" onsubmit="return allForms(this)" enctype="multipart/form-data">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width with-border">
+                    <i class="fa fa-plus"></i>
+                    <h3 class="box-title">Add new module</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group has-feedback">
+                        <select class="form-control" name="pro">
+                            <option value="">-- Choose program --</option>
+                            @for( i <- progs ){
+                                <option value="@i.id">@i.programName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <select class="form-control" name="hasComponent">
+                            <option value="">-- Module has component ? --</option>
+                            <option value="false">Yes, it has</option>
+                            <option value="true">No, it doesn't</option>
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback" id="lectureF">
+                        <select class="form-control" name="lecting">
+                            <option value="">-- Select head of module --</option>
+                            @for( i:Lecture <- Lecture.all() ){
+                                <option value="@i.id">@i.hisNames()</option>
+                            }
+                        </select>
+                    </div>
+                    <div style="text-align: left !important;" class="form-group has-feedback others">
+                        <label style="text-align: left !important;">Is this a module or moot court/Internship ?</label>
+                        <div style="text-align: left !important;" class="myRadio">
+                            <span class="t-radio"><input type="radio" name="moduleInternship" value="module" checked>
+                                <label for="radioMale">Module</label>
+                            </span>
+                            <span class="t-radio"><input type="radio" name="moduleInternship" value="Moot court">
+                                <label for="radioFemale">Moot court</label>
+                            </span>
+                            <span class="t-radio"><input type="radio" name="moduleInternship" value="Internship">
+                                <label for="radioFemale">Internship</label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input class="form-control" name="moduleName" max="3000" placeholder="Enter module name"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input class="form-control" name="moduleCode" max="3000" placeholder="Enter module code"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input class="form-control" name="orderNumber" max="3000" placeholder="Enter module order"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control"
+                        number="true" name="credits" autocomplete="off" max="3000" placeholder="Enter number of credit"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" number="true"  name="catMax" autocomplete="off" max="3000" placeholder="Enter cat Max"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" number="true"  name="examMax" autocomplete="off" max="3000" placeholder="Enter exam Max"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" number="true"  name="reMax" autocomplete="off" max="3000" placeholder="Enter research Max"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" number="true"
+                        name="reseatResearchMax" autocomplete="off" placeholder="Re-seat research max"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" number="true"
+                        name="minMarks" autocomplete="off" placeholder="Re-seat exam max"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" number="true"
+                        name="resitAmount" autocomplete="off" placeholder="Enter amount for resit"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" number="true"
+                        name="retakeAmount" autocomplete="off" placeholder="Enter amount for retake"/>
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default">Save module <i class="fa fa-arrow-circle-right"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="panel panel-success">
+    <div class="panel-heading">Available modules</div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Module name</th>
+                        <th>Program</th>
+                        <th>Module code</th>
+                        <th>Credits</th>
+                        <th>Cat max</th>
+                        <th>Exam max</th>
+                        <th>Research max</th>
+                        <th>Re-seat research max</th>
+                        <th>Re-seat exam max</th>
+                        <th>Total</th>
+                        <th>Retake amount</th>
+                        <th>Module type</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for( i <- modules ){
+                    <tr>
+                        <td>@i.moduleName</td>
+                        <td>@i.program.programName (@i.program.programAcronym)</td>
+                        <td>@i.moduleCode</td>
+                        <td>@i.credits</td>
+                        <td>@i.catMax</td>
+                        <td>@i.examMax</td>
+                        <td>@i.reseatResearchMax</td>
+                        <td>@i.reMax</td>
+                        <td>@i.minMarks</td>
+                        <td>@i.totalMax()</td>
+                        <td>@i.retakeAmount</td>
+                        <td>
+                        @if(i.moduleInternship.equalsIgnoreCase("module")){
+                            <span class="label bg-green">Module</span>
+                        }
+                        @if(i.moduleInternship.equalsIgnoreCase("Internship")){
+                            <span class="label bg-blue">Internship</span>
+                        }
+                        @if(i.moduleInternship.equalsIgnoreCase("Moot court")){
+                            <span class="label bg-blue">Moot court</span>
+                        }
+                        </td>
+                        <td>
+                            <button class="btn btn-info btn-sm btn-circle"
+                            href="@routes.Application.updateAll(i.id,"module")" onclick="return createModal(this , self.event);">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm btn-circle"
+                            onclick="createDel(this)" value="@routes.Application.deleteAll(i.id,"module")">
+                                <i class="fa fa-bitbucket"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

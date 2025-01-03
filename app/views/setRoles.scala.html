@@ -1,0 +1,65 @@
+@( roles : List[Roles] , user : Users )
+    <div class="loginForm">
+        <form action="@routes.Application.assignRoles()" method="POST" onsubmit="return allForms(this,undefined,true)">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-user-circle"></i>
+
+                    <h3 class="box-title">Add roles to <span class="text-green">@user.print()</span> </h3>
+                </div>
+                <div class="box-body max-height">
+                    <table class="table table-hover table-striped">
+                        <tbody>
+                            <input type="hidden" value="@user.id" name="userID">
+                        @for( i <- roles ){
+                            @if(Lecture.byUser(user.id)!=null && i.sessionName.equalsIgnoreCase("Instructor")){
+                                <tr class="fetch-students">
+                                    <td>
+                                        <label class="check-container">
+                                        <input type="checkbox"  value="@i.id" name="roleID"  oninput="" @if(user.hasRole(i)){checked}/>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    </td>
+                                    <td>
+                                        <img class="round-img pull-left" src="@routes.Assets.at(Vld.imagePro(user.profile))" alt="user image"></td>
+                                    <td class="mailbox-name">
+                                        <p class="roleValue"> @i.roleName </p>
+                                    </td>
+                                    @if(user.hasRole(i)) {
+                                    <td class="mailbox-attachment">
+                                        <a href="javascript:void(0);" class="btn btn-link" disabled>
+                                            <i class="fa fa-trash text-red"></i></a>
+                                    </td>
+                                    }
+                                </tr>
+                            }else{
+                                <tr class="fetch-students">
+                                    <td>
+                                    <label class="check-container">
+                                        <input type="checkbox" value="@i.id" name="roleID"  oninput="" @if(user.hasRole(i)){checked}/>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    </td>
+                                    <td> <img class="round-img pull-left" src="@routes.Assets.at(Vld.imagePro(user.profile))" alt="user image"></td>
+                                    <td class="mailbox-name">
+
+                                        <p class="roleValue"> @i.roleName </p>
+
+                                    </td>
+                                    <td class="mailbox-attachment">
+                                    @if(user.hasRole(i)) {
+                                        <a href="@routes.Application.removeRole(user.getRole(i).id)" class="btn btn-danger" onclick="return warnFirst(this,event)"> Remove role</a></td>
+                                    }
+                                </tr>
+                            }
+                        }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default">Update
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>

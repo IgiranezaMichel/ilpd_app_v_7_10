@@ -1,0 +1,158 @@
+@(stockMovements: List[models.stock.StockMovement], request: models.stock.Request)
+@import scala.Predef;var inc = 1;var itemSource = "";
+@main("Request success", "") {
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <section class="content-header">
+                    <div class="row no-print">
+                        <div class="col-xs-12">
+                            <a href="#" onclick="window.print();" class="btn btn-ilpd pull-right box-shadow-default" style="margin-right: 10px;">
+                                <i class="fa fa-print"></i> Print
+                            </a>
+                        </div>
+                    </div>
+                </section>
+                <div class="invoice">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div style="border-bottom: 1px solid silver;
+                                margin-bottom: 10px;">
+                                <table class="table" style="border: none;">
+                                    <thead>
+                                        <tr>
+                                            <td style="border-right: 2px solid #E200E2;
+                                                vertical-align: middle">
+                                                <span>
+                                                    <i class="fa fa-circle"></i>
+                                                    <i class="fa fa-circle" style="color: #E200E2;"></i>
+                                                    <i class="fa fa-circle" style="color: #E200E2;"></i>
+                                                </span>
+                                            </td>
+                                            <td style="vertical-align: top">
+                                                <span>
+                                                    Institute of Legal Practice <br>
+                                                    and Development
+                                                </span>
+                                            </td>
+                                            <td style="vertical-align: bottom">
+                                                <small>
+                                                    <em class="text-left">Excellence in Legal Practice</em>
+                                                </small>
+                                            </td>
+                                            <td>
+                                                <img src="@routes.Assets.at("images/smLogo.png")" alt="" class="img-responsive pull-right" style="width: 50px">
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="pull-left">
+                                        <p>
+                                            <b>Employee name :</b> @request.employee.print()
+                                        </p>
+                                        <p>
+                                            <b>Position :</b> @request.employee.position.name
+                                        </p>
+                                        <p>
+                                            <b>Unit :</b> @request.employee.unit.name
+                                        </p>
+                                        <p>
+                                            <b>Request No:</b> @request.id
+                                        </p>
+                                    </div>
+                                    <div class="pull-right">
+                                        <p>
+                                            <small class="pull-right" title="Day , date Month year , Hour:Minute">
+                                                Due date and time : @(new Date().format("EEEE, dd MMMM yyyy , HH:mm"))</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-dm-12">
+                                    <h4 class="text-center">
+                                        List of items requested
+                                    </h4>
+                                </div>
+                            </div>
+
+
+                            <table class="table  table-striped table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Item</th>
+                                        <th>Type</th>
+                                        <th>Qty</th>
+                                        <th>Tag number</th>
+                                        <th>Serial number</th>
+                                        <th>Depliciation year</th>
+                                        <th>Item source</th>
+                                        <th>Item destination</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @for(s: models.stock.StockMovement <- request.stockMovements) {
+                                    <tr>
+                                        <td>@inc</td>
+                                        <td>@s.item.name</td>
+                                        <td>
+                                        @(s.item.iType)
+
+                                        <td>@s.confirmedQty</td>
+                                        <td>@s.tagNumber</td>
+                                        <td>@s.serialNumber</td>
+                                        <td>
+                                        @if(s.depleciationYear != 0) {
+                                            @s.depleciationYear
+                                        }
+                                        </td>
+                                        <td>
+                                            @(itemSource = s.iType)
+                                            @if(itemSource != null && itemSource.equalsIgnoreCase("Stock")) {
+                                                <span>Stock</span>
+                                            } else {
+                                                <b>
+                                                    @if( models.stock.Location.find(s.fromLocation) != null ) {
+                                                        @models.stock.Location.find(s.fromLocation).toString
+                                                    }
+                                                </b>
+                                            }
+                                        </td>
+                                        <td>
+                                        @if(s.location != null) {
+                                            <span>@s.location.toString</span>
+                                        }
+                                        </td>
+                                    </tr>
+                                    @(inc = inc + 1)
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <p class="main-footer text-center">
+                                <small>P.O. Box 49, Avenue des Sports, Nyanza, Southern Province, Rwanda
+                                    <br>
+                                    E: info@@ilpd.ac.rw / W: www.ilpd.ac.rw</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script>
+        window.print();
+</script>

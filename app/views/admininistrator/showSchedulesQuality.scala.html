@@ -1,0 +1,78 @@
+@(currentPage: com.avaje.ebean.Page[Schedule], lect: List[Lecture], room: List[Room], training: List[Training], comps: List[Component])
+
+@for(t <- training) {
+    @for(tr <- DateRange.all()) {
+        @if(Schedule.isExists(t.id, tr.id)) {
+            <div class="col-md-4 " style="padding-left: 20px;
+                padding-right: 20px;
+                padding-top: 10px">
+                <p style="font-size: 13px">
+                    <a style="font-size: 13px !important;" target="_blank" href="@routes.Application.getTimetable(t.id, tr.id)">@t.tNames()
+                        - @tr.toString()</a>
+                </p>
+            </div>
+        }
+    }
+}
+<script>
+        //Date picker
+        $('.datepicker').datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            format: 'dd-mm-yyyy'
+        });
+        $(function () {
+            $(document).on('change', '#campus', function () {
+                var self = $(this);
+                $.ajax({
+                    url: '/report/campus/' + self.val() + "/",
+                    method: 'get',
+                    dataType: 'json'
+                }).done(function (response) {
+                    var iMode = $('.iMode');
+                    iMode.html('');
+                    iMode.append($('<option>', {
+                        value: '',
+                        text: '--select--'
+                    }));
+
+                    $.each(response, function (index, item) {
+
+                        iMode.append($('<option>', {
+                            value: item.id,
+                            text: item.print
+                        }));
+
+                    });
+                })
+            });
+
+
+            $(document).on('change', '#iMode', function () {
+                var self = $(this);
+                $.ajax({
+                    url: '/report/iMode/' + self.val() + "/",
+                    method: 'get',
+                    dataType: 'json'
+                }).done(function (response) {
+                    var comp = $('#component');
+                    comp.html('');
+                    comp.append($('<option>', {
+                        value: '',
+                        text: '--select--'
+                    }));
+
+                    $.each(response, function (index, item) {
+                        comp.append($('<option>', {
+                            value: item.id,
+                            text:item.comp_name
+                        }));
+                        console.log("Index:" + index + " ,Value:" + item.comp_name)
+                    });
+                })
+            });
+        })
+
+        $("#module_report_form").parsley();
+
+</script>

@@ -1,0 +1,85 @@
+@(student: Student)
+@main("Student certificate", "") {
+    <style>
+        .back1 {
+            background-color: transparent;
+            background-image: url(@routes.Assets.at("images/Sample-final.png"));
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            background-position: left top;
+            height: 250vh;
+            margin-top: 8% !important;
+            width: 596px !important;
+            width: 842px !important;
+        }
+        .regNo{
+            margin-top: 23% !important;
+            margin-left: 10% !important;
+            font-size: 24px !important;
+        }
+    </style>
+    @if(student.training.hasGraduated){
+    <div class="col-md-10 col-centered back1">
+        <div style="margin-top: 4% !important;" class="box-body">
+            <p class="regNo" style="margin-top: 2% !important; border: 2px solid red">@student.regNo</p>
+            <div style="margin-top: 48% !important;" class="text-center">
+                <h1 style="margin-top: -17% !important; margin-left: 39% !important; color: #AC4599; text-transform: lowercase; font-family: 'Edwardian Script ITC'; font-size: 80px; border: 3px solid red">
+                @Counts.firstWord(student.training.iMode.campusProgram.program.programName.toUpperCase())
+                </h1>
+                <h1 style="margin-left:-30% !important; margin-top: -5% !important; color: #AC4599; text-transform: lowercase; font-family: 'Edwardian Script ITC'; font-size: 80px; border: 3px solid red">
+                @Counts.secondWord(student.training.iMode.campusProgram.program.programName.toUpperCase()) @Counts.thirdWord(student.training.iMode.campusProgram.program.programName.toUpperCase()) @Counts.fourthWord(student.training.iMode.campusProgram.program.programName.toUpperCase())
+                </h1>
+                <h3 style="padding-left: 150px;
+                    margin-top: 15% !important;
+                    padding-right: 200px;
+                    color: #2C3B41;
+                    text-transform: capitalize;
+                    font-family: 'Pacifico', cursive;">
+                    @student.toString()
+                </h3>
+                <br>
+                <br>
+                <br>
+                <br>
+                <h3 class="pull-right" style="text-transform: uppercase; font-family: Book Antiqua; margin-top: -1%; margin-left: -18% !important;margin-right: 32% !important; border: 2px solid red; font-size: 26px !important;">
+                    &nbsp;<b>@student.training.iMode.campusProgram.program.programName.toUpperCase()</b>
+                </h3>
+                <br>
+                <br>
+                <br>
+                <h3 style="text-transform: uppercase; margin-top: 2% !important;">
+                    <span style="text-transform: capitalize; margin-left: -7% !important;">
+                        @student.training.trainer
+                        @if(student.training.graduation!=null){
+                             @student.training.endDate.format("dd MMM,yyyy")
+                        }else{
+                            <span class="text-info">Uknown date</span>
+                        }
+                    </span>
+                </h3>
+                <br>
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div style="">
+                <div class="pull-left" style="border: 5px solid mediumvioletred;">
+                    <img src="@routes.Assets.at("uploads/"+ProfileInfo.unique().rector)" style="height: 100px;" alt="">
+                    <h4 style="padding-bottom: 10px;"></h4>
+                </div>
+                <div class="pull-right" style="border: 5px solid mediumvioletred;">
+                    <img src="@routes.Assets.at("uploads/"+ProfileInfo.unique().registrarSignature)" style="height: 100px" alt="">
+                    <h4 style="padding-bottom: 10px;"></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+}else{
+    <div class="alert alert-info">
+        <strong>Info!</strong> Certificate is not available right now OR you are not graduated.
+    </div>
+}
+
+}

@@ -1,0 +1,26 @@
+@( applied : Applied )
+
+@if( applied != null ) {
+
+    <div class="loginForm">
+        <form action="@routes.UpdateForm.updateApp(applied.id)" class="validate-form" method="POST" onsubmit="return allForms(this)">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-envelope"></i>
+                    <h3 class="box-title">Are you sure to disable this ?</h3>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default">Yes disable
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+}
+
+
+<script >
+        $('.validate-form').parsley();
+</script>

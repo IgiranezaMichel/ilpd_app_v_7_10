@@ -1,0 +1,218 @@
+@(student: Student, modules: List[Module] , title : String , tr : Boolean )
+@import scala.Predef;var catMarks=0.0;var resitExamMarks=0.0;var reMarks=0.0;var examMarks=0.0;var inc= 0; var percentMarks =0.0
+@main("Student marks", "") {
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <section class="content-header">
+                    <div class="row no-print">
+                        <div class="col-xs-12">
+                            <a href="#" onclick="window.print();" class="btn btn-ilpd btn-flat pull-right" style="margin-right: 10px;">
+                                <i class="fa fa-print"></i> Print
+                            </a>
+                        </div>
+                    </div>
+                </section>
+                <div class="invoice">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div style="border-bottom: 1px solid silver;
+                                margin-bottom: 10px;">
+                                <table class="table" style="border: none;">
+                                    <thead>
+                                        <tr>
+                                            <td style="border-right: 2px solid #E200E2;
+                                                vertical-align: middle">
+                                                <span>
+                                                    <i class="fa fa-circle"></i>
+                                                    <i class="fa fa-circle" style="color: #E200E2;"></i>
+                                                    <i class="fa fa-circle" style="color: #E200E2;"></i>
+                                                </span>
+                                            </td>
+                                            <td style="vertical-align: top">
+                                                <span>
+                                                    Institute of Legal Practice <br>
+                                                    and Development
+                                                </span>
+                                            </td>
+                                            <td style="vertical-align: bottom">
+                                                <small>
+                                                    <em class="text-left">Excellence in Legal Practice</em>
+                                                </small>
+                                            </td>
+                                            <td>
+                                                <img src="@routes.Assets.at("images/smLogo.png")" alt="" class="img-responsive pull-right" style="width: 50px">
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="pull-left">
+                                        <p>
+                                            <span>Name:</span>
+                                            <span><b>@student.toString</b></span>
+                                        </p>
+                                        <p>
+                                            <span>Reg Number:</span>
+                                            <span><b>@student.regNo</b></span>
+                                        </p>
+                                    </div>
+                                    <div class="pull-right">
+                                        <p>
+                                            <span>Campus:</span>
+                                            <span><b>@student.training.iMode.campusProgram.campus.campusName</b></span>
+                                        </p>
+                                        <p>
+                                            <span>Program:</span>
+                                            <span><b>@student.training.iMode.campusProgram.program.toString</b></span>
+                                        </p>
+                                        <p>
+                                            <span>Intake:</span>
+                                            <span><b>@student.training.iMode.intake.toString</b></span>
+                                        </p>
+                                        <p>
+                                            <span>Session-mode:</span>
+                                            <span>
+                                                <b>@student.training.iMode.sessionMode.session.sessionName
+                                                    -@student.training.iMode.sessionMode.mode.modeName </b>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4 class="text-center" style="text-transform: uppercase">
+                                        Marks sheet result
+                                    </h4>
+                                </div>
+                            </div>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Module</th>
+                                        <th>CAT</th>
+                                        <th>RE-EX.</th>
+                                        <th>EXAM</th>
+                                        <th>Total %</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @for(mod <- modules) {
+                                    @(catMarks=Counts.getStudentCatMarksModule(student.id, mod.id))
+                                    @(reMarks=Counts.getStudentResearchMarksModule(student.id,mod.id))
+                                    @(examMarks=SubMark.componetExamResultModule(student.id, mod.id, student.training.id))
+                                    @(resitExamMarks=SubMark.reSitExamResultModule(student.id, mod.id))
+                                    <tr>
+                                        <td>@mod.moduleName</td>
+                                        <td>
+                                        @if(SubMark.byDualInResitModule(student.id, mod.id) == null && AssignmentResult.numberAssignmentDone(student.id, mod.id, student.training.id) > 0.0){
+                                            @(Student.rounding(catMarks))
+                                        }else{
+                                            N/A
+                                        }
+                                        </td>
+                                        <td>
+                                        @if(SubMark.byDualInResitModule(student.id, mod.id) == null && AssignmentResult.numberResearchDone(student.id, mod.id, student.training.id)> 0.0) {
+                                            @(Student.rounding(reMarks))
+                                        }else{
+                                            N/A
+                                        }
+                                        </td>
+                                        <td>
+                                        @if(SubMark.byDualInResitModule(student.id, mod.id) == null && Counts.getExamMaxTrainingModule(student.training.id, mod.id) > 0.0) {
+                                            @(Student.rounding(examMarks))
+                                        }else{
+                                            N/A
+                                        }</td>
+                                        <td>
+                                            @* C, R & E *@
+                                            @if(SubMark.byDualInResitModule(student.id, mod.id) == null && AssignmentResult.numberAssignmentDone(student.id, mod.id, student.training.id) > 0.0 && AssignmentResult.numberResearchDone(student.id, mod.id, student.training.id)> 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, mod.id) > 0.0) {
+                                                @(Student.rounding(catMarks + reMarks + examMarks))
+                                                @(percentMarks = percentMarks + (catMarks + reMarks + examMarks))
+                                            }
+                                            @* C & E *@
+                                            @if(SubMark.byDualInResitModule(student.id, mod.id) == null && AssignmentResult.numberAssignmentDone(student.id, mod.id, student.training.id) > 0.0 && AssignmentResult.numberResearchDone(student.id, mod.id, student.training.id) <= 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, mod.id) > 0.0) {
+                                                @Student.rounding(((catMarks + examMarks) * 100) / (mod.catMax + mod.examMax))
+                                                @(percentMarks = percentMarks + (((catMarks + examMarks) * 100) / (mod.catMax + mod.examMax)))
+                                            }
+                                            @* C & R *@
+                                            @if(SubMark.byDualInResitModule(student.id, mod.id) == null && AssignmentResult.numberAssignmentDone(student.id, mod.id, student.training.id) > 0.0 && AssignmentResult.numberResearchDone(student.id, mod.id, student.training.id)> 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, mod.id) <= 0.0) {
+                                                @Student.rounding(((catMarks + reMarks) * 100) / (mod.catMax + mod.reMax))
+                                                @(percentMarks = percentMarks + (((catMarks + reMarks) * 100) / (mod.catMax + mod.reMax)))
+                                            }
+                                            @* C *@
+                                            @if(SubMark.byDualInResitModule(student.id, mod.id) == null && AssignmentResult.numberAssignmentDone(student.id, mod.id, student.training.id) > 0.0 && AssignmentResult.numberResearchDone(student.id, mod.id, student.training.id) <= 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, mod.id) <= 0.0) {
+                                                @Student.rounding((catMarks * 100) / mod.catMax)
+                                                @(percentMarks = percentMarks + ((catMarks * 100) / mod.catMax))
+                                            }
+                                            @* R & E *@
+                                            @if(SubMark.byDualInResitModule(student.id, mod.id) == null && AssignmentResult.numberAssignmentDone(student.id, mod.id, student.training.id) <= 0.0 && AssignmentResult.numberResearchDone(student.id, mod.id, student.training.id)> 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, mod.id) > 0.0) {
+                                                @Student.rounding(((reMarks + examMarks) * 100) / (mod.reMax + mod.examMax))
+                                                @(percentMarks = percentMarks + (((reMarks + examMarks) * 100) / (mod.reMax + mod.examMax)))
+                                            }
+                                            @* R *@
+                                            @if(SubMark.byDualInResitModule(student.id, mod.id) == null && AssignmentResult.numberAssignmentDone(student.id, mod.id, student.training.id) <= 0.0 && AssignmentResult.numberResearchDone(student.id, mod.id, student.training.id)> 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, mod.id) <= 0.0) {
+                                                @Student.rounding((reMarks * 100) / mod.reMax)
+                                                @(percentMarks = percentMarks + ((reMarks * 100) / mod.reMax))
+                                            }
+                                            @* E *@
+                                            @if(SubMark.byDualInResitModule(student.id, mod.id) == null && AssignmentResult.numberAssignmentDone(student.id, mod.id, student.training.id) <= 0.0 && AssignmentResult.numberResearchDone(student.id, mod.id, student.training.id) <= 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, mod.id) > 0.0) {
+                                                @Student.rounding((examMarks * 100) / mod.examMax)
+                                                @(percentMarks = percentMarks + ((examMarks * 100) / mod.examMax))
+                                            }
+                                            @* RE-SIT *@
+                                            @if(SubMark.byDualInResitModule(student.id, mod.id) != null) {
+                                                <span style="color: #9c079c !important;">
+                                                @if(((examMarks * 100) / mod.examMax) < ProfileInfo.unique().scoreThree) {
+                                                    @Student.rounding((examMarks * 100) / mod.examMax)
+                                                }else{
+                                                    @Student.rounding(ProfileInfo.unique().scoreThree)
+                                                }</span>
+                                            }
+                                            @if(SubMark.byDualInResitModule(student.id, mod.id) == null && AssignmentResult.numberAssignmentDone(student.id, mod.id, student.training.id) <= 0.0 && AssignmentResult.numberResearchDone(student.id, mod.id, student.training.id) <= 0.0 &&  Counts.getExamMaxTrainingModule(student.training.id, mod.id) <= 0.0) {
+                                                N/A
+                                            }else{
+                                                @(inc = inc + 1)
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="4">Percentage </th>
+                                        <th>@Student.rounding(percentMarks/inc) %</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        @reports.footerTranscript()
+                        <p class="text-danger text-center">
+                            <center>This report has generated by ILPD MIS, there is no need of stamp or signature</center>
+                        </p>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="main-footer text-center">
+                                <p>
+                                    <small>P.O. Box 49, Avenue des Sports, Nyanza, Southern Province, Rwanda
+                                        <br>
+                                        E: info@@ilpd.ac.rw / W: www.ilpd.ac.rw</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

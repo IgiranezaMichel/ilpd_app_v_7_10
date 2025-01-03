@@ -1,0 +1,65 @@
+@(profileInfo: ProfileInfo)
+
+<div class="row content">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-history"></i> Signatures</h3>
+                <div class="box-tools">
+                </div>
+            </div>
+            <div class="box-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Registrar</th>
+                            <th>Rector</th>
+                            <th>Stamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Signature && Stamp</td>
+                            <td style="vertical-align: middle;horiz-align: center">
+                                <img src="@routes.Assets.at("uploads/"+profileInfo.registrarSignature)" style="height: 100px" alt="">
+                                <br><br>
+
+
+                                <form action="@routes.UpdateForm.updateSignature("registrar")" method="POST" onsubmit="return allForms(this)">
+                                    <div class="btn btn-success" onclick="$(this).parents('form').find('.elex').click()"><i class="fa fa-upload"></i>
+                                        Upload registrar  signature</div>
+                                    <input type="file" name="photo" class="hidden elex" onchange="return changeAndSubmit(this)">
+                                </form>
+                            </td>
+
+
+                            <td style="vertical-align: middle;horiz-align: center">
+                                <img src="@routes.Assets.at("uploads/"+profileInfo.rector)" style="height: 100px" alt="">
+                                <br>    <br>
+
+                                <form action="@routes.UpdateForm.updateSignature("rector")" method="POST" onsubmit="return allForms(this)">
+                                    <div class="btn btn-success" onclick="$(this).parents('form').find('.elex').click()"><i class="fa fa-upload"></i>
+                                        Upload rector signature</div>
+                                    <input type="file" name="photo" class="hidden elex" onchange="return changeAndSubmit(this)">
+                                </form>
+                            </td>
+
+
+                            <td style="vertical-align: middle;horiz-align: center">
+                                <img src="@routes.Assets.at("uploads/"+profileInfo.stamp)" style="height: 100px" alt="">
+                                <br>    <br>
+
+                                <form action="@routes.UpdateForm.updateSignature("stamp")" method="POST" onsubmit="return allForms(this)">
+                                    <div class="btn btn-success" onclick="$(this).parents('form').find('.elex').click()"><i class="fa fa-upload"></i>
+                                        Upload stamp</div>
+                                    <input type="file" name="photo" class="hidden elex" onchange="return changeAndSubmit(this)">
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

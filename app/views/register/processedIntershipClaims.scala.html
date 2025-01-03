@@ -1,0 +1,50 @@
+@( internshipAppeals : List[InternshipAppeal] )
+@import scala.Predef; var inc = 1
+<div class="panel panel-success">
+    <div class="panel-heading">View processed intership appeals</div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Student name</th>
+                        <th>Phone number</th>
+                        <th>Appeal reason</th>
+                        <th>Download proof</th>
+                        <th>Appeal type</th>
+                        <th>Decision</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for( i <- internshipAppeals ){
+                    <tr>
+                        <td>@inc</td>
+                        <td>
+                        @if(i.applicant != null) {
+                            @i.applicant.familyName @i.applicant.firstName
+                        }</td>
+                        <td>
+                        @if(i.applicant != null) {
+                            @i.applicant.user.phone @i.applicant.user.phone
+                        }</td>
+                        <td>
+                            <a target="_blank" href="@routes.Application.updateAll(i.id,"downloadInternshipClaimProof")"
+                            class="btn btn-ilpd" title="Download">
+                                <i class="fa fa-download"></i>
+                                Download
+                            </a>
+                        </td>
+                        <td>@i.reason</td>
+                        <td>@i.appType</td>
+                        <td>@i.status</td>
+                    </tr>
+                    @(inc = inc + 1)
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

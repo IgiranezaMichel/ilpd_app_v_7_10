@@ -1,0 +1,9 @@
+users:
+ - !!models.Users
+  id: 1
+  names: Adiel TUYISHIME
+  role: admin
+  email: adiel.tuyishime@ilpd.ac.rw
+  phone: 788065487
+  code: 250
+  password: password

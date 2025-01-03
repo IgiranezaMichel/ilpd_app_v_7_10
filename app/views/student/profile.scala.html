@@ -1,0 +1,139 @@
+@(applied: Applied)
+
+
+<section class="content-header">
+    <h1>
+        User Profile
+    </h1>
+</section>
+
+<section class="content">
+
+    <div class="row">
+        <div class="col-md-4">
+
+                <!-- Profile Image -->
+            <div class="box box-primary">
+                <div class="box-body box-profile">
+                    <img class="profile-user-img img-responsive img-circle" src="@routes.Assets.at(""+Counts.profileImage(applied.applicant.profile))" alt="User profile picture">
+
+                    <h3 class="profile-username text-center">@applied.applicant.toString</h3>
+
+                    <p class="text-muted text-center">
+                        <span class="label label-info">
+                        @if(applied.applicant.student==null){
+                            Applicant
+                        }else{
+                            @applied.applicant.user.role.toLowerCase
+                        }
+                       </span>
+                    </p>
+
+                    <ul class="list-group list-group-unbordered">
+                        <li class="list-group-item">
+                            <b>Reg no</b>
+                            <a class="pull-right">
+                                @if(applied.applicant.student!=null){
+                                 @applied.applicant.student.regNo
+                                }else{
+                                    Not available
+                                }
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Campus</b> <a class="pull-right">@applied.training.iMode.campusProgram.campus.campusName</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Program</b> <a class="pull-right">@applied.training.iMode.campusProgram.program.programAcronym</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Study Mode</b> <a class="pull-right">@applied.training.iMode.sessionMode.mode.modeName</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Session</b> <a class="pull-right">@applied.training.iMode.sessionMode.session.sessionName</a>
+                        </li>
+                        @if(applied.training.iMode.campusProgram.program.cle){
+                            <li class="list-group-item">
+                                <b>Training :</b> <a class="pull-right">@applied.training.title [Trainer: @applied.training.trainer]</a>
+                            </li>
+                        }else{
+                            <li class="list-group-item">
+                                <b>Training :</b> <a class="pull-right">@applied.training.print()</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                    <!-- /.box-body -->
+            </div>
+                <!-- /.box -->
+        </div>
+            <!-- /.col -->
+        <div class="col-md-8">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#settings" data-toggle="tab"><i class="fa fa-wrench"></i> Settings</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="active tab-pane active" id="settings">
+                        <form class="form-horizontal validate-form" method="post" action="@routes.UpdateForm.updateInfo()" autocomplete="off" id="changePasswordForm" novalidate>
+
+                            <div id="div-result"></div>
+
+                            <div class="form-group">
+                                <label for="inputEmail" class="col-sm-3">Email</label>
+                                <div class="col-sm-9">
+                                    <input type="email" name="email" readonly value="@applied.applicant.user.email" class="form-control" id="inputEmail" placeholder="Email address" required>
+                                    <span class="text-red"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phoneNumber" class="col-sm-3">Phone number</label>
+
+                                <div class="col-sm-9">
+                                    <input name="phoneNumber"  type="text" value="@applied.applicant.user.phone" class="form-control" id="phoneNumber" placeholder="Phone number" required>
+                                    <span class="text-red"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="oldPassword" class="col-sm-3">Old Password</label>
+                                <div class="col-sm-9">
+                                    <input type="password" name="oldPassword" required class="form-control" id="oldPassword" placeholder="Old password">
+                                    <span class="text-red"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="newPassword" class="col-sm-3">New Password</label>
+                                <div class="col-sm-9">
+                                    <input type="password" name="newPassword" required class="form-control" id="newPassword" placeholder="New password">
+                                    <span class="text-red"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword" class="col-sm-3">Comfirm password</label>
+                                <div class="col-sm-9">
+                                    <input type="password" name="confirmPassword" required class="form-control" id="confirmPassword" placeholder="Re-type password" data-parsley-equalto="#newPassword">
+                                    <span class="text-red"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9">
+                                    <button type="submit" id="btnSumit" data-loading-text="Loading..." autocomplete="off" class="btn btn-primary"><i class="fa fa-lock"></i>
+                                        Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                        <!-- /.tab-pane -->
+                </div>
+                    <!-- /.tab-content -->
+            </div>
+                <!-- /.nav-tabs-custom -->
+        </div>
+            <!-- /.col -->
+    </div>
+        <!-- /.row -->
+
+</section>
+<script >
+        $('.validate-form').parsley();
+</script>

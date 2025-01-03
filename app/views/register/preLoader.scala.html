@@ -1,0 +1,109 @@
+@( typ : String , id : Long,trainings: List[Training] )
+@import scala.Predef;var ting = typ;
+@if( typ.equals("prog") || typ.equals("inApp") ){
+    @( ting = ":all" )
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-11">
+        @if(flash.containsKey("error")){
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4><i class="fa fa-warning"></i> @flash.get("error")</h4>
+            </div>
+        }
+        </div>
+    </div>
+</div>
+
+
+<div class="col-md-3">
+
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <h3 class="box-title">@typ applications</h3>
+
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            </div>
+        </div>
+
+        <input type="hidden" value="@typ" id="statusElement">
+            <!-- /.box-header -->
+        <div class="box-body">
+
+            <div class="form-group has-feedback">
+                <select name="period" id="period" class="form-control" onchange="selectPeriod(this,'@typ')">
+                    @for(t:Training<-trainings){
+                        @if(session.containsKey("status")){
+                            <option value="@t.id" @Counts.selectTraining(session.get("status"),t.id) > @t.print()</option>
+                        }else{
+                            <option value="@t.id">@t.print()</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="text" placeholder="Search Here !!!" class="form-control" oninput="searchApplicant(this)" href="@routes.Application.searchApplicant("")">
+                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+            <div class="liquify-content" id="mayaya" style="max-height:550px;">
+
+                @if( id == null ){
+                    <script>
+                            var mayinya = I("#mayaya");
+                            var elementPeriod=document.getElementById('period');
+                            var status=document.getElementById('statusElement').value;
+                            selectPeriod(elementPeriod,status);
+                    </script>
+                }else{
+                    <script>
+                            var mayinya = I("#mayaya");
+                            if( mayinya ) appliedIn(mayinya,"all",'@id','@typ');
+
+                    </script>
+                }
+                @if( Applied.lastUserId(ting) != null ){
+                    <script>
+                    </script>
+                }
+            </div>
+                <!-- /.row -->
+        </div>
+            <!-- /.box-body -->
+        <div class="box-footer">
+
+        </div>
+    </div>
+
+</div>
+
+
+<div class="col-md-9">
+
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <h3 class="box-title">Last applied in @typ</h3>
+
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            </div>
+        </div>
+            <!-- /.box-header -->
+        <div class="box-body">
+            <div class="app-user loading super-heighted user-app">
+                <div align="center"></div>
+            </div>
+                <!-- /.row -->
+        </div>
+            <!-- /.box-body -->
+        <div class="box-footer">
+
+        </div>
+    </div>
+
+</div>

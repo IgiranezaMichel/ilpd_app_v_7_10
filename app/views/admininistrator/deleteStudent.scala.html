@@ -1,0 +1,26 @@
+@(user: Users)
+<div class="loginForm">
+    <form action="@routes.UpdateForm.deleteUser()" method="post" onsubmit="return allForms(this)">
+        <div class="box box-info">
+            <div class="box-header text-left resp-width">
+                <i class="fa fa-pencil"></i>
+                <h3 class="box-title">Are you sure to delete this user ??</h3>
+            </div>
+            @if(user != null ) {
+                <div class="box-body">
+                <input type="hidden" name="userId" value="@user.id">
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default">Delete user
+                        <i class="fa fa-trash-o-right"></i></button>
+                </div>
+            } else {
+                <div class="box-body">
+                    <div class="alert alert-danger">
+                        <h4><i class="fa fa-warning"></i> Error !! Problem of incomplete data.</h4>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </form>
+</div>

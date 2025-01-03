@@ -1,0 +1,23 @@
+@( users : List[Users] , me : Users )
+
+
+
+<div class="box box-widget widget-user-2">
+  <div class="widget-user-header bg-yellow">
+    <span>Chat list</span>
+  </div>
+  <div class="box-footer no-padding">
+    <ul class="nav nav-stacked">
+      @for( user <- users ) {
+        <li><a href="@routes.Application.singleChat(user.id)" onclick="return getChat(this,event)">
+          @if(user.role.equalsIgnoreCase("Employee")) {
+            @user.employee.employeeFirstName @user.employee.employeeLastName
+          }
+          @if(user.role.equalsIgnoreCase("student") && Student.byUserId(user.id) != null) {
+            @Student.byUserId(user.id).firstName @Student.byUserId(user.id).familyName
+          }
+            <span class="fix-right"><span class="badge bg-green">@me.SpecificUnread(user)</span></span></a></li>
+      }
+    </ul>
+  </div>
+</div>

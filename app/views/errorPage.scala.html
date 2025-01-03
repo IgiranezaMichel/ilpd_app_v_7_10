@@ -1,0 +1,28 @@
+@( print : String , view : Html , global : Boolean )
+
+@subMain(global){
+  <section class="content bg-light" no-prop="true">
+    <div class="error-page">
+      <h2 class="headline text-yellow"> <i class="fa fa-warning text-yellow"></i> </h2>
+
+      <div class="error-content">
+        <h1><i class="fa fa-warning text-yellow"></i> Oops! Something went wrong.</h1>
+
+        @*<p>
+        @Html(print)
+        </p>*@
+        <br>
+        <h4>
+          The page you trying to look is not found right away.
+        </h4>
+      </div>
+        <!-- /.error-content -->
+    </div>
+      <!-- /.error-page -->
+    <div class="col-md-12">
+    @if( view != null ){
+      @view
+    }
+    </div>
+  </section>
+}

@@ -1,0 +1,91 @@
+@(suppliers : List[models.stock.Supplier] )
+
+<div align="right" class="left-form">
+    <button id="meBut" class="btn btn-ilpd" onclick="addNew(this, event)">
+        <i class="fa fa-plus"></i>
+        Add new
+    </button>
+    <div class="loginForm" id="form1" no-prop="true">
+        <div class="box box-ilpd">
+            <div class="box-header with-border text-left resp-width">
+                <i class="fa fa-plus"></i>
+                <h3 class="box-title">Add new supplier</h3>
+            </div>
+            <form action="@routes.EmployeesController.saveSupplier()" method="POST" onsubmit="return allForms(this)" >
+                <div class="box-body text-left">
+                    <div class="form-position relative">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Supplier name">
+                    </div>
+                    <div class="form-position relative">
+                        <input type="text" class="form-control" id="email" email="true" name="email" placeholder="Supplier email">
+                    </div>
+                    <div class="form-position relative">
+                        <input type="text" class="form-control" id="address" name="address" placeholder="Supplier address">
+                    </div>
+                    <div class="form-position relative">
+                        <input type="text" class="form-control" id="phone" number="true" name="phone" placeholder="Supplier phone">
+                    </div>
+                    <div class="form-position relative">
+                        <input type="text" class="form-control" id="tinNumber" name="tinNumber" placeholder="Tin number">
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-ilpd">Save changes
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-ilpd">
+            <div class="box-header with-border">
+                <h3 class="box-title">Suppliers</h3>
+            </div>
+                <!-- /.box-header -->
+            <div class="box-body">
+                <div class="">
+                    <table class="table table table-bordered table-hover table-striped table-condensed manageTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Address</th>
+                                <th>Tin number</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for(i <- suppliers) {
+                            <tr>
+                                <td>@i.name</td>
+                                <td>@i.email</td>
+                                <td>@i.phone</td>
+                                <td>@i.address</td>
+
+                                <td>@i.tinNumber</td>
+                                <td>
+                                    <button href="@routes.EmployeesController.editSupplier(i.id)" onclick="createModal(this, self.event)" class="btn btn-link " title="Edit this record">
+                                        <i class="ion-compose"></i>
+                                    </button>
+                                    <button onclick="createDel(this)" value="@routes.EmployeesController.deleteSupplier(i.id)" class="btn btn-link text-red" title="Delete this record">
+                                        <i class="ion-android-delete"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+        $('.manageTable').DataTable();
+</script>

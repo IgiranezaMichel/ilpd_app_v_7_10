@@ -1,0 +1,153 @@
+@(isCoordinator: Boolean, cle : Boolean )
+@main("Evaluation report", "") {
+    <section class="content-header">
+        <h1>
+            Evaluation report
+            <small>report</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Reports</a></li>
+            <li class="active">Evaluation reports</li>
+        </ol>
+    </section>
+    <div class="content" style="padding-left: 20px;">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h4 class="box-title text-success"><i class="fa fa-list-ul"></i> Evaluation report</h4>
+                <small>
+                    This page has been enhanced for printing. Click on the links below to print the below content in new tab.</small>
+            </div>
+            <div class="box-body">
+                <div class="panel-group" id="att-accordion">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="btn-block" data-toggle="collapse" data-parent="#att-accordion" href="#attModule">
+                                    Instructor+Component+Status  <i class="fa fa-minus-circle pull-right"></i>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="attModule" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="box-body">
+                                    <form target="_blank" action="@routes.Reports.evaluationPost()" method="post" id="module_report_form">
+                                        <div class="form-inline">
+                                            <div class="form-group">
+                                                <label for="period">Choose period</label>
+                                                <select name="period" id="period" class="form-control" required>
+                                                    <option value="">--select period--</option>
+                                                    @for( i : Training <- Training.cleAbout(cle) ) {
+                                                        <option value="@i.id">@i.print()</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="lecture">Choose lecture</label>
+                                                <select name="lecture" id="lecture" class="form-control" onchange="return listComponent(this)" required>
+                                                    <option value="">--select lecture--</option>
+                                                    <option value="0">All</option>
+                                                    @for( i : Lecture <- Lecture.all() ) {
+                                                        <option value="@i.id" data-value="@routes.Application.listComp(i.id)">@i.print()</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="component-data">Choose component</label>
+                                                <select name="component" id="component-data" class="form-control" required>
+                                                    <option value="">--select component--</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="component-data">Choose status</label>
+                                                <select name="status" class="form-control" required>
+                                                    <option value="">--select status--</option>
+                                                    @if(!isCoordinator) {
+                                                        <option value="yes">Evaluated</option>
+                                                    }
+                                                    <option value="not">Not evaluated</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-primary"><i class="ion-ios-printer-outline"></i>
+                                                    Generate report</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="btn-block" data-toggle="collapse" data-parent="#att-accordion" href="#attModuleS">
+                                    Evaluation per Module and Components  <i class="fa fa-minus-circle pull-right"></i>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="attModuleS" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="box-body">
+                                    <form target="_blank" action="@routes.Reports.evaluationPostModule()" method="post" id="module_report_form">
+                                        <div class="form-inline">
+                                            <div class="form-group">
+                                                <label for="period">Choose training</label>
+                                                <select name="trainingId" id="trainingId" class="form-control" required>
+                                                    <option value="">--select period--</option>
+                                                    @for( i : Training <- Training.cleAbout(cle) ) {
+                                                        <option value="@i.id">@i.print()</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="component-data">Choose module</label>
+                                                <select name="moduleId" id="moduleId" class="form-control" required>
+                                                    <option value="">--select module--</option>
+                                                    @for( i : Module <- Module.all() ) {
+                                                        <option value="@i.id" data-value="@routes.Application.listComponents(i.id)">@i.print()</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="component-data">Choose status</label>
+                                                <select name="status" class="form-control" required>
+                                                    <option value="">--select status--</option>
+                                                    @if(!isCoordinator) {
+                                                        <option value="yes">Evaluated</option>
+                                                    }
+                                                    <option value="not">Not evaluated</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-primary"><i class="ion-ios-printer-outline"></i>
+                                                    Generate report</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- /.content -->
+    <div class="clearfix"></div>
+}
+
+<script >
+    //Date picker
+    $('.datepicker').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'dd-mm-yyyy'
+    });
+
+    $("#module_report_form").parsley();
+
+</script>

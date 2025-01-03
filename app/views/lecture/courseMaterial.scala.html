@@ -1,0 +1,101 @@
+@(courseMaterials:List[CourseMaterial],lect:Lecture)
+<div align="right" class="left-form">
+    <button id="meBut" class="btn btn-ilpd" onclick="addNew(this, event)">
+        <i class="fa fa-plus"></i>
+        Add new
+    </button>
+    <div class="loginForm" id="form1" no-prop="true">
+        <div class="box box-ilpd">
+            <div class="box-header with-border text-left resp-width">
+                <i class="fa fa-plus"></i>
+                <h3 class="box-title">Add new course material Lecturer</h3>
+            </div>
+            <form
+            action="@routes.LectureController.saveCourseMaterial()"
+            method="POST" enctype="multipart/form-data"
+            onsubmit="return allForms(this)" >
+                <div class="box-body">
+                    <div class="form-group">
+                        <select class="form-control" title="Choose schedule" id="schedule" name="scheduleId">
+                            <option value="schedule">-- Select intake/class --</option>
+                            @for(c <- lect.scheduleList()){
+                                @if(!c.training.isClosedA) {
+                                    <option value="@c.id">@c.training.print()</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" required class="form-control"
+                        id="name" name="name" placeholder="Course material title">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="file" name="fileName" class="form-control">
+                    </div>
+
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-ilpd">
+                        Upload material
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-ilpd">
+            <div class="box-header with-border">
+                <h3 class="box-title">List of course materials</h3>
+            </div>
+                <!-- /.box-header -->
+            <div class="box-body">
+                <div class="">
+                    <table class="table table table-hover table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Upload date</th>
+                                <th>Name</th>
+                                <th>Component</th>
+                                <th>Training</th>
+                                <th>File</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for(m <- courseMaterials) {
+                            @if(!m.schedule.training.isClosedA) {
+                                <tr>
+                                    <td width="150">@m.date.format("dd/MM/yyy , HH:mm")</td>
+                                    <td>@m.name</td>
+                                    <td>@m.schedule.print()</td>
+                                    <td>@m.schedule.training.print()</td>
+                                    <td>
+                                        <a target="_blank" href="@routes.Application.updateAll(m.id, "downloadCourseMaterial")"
+                                        class="btn btn-ilpd" title="Download">
+                                            <i class="fa fa-download"></i>
+                                            Download
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm btn-circle"
+                                        onclick="createDel(this)" value="@routes.Application.deleteAll(m.id, "courseMaterial")">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

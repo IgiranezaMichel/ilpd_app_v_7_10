@@ -1,0 +1,34 @@
+@(list: List[Student] , cId : Long, group : Groups )
+<input type="text" value="@group.groupName" class="live-search-box form-control" data-escape="1">
+<input type="hidden" name="groupId" value="@group.id">
+<input type="text" name="train" class="live-search-box form-control" placeholder="search hereXX" data-escape="1">
+@for(c <- list) {
+    @if(!Counts.hasGroup(c.id, cId)) {
+        <ul class="live-search-list">
+            <li>
+                <div class="custom-control custom-checkbox" style="cursor: pointer">
+                    <input type="checkbox" name="studentId[]" style="cursor: pointer" value="@c.id" class="custom-control-input" id="customCheck@c.id">
+                    <label class="custom-control-label" style="cursor: pointer" for="customCheck@c.id"> @c.print() </label>
+                </div>
+            </li>
+            <input type="hidden" name="train" class="trainVals" value="@c.id">
+        </ul>
+    }
+    <script >
+        jQuery(document).ready(function($){
+            $('.live-search-list li').each(function(){
+                $(this).attr('data-search-term', $(this).text().toLowerCase());
+            });
+            $('.live-search-box').on('keyup', function(){
+                var searchTerm = $(this).val().toLowerCase();
+                $('.live-search-list li').each(function(){
+                    if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+    </script>
+}

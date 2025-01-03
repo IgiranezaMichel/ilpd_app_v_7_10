@@ -1,0 +1,20 @@
+@( courseMaterial : CourseMaterial )
+@if( courseMaterial != null ) {
+    <div class="loginForm">
+        <form action="@routes.Application.deleteMaterial(courseMaterial.id)" class="validate-form" method="POST" onsubmit="return allForms(this)">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-envelope"></i>
+                    <h3 class="box-title">Are you sure to delete this ?</h3>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default"> Delete
+                        <i class="fa fa-trash pull-right"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+}
+<script >
+        $('.validate-form').parsley();
+</script>

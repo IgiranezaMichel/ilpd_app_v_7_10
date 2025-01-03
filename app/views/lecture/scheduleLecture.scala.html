@@ -1,0 +1,54 @@
+@(scheduleList : List[Schedule], lecture : Lecture)
+@main("Schedule per lecture","") {
+    <div class="box box-ilpd">
+        <div class="box-body">
+            <div class="box-header with-border">
+                <h4 class="box-title">
+                    <i class="fa fa-calendar-check-o"></i>
+                    Available schedule for @lecture.hisNames()</h4>
+            </div>
+            <table class="table table table-bordered table-hover table-striped table-condensed manageTable">
+                <thead>
+                    <tr>
+                        <th>Day - Hour</th>
+                        <th>lecture</th>
+                        <th>component</th>
+                        <th>room</th>
+                        <th>period</th>
+                        <th>Date range</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for(i <- scheduleList) {
+                    <tr>
+                        <td>@i.date.format("dd-MM , YYYY") , @i.date.format("EEE") , @i.getHour</td>
+                        <td>@i.lecture.hisNames()</td>
+                        <td>@i.component.compName</td>
+                        <td>@i.room.roomName</td>
+                        <td>@i.training.tNames()</td>
+                        <td>@i.dateRange.toString </td>
+                        <td>
+                            <button class="btn btn-info btn-sm btn-circle" href="@routes.Application.updateAll(i.id, "schedule2")" onclick="return createModal(this, self.event);"><i class="fa fa-pencil"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm btn-circle" onclick="createDel(this)" value="@routes.Application.deleteAll(i.id, "schedule")"><i class="ion-ios-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+<script >
+        $('.datepicker').datepicker({
+            autoclose: true,
+            format: 'yyyy/mm/dd',
+            todayHighlight: true
+        });
+
+</script>
+<script>
+        $('.manageTable').DataTable();
+</script>

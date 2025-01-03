@@ -1,0 +1,55 @@
+@( list : List[SubMark] , module: Module)
+@import scala.Predef; var catMarks=0.0;var reMarks=0.0;var inc = 1; var examMarks=0.0;var tot1 = 0.0;var tot2 = 0.0;var tot3 = 0.0;var tot4 = 0.0;
+<div style="margin-bottom: 100px; padding-left: 1%;">
+    <style>
+            @@media print {
+            .hidden-print {
+                display: none !important;
+            }
+            }
+    </style>
+    <h4>&nbsp; @module.moduleName</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Reg number</th>
+                <th>Component</th>
+                <th>CAT / @module.catMax</th>
+                <th>Re-Ex  / @module.reMax</th>
+                <th>EXAM / @module.examMax</th>
+                <th>Claims</th>
+                <th>Denial</th>
+            </tr>
+        </thead>
+        <tbody>
+        @for(s <- list) {
+            @if(s.claimRe > 0 || s.claimExam > 0) {
+                <tr>
+                    <td>&nbsp;@inc</td>
+                    <td>@s.student.regNo</td>
+                    <td>@s.component.compName </td>
+                    <td>@Student.rounding(Counts.getStudentCatMarksComponent(s.student.id, s.component.id))</td>
+                    <td>@Student.rounding(Counts.getStudentResearchMarks(s.student.id, s.component.id))</td>
+                    <td>@Student.rounding(SubMark.componetExamResult(s.student.id, s.component.id))</td>
+                    <td><button class="btn btn-info btn-sm btn-circle" href="@routes.Application.updateAll(s.id, "claim-marks-approval")" onclick="return createModal(this, self.event);"><i class="fa fa-check"></i></button></td>
+                    <td><button class="btn btn-danger btn-sm btn-circle" href="@routes.Application.updateAll(s.id, "claim-marks-denial")" onclick="return createModal(this, self.event);"><i class="fa fa-check"></i></button></td>
+                </tr>
+                @(tot2 = tot2 + Counts.getStudentResearchMarks(s.student.id, s.component.id))
+                @(tot3 = tot3 + SubMark.componetExamResult(s.student.id, s.component.id))
+                @(tot4 += (SubMark.componetExamResult(s.student.id, s.component.id) / (SubMark.totalExamDone(s.student.id, s.component.module.id).toFloat)))
+                @(inc = inc + 1)
+                @(tot1 = Counts.getStudentCatMarksModule(s.student.id, s.component.module.id))
+            }
+        }
+        </tbody>
+        <tfooter>
+            <tr>
+                <td colspan="3">Total</td>
+                <td>@Student.rounding(tot1)</td>
+                <td>@Student.rounding(tot2)</td>
+                <td>@Student.rounding(tot4)</td>
+            </tr>
+        </tfooter>
+    </table>
+</div>

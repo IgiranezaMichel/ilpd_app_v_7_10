@@ -1,0 +1,42 @@
+@( user : Users )
+@main("Reset password via Email Link","a"){
+
+<div class="sp-hd"><img src="@routes.Assets.at("images/logo.png")" alt=""></div>
+  
+  <div class="login-box" style="margin-top:10px;">
+    <div class="box box-info shaded">
+      <div class="box-header">
+        <i class="fa fa-lock"></i>
+
+        <h3 class="box-title">@user.email</h3>
+      </div>
+      <div class="login-logo forgot-logo">
+        <img src="@routes.Assets.at(Vld.imagePro(user.profile))" alt="User Image">
+      </div>
+      <div class="login-box-body">
+        <form action="@routes.Registration.resetPassword()" method="POST" onsubmit="return validate(this, function (res, f) {hoss.reseting(f)});">
+          <div class="form-group has-feedback">
+            <input type="password" name="password" class="form-control" placeholder="New password" autocomplete="off" min="6"/>
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+          </div>
+          <div class="form-group has-feedback">
+            <input type="password" name="conf_password" class="form-control" placeholder="Confirm new password"/>
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <button type="submit" class="btn btn-primary btn-block btn-flat">Reset password</button>
+            </div>
+          </div>
+        </form>
+        <br>
+        <a href="@routes.Application.index()"class="btn btn-link btn-flat no-padding">Already have password ?</a>
+        <br/>
+      </div>
+    </div>
+  </div>
+
+
+
+
+}

@@ -1,0 +1,21 @@
+@(users : List[Users])
+@import scala.Predef;var nn = 0
+<div class="loginForm">
+    <form action="@routes.UpdateForm.deleteUncompletedUser()" method="POST" >
+        @for(i <- users){
+            @if(i.names.length() <= 2){
+                @(nn = nn + 1)
+            }
+        }
+        <div class="box box-info">
+            <div class="box-header text-left resp-width">
+                <i class="fa fa-pencil"></i>
+                <h3 class="box-title">Delete @nn uncompleted ???</h3>
+            </div>
+            <div class="box-footer clearfix">
+                <button type="submit" class="pull-right btn btn-danger"> Delete
+                    <i class="fa fa-arrow-circle-right"></i></button>
+            </div>
+            </div>
+    </form>
+</div>

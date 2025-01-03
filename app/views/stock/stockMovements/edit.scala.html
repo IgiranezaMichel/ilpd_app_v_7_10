@@ -1,0 +1,67 @@
+@(stockMovement:models.stock.StockMovement,employees:List[Employee],locations:List[models.stock.Location],items:List[models.stock.Item])
+@import scala.Predef;var selected="";
+<div class="loginForm" id="form1" no-prop="true">
+    <div class="box box-ilpd">
+        <div class="box-header with-border text-left resp-width">
+            <i class="ion-compose"></i>
+            <h3 class="box-title">Edit stock movement</h3>
+        </div>
+        <form action="@routes.StockTabsController.updateExistingAssest(stockMovement.id)" method="POST" onsubmit="return allForms(this)">
+            <div class="box-body dt-form-container width-100">
+                <div class="form-group has-feedback  width-100">
+                    <select style="width: 100% !important;" name="item" class="form-control select2">
+                        <option value="">-- Choose item --</option>
+                        @for( item <- items ){
+
+                            <option @Counts.selectThis(item.id,stockMovement.item.id) value="@item.id">@item.name ( @item.category.name )</option>
+                        }
+                        </select>
+                </div>
+                @(selected="")
+                <div class="form-group has-feedback  width-100">
+                    <select style="width: 100% !important;" name="employee" class="form-control select2">
+                        <option value="">-- Choose employee --</option>
+                        @for( emp <- employees ){
+                            <option  @Counts.selectThis(emp.id,stockMovement.request.employee.id) value="@emp.id">
+                            @emp.print()
+                            </option>
+                        }
+                    </select>
+                </div>
+                @(selected="")
+                <div class="form-group has-feedback  width-100">
+                    <select style="width: 100% !important;" name="location" class="form-control select2">
+                        <option value="">-- Choose location --</option>
+                        @for( emp <- locations ){
+                            <option @Counts.selectThis(emp.id,stockMovement.location.id) value="@emp.id">@emp.toString</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group has-feedback  width-100">
+                    <input value="@stockMovement.confirmedQty" type="number" class="form-control" name="confirmedQty" placeholder="Item's quantity">
+                </div>
+                <div class="form-group has-feedback  width-100">
+                    <input value="@stockMovement.unitPrice"  type="number" class="form-control" name="unitPrice" placeholder="Item's unit price">
+                </div>
+                <div class="form-group has-feedback  width-100">
+                    <input value="@stockMovement.tagNumber"  type="text" class="form-control" name="tagNumber" placeholder="Item's Tag number">
+                </div>
+                <div class="form-group has-feedback  width-100">
+                    <input value="@stockMovement.serialNumber"  type="text" class="form-control" name="serialNumber" placeholder="Item's Serial number">
+                </div>
+                <div class="form-group has-feedback  width-100">
+                    <input value="@stockMovement.depleciationYear"  type="number" min="0" class="form-control" name="depleciationYear" required placeholder="Depreciation year">
+                </div>
+            </div>
+            <div class="box-footer clearfix">
+                <button type="submit" class="pull-right btn btn-ilpd">Update stock
+                    <i class="fa fa-arrow-circle-right"></i></button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+        $(function () {
+            $('.select2').select2()
+        })
+</script>

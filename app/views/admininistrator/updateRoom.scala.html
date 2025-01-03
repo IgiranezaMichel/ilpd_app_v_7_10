@@ -1,0 +1,58 @@
+@( room : Room )
+@if( room != null ){
+  <div class="loginForm">
+    <form action="@routes.UpdateForm.updateRoom(room.id)"method="POST"onsubmit="return allForms(this)">
+      <div class="box box-info">
+        <div class="box-header text-left resp-width">
+          <i class="fa fa-envelope"></i>
+
+          <h3 class="box-title">Update room name</h3>
+        </div>
+        <div class="box-body">
+
+
+          <div class="form-group has-feedback">
+            <p>Change campus</p>
+            <select name="camp" id="idea" class="form-control">
+              <option value="">-- choose campus</option>
+              @for( i <- Campus.all() ){
+                <option value="@i.id" @if(room.campus.id.equals(i.id)){selected}>@i.campusName</option>
+              }
+            </select>
+          </div>
+          <div class="form-group has-feedback">
+            <p>Room name</p>
+            <input type="text" class="form-control" name="roomName" autocomplete="off" value="@room.roomName"/>
+          </div>
+          <div class="form-group has-feedback">
+            <p>Room code</p>
+            <input class="form-control" name="roomCode" value="@room.roomCode"/>
+          </div>
+          <div class="form-group has-feedback">
+            <p>flow number</p>
+            <input class="form-control" name="flowNumber" value="@room.flowNumber"/>
+          </div>
+          <div class="form-group has-feedback">
+            <p>seat number</p>
+            <input class="form-control" name="numberSeat" value="@room.numberSeat" number="true"/>
+          </div>
+          <div class="form-group has-feedback">
+            <p>room type</p>
+            <select name="roomType" class="form-control">
+              <option value="">-- Choose room type --</option>
+              <option value="lab" @if(room.roomType.equals("lab")){selected}>Computer lab </option>
+              <option value="hall" @if(room.roomType.equals("hall")){selected}>Main hall</option>
+              <option value="class" @if(room.roomType.equals("class")){selected}>Class</option>
+            </select>
+          </div>
+        </div>
+        <div class="box-footer clearfix">
+          <button type="submit" class="pull-right btn btn-default">Update Room
+            <i class="fa fa-arrow-circle-right"></i></button>
+        </div>
+      </div>
+    </form>
+  </div>
+}else{
+  <div>Error with reference</div>
+}

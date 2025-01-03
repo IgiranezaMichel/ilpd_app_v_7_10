@@ -1,0 +1,26 @@
+
+<script>
+        tabs(".staffRequestTab");
+</script>
+<div class="staffRequestTab nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        <li>
+            <a data-toggle="tab" href="#tab1" exclude="true" type="server" data="@routes.StockTabsController.StaffsPage("employees")">
+                <i class="icon-arrow-down"></i>Pending request</a>
+        </li>
+        <li>
+            <a data-toggle="tab" href="#tab2" exclude="true" type="server" data="@routes.StockTabsController.StaffsPage("employees")">
+                <i class="icon-arrow-down"></i>Approved request</a>
+        </li>
+        <li>
+            <a data-toggle="tab" href="#tab3" exclude="true" type="server" data="@routes.StockTabsController.StaffsPage("employees")">
+                <i class="icon-arrow-down"></i>All request</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+
+        <div id="tab1" class="tab-pane active"></div>
+        <div id="tab2" class="tab-pane"></div>
+        <div id="tab3" class="tab-pane"></div>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+@( ver : Verification )
+
+
+
+
+@if( ver == null ){
+  <span class="buttoning"><i class="icon-remove"></i>Pending</span>
+}else{
+    @if( ver.status ){
+        <span class="buttoning"><i class="icon-check"></i>Accepted</span>
+    }else{
+        <span class="buttoning"><i class="icon-remove"></i>Canceled</span>
+    }
+}

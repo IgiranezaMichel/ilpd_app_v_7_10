@@ -1,0 +1,113 @@
+@(request: models.stock.Request)
+@import scala.Predef;var inc = 0;var itemType = "";var typeVar="";var status=""; var remain = 0; var totalConformed = 0;
+
+<div class="row">
+    <div class="col-md-12">
+        <h4>Details for request No: <b>@request.id</b> of  <b>@request.employee.print()</b>
+            , Unit of <b>@request.employee.unit.acronym</b></h4>
+
+        <form target="_blank" action="@routes.HUnitController.comfirmStockOut(request.id,"2")" class="submitFinalRequest" id="" method="post">
+            <input type="hidden" value="@request.id" id="hiddenRequestId">
+            <table class="table table-condensed table-striped ">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Item [type]</th>
+                        <th>Proposed qty</th>
+                        <th>DAF qty</th>
+                        <th>Tag number</th>
+                        <th>Serial number</th>
+                        <th>Depleciation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @(inc = 1)
+                    @for(item <- request.stockMovements) {
+                        @(remain = item.item.getBeginningStockQty(Counts.getTomorrow().toDate.format("yyyy-MM-dd")))
+                            @(typeVar = (item.iType))
+                            @if(!(typeVar=="Stock")){
+                                @(status="disabled")
+                            }else{
+                                @(status="")
+                            }
+
+                        @if(item.confirmedQty < remain){
+                                <tr>
+                                }else{
+                                <tr style="color: red !important;">
+                            }
+                                    <td>
+                                        <div class="form-group"> @inc </div>
+                                    </td>
+                                    @(itemType = (item.item.iType))
+                                    <td>
+                                        <div class="form-group">
+                                            @item.item.name <span class="label bg-orange">The remain qty: @remain</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                        @item.proposedQty
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                        @item.confirmedQty
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @if(itemType.equalsIgnoreCase("Non-consumable")){
+                                            <input  @status placeholder="Tag number" type="text" name="tagNumber@item.id" class="form-control">
+                                        }else{
+                                            <span class="label label-info"> No need</span>
+                                            <input  @status placeholder="Tag number" type="hidden" name="tagNumber@item.id" value="">
+                                        }
+
+                                    </td>
+                                    <td>
+                                        @if(itemType.equalsIgnoreCase("Non-consumable")){
+                                            <input @status placeholder="Serial number" type="text" name="serialNumber@item.id" class="form-control">
+                                        }else{
+                                            <input @status placeholder="Serial number" type="hidden" name="serialNumber@item.id" value="">
+                                            <span class="label label-info"> No need</span>
+                                        }
+
+                                        <input type="hidden" name="movements[]" value="@item.id">
+                                        <input type="hidden" name="toLocation@item.id" value="@item.toLocation">
+
+                                    </td>
+                                    <td>
+                                        @if(itemType.equalsIgnoreCase("Non-consumable")){
+                                            <input @status placeholder="Depleciation year" type="text" name="depleciationYear@item.id" class="form-control">
+                                        }else{
+                                            <input @status placeholder="Depleciation year" type="hidden" name="depleciationYear@item.id" value="0">
+                                            <span class="label label-info"> No need</span>
+                                        }
+
+                                    </td>
+                                </tr>
+                                @(inc = inc + 1)
+                                @(totalConformed = totalConformed + item.confirmedQty)
+                    }
+                    <tr>
+                        <td colspan="7">
+                            <div class="form-group pull-right">
+                                @if(totalConformed > remain) {
+                                    <span class="btn btn-danger btnConfirmIndividual disabled">
+                                        No quantity   <i class="ion ion-android-checkmark-circle"></i>
+                                    </span>
+                                }else{
+                                    <button type="submit" class="btn btn-success btnConfirmIndividual">
+                                        Confirm   <i class="ion ion-android-checkmark-circle"></i>
+                                    </button>
+                                }
+                                <button class="btn btn-default"  data-dismiss="modal">Close</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+

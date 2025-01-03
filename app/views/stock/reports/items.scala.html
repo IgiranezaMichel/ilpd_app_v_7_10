@@ -1,0 +1,608 @@
+@main("Items report", "") {
+    <section class="content-header">
+        <h1>
+            Items
+            <small>Reports</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Reports</a></li>
+            <li class="active">Items reports</li>
+        </ol>
+    </section>
+
+        <!-- Main content -->
+    <div class="content" style="padding-left: 20px ">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-ilpd">
+                    <div class="box-header with-border">
+                        <h2 class="box-title text-success">
+                            <i class="fa fa-info-circle"></i> General report.
+                            <small>
+                                This page has been enhanced for printing. Click on the links below to print the below content in new tab.
+                            </small>
+                        </h2>
+                    </div>
+                    <div class="box-body">
+                        <div class="panel-group" id="app-accordion">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#app-accordion" href="#sItmes">
+                                                    Items and Suppliers <i class="fa fa-plus-circle pull-right"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="sItmes" class="panel-collapse collapse">
+                                            <div class="panel-body">
+
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <p>
+                                                            <a href="@routes.Reports.generalStockReport("groups")" target="_blank">
+                                                                Group categories</a>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <p>
+                                                            <a href="@routes.Reports.generalStockReport("categories")" target="_blank">
+                                                                Items categories</a>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <p>
+                                                            <a href="@routes.Reports.generalStockReport("suppliers")" target="_blank">
+                                                                Suppliers</a>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <p>
+                                                            <i class="fa fa-arrow-right"></i>
+                                                            <a href="@routes.Reports.generalStockReport("items")" target="_blank">
+                                                                View all items</a>
+                                                        </p>
+                                                            <ul>
+                                                                <li class="active">
+                                                                    <a href="@routes.Reports.generalStockReport("items-cons")" target="_blank">
+                                                                    Consumable items</a>
+                                                                </li>
+                                                                <li class="active">
+                                                                    <a href="@routes.Reports.generalStockReport("items-non")" target="_blank">
+                                                                    Non-consumable</a>
+                                                                </li>
+                                                            </ul>
+
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <p>
+                                                            <a href="@routes.Reports.generalStockReport("nonConsItems")" target="_blank">
+                                                                Asset report</a>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <p>
+                                                            <a style="color: red !important;" href="@routes.Reports.generalStockReport("itemsLowStock")" target="_blank">
+                                                                Low stock items</a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#app-accordion" href="#sTocksCategory">
+                                                    Report of stock based on item category  <i class="fa fa-plus-circle pull-right"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="sTocksCategory" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <form action="@routes.Reports.generalStockReport("stockReportCategory")" class="form-inline" method="get" target="_blank" autocomplete="off">
+
+                                                    <div class="form-group">
+                                                        <select style="width: 100%" title="" name="category" class="form-control select2">
+                                                            <option value="0">--All categories--</option>
+                                                            @for(c <- models.stock.Category.all()) {
+                                                                <option value="@c.id">@c.name</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="startDate" placeholder="Start date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="endDate" placeholder="End date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button class="btn btn-ilpd" type="submit">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#app-accordion" href="#sTocksCategoryss">
+                                                    Report of asset based on category <i class="fa fa-plus-circle pull-right"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="sTocksCategoryss" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <form action="@routes.Reports.generalStockReport("stockReportCategoryAsset")" class="form-inline" method="get" target="_blank" autocomplete="off">
+
+                                                    <div class="form-group">
+                                                        <select style="width: 100%" title="" name="category" class="form-control select2">
+                                                            <option value="0">--All categories--</option>
+                                                            @for(c <- models.stock.Category.all()) {
+                                                                <option value="@c.id">@c.name</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="startDate" placeholder="Start date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="endDate" placeholder="End date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button class="btn btn-ilpd" type="submit">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#app-accordion" href="#assetsStockCategory">
+                                                    Stock out report by item categories <i class="fa fa-plus-circle pull-right"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="assetsStockCategory" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <form action="@routes.Reports.generalStockReport("assetsReportCategory")" class="form-inline" method="get" target="_blank" autocomplete="off">
+
+                                                    <div class="form-group">
+                                                        <select style="width: 100%" name="category" class="form-control select2">
+                                                            <option value="0">--All category--</option>
+                                                            @for(c <- models.stock.Category.all()) {
+                                                                <option value="@c.id">@c.name</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="startDate" placeholder="Start date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="endDate" placeholder="End date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button class="btn btn-ilpd" type="submit">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#app-accordion" href="#stockInHistory">
+                                                    <i class="fa fa-arrow-circle-right"></i>
+                                                    Stock in report History <i class="fa fa-plus-circle pull-right"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="stockInHistory" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <form action="@routes.Reports.generalStockReport("stockInHistory")" class="form-inline" method="get" target="_blank" autocomplete="off">
+                                                    <div class="form-group">
+                                                        <select style="width: 100%" title="" class="form-control select2" name="groupId" required>
+                                                            <option value="0">All item group</option>
+                                                            @for(emp: models.stock.Group <- models.stock.Group.all()) {
+                                                                <option value="@emp.id">@emp.name</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="startDate" placeholder="Start date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="endDate" placeholder="End date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button class="btn btn-ilpd" type="submit">Generate report</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a href="@routes.Reports.generalStockReport("depreciatedItems")" target="_blank">
+                                                    Expired and depreciated items
+                                                </a>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a href="@routes.Reports.generalStockReport("depreciatedItems-removed")" target="_blank">
+                                                    Removed depreciated items
+                                                </a>
+                                            </h4>
+                                        </div>
+                                    </div>
+
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#app-accordion" href="#stockInSupplierItems">
+                                                    <i class="fa fa-arrow-circle-right"></i>
+                                                    Stock in supplier+Item
+                                                    <i class="fa fa-plus-circle pull-right"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="stockInSupplierItems" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <form action="@routes.Reports.generalStockReport("stockInSupplierItems")" class="form-horizontal" method="get" target="_blank" style="padding: 10px" autocomplete="off">
+                                                    <div class="form-group">
+                                                        <select style="width: 100%" title="" class="form-control select2" name="supplier" required>
+                                                            <option value="">-- select supplier --</option>
+                                                            <option value="0">All</option>
+                                                            @for(supp: models.stock.Supplier <- models.stock.Supplier.all()) {
+                                                                <option value="@supp.id">@supp.name</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <select style="width: 100%" title="" class="form-control select2" name="item" required>
+                                                            <option value="">-- select item --</option>
+                                                            <option value="0">All</option>
+                                                            @for(emp: models.stock.Item <- models.stock.Item.all()) {
+                                                                <option value="@emp.id">@emp.name</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="startDate" placeholder="Start date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="endDate" placeholder="End date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button class="btn btn-ilpd" type="submit">Generate report</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#app-accordion" href="#stockOutHistory">
+                                                    <i class="fa fa-arrow-circle-left"></i>
+                                                    Stock out report History <i class="fa fa-plus-circle pull-right"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="stockOutHistory" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <form action="@routes.Reports.generalStockReport("stockOutHistory")" class="form-inline" method="get" target="_blank" autocomplete="off">
+                                                    <div class="form-group">
+                                                        <select style="width: 100%" title="" class="form-control select2" name="groupId" required>
+                                                            <option value="0">All item group</option>
+                                                            @for(emp: models.stock.Group <- models.stock.Group.all()) {
+                                                                <option value="@emp.id">@emp.name</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="startDate" placeholder="Start date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="endDate" placeholder="End date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button class="btn btn-ilpd" type="submit">Generate report</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#app-accordion" href="#stockInOutHistory">
+                                                    <i class="fa fa-arrow-circle-left"></i> <i class="fa fa-arrow-circle-right"></i>
+                                                    Stock in/out report <i class="fa fa-plus-circle pull-right"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="stockInOutHistory" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <form action="@routes.Reports.generalStockReport("stockInOutHistory")" class="form-inline" method="get" target="_blank" autocomplete="off">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="startDate" placeholder="Start date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="endDate" placeholder="End date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button class="btn btn-ilpd" type="submit">Generate report</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#app-accordion" href="#staffRequestHistory">
+                                                    <i class="fa fa-user"></i> Staff request history
+                                                    <i class="fa fa-plus-circle pull-right"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="staffRequestHistory" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <form action="@routes.Reports.generalStockReport("staffRequestHistory")" class="form-inline" method="get" target="_blank" autocomplete="off">
+                                                    <div class="form-group">
+                                                        <select style="width: 100%" class="form-control select2" name="employee" id="employee">
+                                                            <option value="0">-- select --</option>
+                                                            @for(emp: Employee <- Employee.all()) {
+                                                                <option value="@emp.id">@emp.print()</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="startDate" placeholder="Start date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="endDate" placeholder="End date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button class="btn btn-ilpd" type="submit">Generate report</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#app-accordion" href="#staffRequestHistoryItem">
+                                                    <i class="fa fa-tag"></i> Item + Staff request history
+                                                    <i class="fa fa-plus-circle pull-right"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="staffRequestHistoryItem" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <form action="@routes.Reports.generalStockReport("staffRequestHistoryItem")" class="form-inline" method="get" target="_blank" autocomplete="off">
+                                                    <div class="form-group">
+                                                        <select style="width: 100%" title="" class="form-control select2" name="itemId" id="employee">
+                                                            <option value="0">-- select --</option>
+                                                            @for(emp: models.stock.Item <- models.stock.Item.all()) {
+                                                                <option value="@emp.id">@emp.name</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <select style="width: 100%" title="" class="form-control select2" name="employee" id="employee">
+                                                            <option value="0">-- select --</option>
+                                                            @for(emp: Employee <- Employee.all()) {
+                                                                <option value="@emp.id">@emp.print()</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="startDate" placeholder="Start date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="endDate" placeholder="End date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button class="btn btn-ilpd" type="submit">Generate report</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#app-accordion" href="#staffRequestHistoryUnit">
+                                                    <i class="fa fa-user"></i> Item + Unit
+                                                    <i class="fa fa-plus-circle pull-right"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="staffRequestHistoryUnit" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <form action="@routes.Reports.generalStockReport("staffRequestHistoryUnit")" class="form-inline" method="get" target="_blank" autocomplete="off">
+                                                    <div class="form-group">
+                                                        <select style="width: 100%" title="" class="form-control select2" name="itemId" id="employee">
+                                                            <option value="0">-- select --</option>
+                                                            @for(emp: models.stock.Item <- models.stock.Item.all()) {
+                                                                <option value="@emp.id">@emp.name</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <select style="width: 100%" title="" class="form-control select2" name="unitId" id="employee">
+                                                            <option value="0">-- select --</option>
+                                                            @for(emp: models.stock.Unit <- models.stock.Unit.all()) {
+                                                                <option value="@emp.id">@emp.name</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="startDate" placeholder="Start date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="endDate" placeholder="End date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button class="btn btn-ilpd" type="submit">Generate report</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#app-accordion" href="#assetLocation">
+                                                    <i class="fa fa-building"></i>
+                                                    Asset Inventory report by location (Building ), offices
+                                                    <i class="fa fa-plus-circle pull-right"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="assetLocation" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <form action="@routes.Reports.generalStockReport("assetLocation")" method="get" target="_blank" autocomplete="off">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <select style="width: 100%" class="form-control select2" title="Category" name="item" id="location" required>
+                                                                    <option value="">--select--</option>
+                                                                    <option value="0">All</option>
+                                                                    @for(c : models.stock.Item <- models.stock.Item.nonConsume()) {
+                                                                        <option value="@c.id">@c.name</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <select style="width: 100%" class="form-control select2" title="Location" name="location" id="location" required>
+                                                                    <option value="">--select--</option>
+                                                                    <option value="0">All</option>
+                                                                    @for(location: models.stock.Location <- models.stock.Location.all()) {
+                                                                        <option value="@location.id">@location.toString</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <select style="width: 100%" class="form-control select2" title="Status" name="status" id="location" required>
+                                                                    <option value="">--select--</option>
+                                                                    <option value="0">All</option>
+                                                                    <option value="1">Depreciated</option>
+                                                                    <option value="2">Not depreciated</option>
+
+                                                                </select>
+                                                            </div>
+                                                            <button class="btn btn-ilpd btn-flat" type="submit">
+                                                                Generate report
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#app-accordion" href="#stockInHistory1">
+                                                    <i class="fa fa-arrow-circle-right"></i>
+                                                    Stock harmonization in report <i class="fa fa-plus-circle pull-right"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="stockInHistory1" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <form action="@routes.Reports.generalStockReport("harmonizationInReport")" class="form-inline" method="get" target="_blank" autocomplete="off">
+                                                    <div class="form-group">
+                                                        <select style="width: 100%" title="" class="form-control select2" name="groupId" required>
+                                                            <option value="0">All item group</option>
+                                                            @for(emp: models.stock.Group <- models.stock.Group.all()) {
+                                                                <option value="@emp.id">@emp.name</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="startDate" placeholder="Start date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="endDate" placeholder="End date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button class="btn btn-ilpd" type="submit">Generate report</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#app-accordion" href="#stockOutHistory7">
+                                                    <i class="fa fa-arrow-circle-left"></i>
+                                                    Stock harmonization out report <i class="fa fa-plus-circle pull-right"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="stockOutHistory7" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <form action="@routes.Reports.generalStockReport("harmonizationOut")" class="form-inline" method="get" target="_blank" autocomplete="off" autocomplete="off">
+                                                    <div class="form-group">
+                                                        <select style="width: 100%" title="" class="form-control select2" name="groupId" required>
+                                                            <option value="0">All item group</option>
+                                                            @for(emp: models.stock.Group <- models.stock.Group.all()) {
+                                                                <option value="@emp.id">@emp.name</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="startDate" placeholder="Start date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control datepicker" name="endDate" placeholder="End date">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button class="btn btn-ilpd" type="submit">Generate report</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script>
+       //Date picker
+       $('.datepicker').datepicker({
+           autoclose: true,
+           todayHighlight: true,
+           format: 'yyyy-mm-dd'
+       });
+</script>
+<script>
+        $(function () {
+            $('.select2').select2()
+        })
+</script>

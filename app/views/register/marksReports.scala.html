@@ -1,0 +1,129 @@
+@(intakes: List[Intake])
+    @main("Marks report", "") {
+        <section class="content-header">
+            <h1> Marks<small>report</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Reports</a></li>
+                <li class="active">marks reports</li>
+            </ol>
+        </section>
+        <div class="content" style="padding-left: 20px ">
+            <div class="box box-primary">
+                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                <div class="box-header with-border">
+                    <h4 class="box-title text-success"><i class="fa fa-list-ul"></i> Attendance report</h4>
+                    <small>
+                        This page has been enhanced for printing. Click on the links below to print the below content in new tab.</small>
+                </div>
+                <div class="box-body">
+                    <div class="panel-group" id="marksAccordion">
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="btn-block" data-toggle="collapse" data-parent="#marksAccordion" href="#stMaks">
+                                        Student marks report  <i class="fa fa-minus-circle pull-right"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="stMaks" class="panel-collapse collapse in">
+                                <div class="panel-body">
+
+                                    <form target="_blank" class="form-horizontal" method="get" action="@routes.Reports.marksReportByStudent("reg")" autocomplete="off">
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2 control-label-important">
+                                                Reg number</label>
+                                            <div class="col-sm-6">
+                                                <input type="text" required placeholder="Enter student registration number" class="form-control col-md-4" name="regNumber">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-6">
+                                                <button type="submit" class="btn btn-ilpd">
+                                                    <i class="fa fa-print"></i> Generate report</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="btn-block" data-toggle="collapse" data-parent="#marksAccordion" href="#diploma">
+                                        Student certificate   <i class="fa fa-minus-circle pull-right"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="diploma" class="panel-collapse collapse">
+                                <div class="panel-body">
+
+                                    <form target="_blank" class="form-horizontal" method="get" action="@routes.Reports.marksReportByStudent("dip")">
+                                        <div class="form-group">
+                                            <label for="regNo" class="col-sm-2 control-label-important">Reg number</label>
+                                            <div class="col-sm-6">
+                                                <input id="regNo" type="text" required placeholder="Enter student registration number" class="form-control col-md-4" name="regNumber">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-6">
+                                                <button type="submit" class="btn btn-ilpd">
+                                                    <i class="fa fa-print"></i> View diploma</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="btn-block" data-toggle="collapse" data-parent="#marksAccordion" href="#stIntakeMarks">
+                                        Student marks report by Intake  <i class="fa fa-minus-circle pull-right"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="stIntakeMarks" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="container">
+                                        <form action="#" method="get" target="_blank" class="form-horizontal">
+
+                                            <div class="form-group">
+                                                <label for="regNo" class="col-sm-2 control-label-important">Select intake</label>
+                                                <div class="col-sm-6">
+                                                    <select name="intakeId" id="intakeId" title="choose intake" class="form-control" onchange="this.form.action = this.value;">
+                                                    @for(i <- intakes) {
+                                                        <option value="@routes.Reports.marksReportByIntake(i.id)">@i.print()</option>
+                                                    }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-offset-2 col-sm-6">
+                                                    <button type="submit" class="btn btn-ilpd">
+                                                        <i class="fa fa-print"></i> Generate report</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        </div>
+            <!-- /.content -->
+        <div class="clearfix"></div>
+
+
+    }
+
+

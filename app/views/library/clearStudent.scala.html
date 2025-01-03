@@ -1,0 +1,44 @@
+@( library : ILDPLibrary )
+
+<div class="loginForm" id="form1" no-prop="true">
+
+  <div class="box box-info">
+    <div class="box-header text-left resp-width">
+      <i class="fa fa-envelope"></i>
+
+      <h3 class="box-title">Student clearance</h3>
+    </div>
+    <form action="@routes.LibraryController.clearStudent()" method="POST" onsubmit="return allForms(this)">
+      <div class="box-body">
+        <div class="col-md-12">
+          <div class="form-group has-feedback">
+            <p>Student reg Number</p>
+            <input type="text" name="regno" placeholder="Enter reg no ..." id="regno1" value="@library.student.regNo" readonly  class="form-control">
+          </div>
+          <div class="form-group has-feedback">
+            <p>Student names</p>
+            <input type="text" class="form-control" name="studentNames" value="@library.student.toString()" placeholder="Names" autocomplete="off" disabled id="studentNames1"/>
+          </div>
+          <div class="form-group has-feedback">
+            <p>Book code</p>
+            <input type="text" class="form-control" name="bookCode" readonly value="@library.bookNumber" placeholder="Enter book code" autocomplete="off" id="bookCode1"/>
+          </div>
+          <div class="form-group has-feedback">
+            <p>Book name</p>
+            <input type="text" class="form-control" name="bookTitle" value="@library.bookName" placeholder="Enter book title" autocomplete="off" disabled id="bookTitle1"/>
+          </div>
+          <div class="form-group has-feedback">
+            <p>Book cost</p>
+            <input type="text" class="form-control" name="bookCost" value="@library.bookCost" placeholder="Enter amount charged" autocomplete="off" id="bookCost1" disabled/>
+          </div>
+          <input type="hidden" name="libraryId" id="libraryId" value="@library.id">
+
+        </div>
+      </div>
+      <div class="box-footer clearfix">
+        <button type="submit" class="pull-right btn btn-default">Clear
+          <i class="fa fa-check-circle-o"></i></button>
+      </div>
+    </form>
+  </div>
+</div>

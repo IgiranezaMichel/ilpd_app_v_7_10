@@ -1,0 +1,65 @@
+@( list : List[GroupMembers] , groups: Groups)
+@*
+<div class="row">
+<div class="col-md-12">
+<div class="col-md-6 pull-left">
+<h3>@groups.groupName</h3>
+</div>
+  <div class="col-md-6 pull-right">
+    <ul>
+    <li role="presentation">
+    <a class="btn btn-danger" role="menuitem" tabindex="-1" href="@routes.Application.deleteAll(groups.id,"deleGroup")" onclick="return createOg(this,'Are you sure to delete @groups.groupName ?','Delete alert')">
+      <i class="fa fa-trash-o text-red"></i><i class="fa fa-trash"></i> Delete group</a></li></ul>
+  </div>
+</div>
+</div> *@
+
+
+
+<table class="table table-hover table-striped mid-v">
+
+  <tbody>
+
+    <tr class="end-block">
+      <td class="mailbox-name"><a href="#"> @groups.groupName </a></td>
+      <td><li class="dropdown" style="list-style: none">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true">
+          <i class="fa fa-gear"></i> options <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="@routes.Application.deleteAll(groups.id,"deleGroup")" onclick="return createOg(this,'Are you sure to delete @groups.groupName ?','Delete alert');locatioReload()">
+              <i class="fa fa-trash-o text-red"></i> Delete group</a></li>
+          <li role="presentation"class="dropdown">
+            <a role="menuitem" class="dropdown-toggle fetch-students" data-toggle="dropdown" tabindex="-1" href="#"><i class="fa fa-send-o text-warning"></i> Add members</a></li>
+        </ul>
+      </li></td>
+      <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
+    </tr>
+    <hr/>
+  @for( i <- list ){
+    <tr class="end-block">
+      <td><li class="dropdown" style="list-style: none">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true">
+                 <i class="fa fa-gear"></i> options <span class="caret"></span>
+                </a>
+        <ul class="dropdown-menu">
+          <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="@routes.Application.deleteAll(i.id,"gMember")" onclick="return createOg(this,'Are you sure to delete @i.student.toString() ?','Delete alert')">
+              <i class="fa fa-trash-o text-red"></i> Remove</a></li>
+          <li role="presentation"class="dropdown">
+            <a role="menuitem" class="dropdown-toggle fetch-students" data-toggle="dropdown" tabindex="-1" href="@routes.Application.moveNext(i.id)"><i class="fa fa-send-o text-warning"></i> Send to another group</a></li>
+        </ul>
+      </li></td>
+      <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
+      <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
+      <td><div class="round-image sm-round"><img src="@routes.Assets.at("uploads/"+i.student.applicant.profile)" alt=""></div></td>
+      <td class="mailbox-name"><a href="#"> @i.student.toString() </a></td>
+      <td class="mailbox-subject"><b>@i.student.regNo</b></td>
+      
+      <td class="mailbox-attachment"></td>
+      <td class="mailbox-date"><span class="label label-primary pull-right">@i.student.status</span></td>
+    </tr>
+  }
+  </tbody>
+</table>

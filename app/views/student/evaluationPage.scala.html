@@ -1,0 +1,84 @@
+@(categories: List[EvCategory], schedule: Schedule)
+
+
+<section>
+
+    @views.html.shared.ildpHeader.render()
+
+<h2 class="text-center">Lecturer evaluation form</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <span><span class="text-bold">1</span> = Strongly Disagree</span>
+        <span>,&nbsp;&nbsp;&nbsp;<span class="text-bold">2</span> = Disagree</span>
+        <span>,&nbsp;&nbsp;&nbsp;<span class="text-bold">3</span> = Neutral</span>
+        <span>,&nbsp;&nbsp;&nbsp;<span class="text-bold">4</span> = Agree</span>
+        <span>,&nbsp;&nbsp;&nbsp;<span class="text-bold">5</span> = Strongly agree</span>
+    </div>
+</div>
+
+<div class="relative">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tbody>
+            @for(c <- categories) {
+                <tr>
+                    <td colspan="6"> <h4>@c.content</h4></td>
+                </tr>
+
+                @for(q: EvQuestion <- c.questionList) {
+                    <tr>
+                        <td>@q.question</td>
+                        @if(q.textarea) {
+                            <td colspan="5">
+                                <div class="form-group">
+                                    <label for="textarea">Enter answer</label>
+                                    <textarea id="textarea" title="Enter answer" class="form-control" name="@q.id"></textarea>
+                                </div>
+                            </td>
+                        } else {
+                            <td>
+                                <div>
+                                    <span class="">
+                                        <input type="radio" title="" value="1" name="@q.id"/>
+                                        <label class="">1</label>
+                                    </span>
+                                </div>
+                            </td>
+                            
+                            <td>
+                                <div><span class="">
+                                <input type="radio" title="" value="2" name="@q.id"/>
+                                <label class="">2</label>
+                            </span>
+                            </div>
+                            </td>
+                            <td><div><span class="">
+                                <input type="radio" title="" value="3" name="@q.id"/>
+                                <label class="">3</label>
+                            </span>
+                            </div>
+                            </td>
+                            <td><div>
+                                <span class="">
+                                <input type="radio" title="" value="4" name="@q.id"/>
+                                <label class="">4</label>
+                            </span>
+                            </div>
+                            </td>
+                            <td><div><span class="">
+                                <input type="radio" title="" value="5" name="@q.id"/>
+                                <label class="">5</label>
+                            </span>
+                            </div>
+                            </td>
+                        }
+                    </tr>
+                }
+            }
+</tbody>
+</table>
+</div>
+</div>
+
+</section>

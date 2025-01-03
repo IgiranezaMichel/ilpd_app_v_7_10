@@ -1,0 +1,37 @@
+@( applieds : List[Applied] , user : Users )
+<form action="@routes.Application.FinalStudent()" method="POST" onsubmit="return validate(this,function(res,f){studentC(f)});">
+    <div class="box-header text-left">
+        <i class="fa fa-user-circle"></i>
+
+        <h3 class="box-title">Choose a training to access</h3>
+            <!-- tools box -->
+    </div>
+    <div class="box-body">
+        <div class="text-center">
+            <div class="image-div large-size">
+                <img src="@routes.Assets.at(Vld.imagePro(user.profile))" alt="ILPD" style="max-width:100%;"/>
+            </div>
+        </div>
+        <div style="max-height: 200px;overflow-y: auto">
+        @for( applied <- applieds ){
+                <div class="col-md-12" style="margin-top: 9px"><label class="radio-container">
+                    <input type="radio" value="@applied.id" name="applicantId"/>
+                    <span class="radio-mark"></span>
+                </label> @applied.training.print() </div>
+        }
+        </div>
+    </div>
+    <div class="box-footer">
+        <img src="@routes.Assets.at("images/loader.gif")" height="40" class="regLoader"><button type="submit" class="pull-right btn btn-default">SIGN IN
+        <i class="fa fa-arrow-circle-right"></i></button>
+    </div>
+
+    <div class="col-md-12">
+        <a href="@routes.Registration.studentRegForm()" onclick="return runSignUp(this,0);"
+        class="btn btn-link text-left btn-flat no-padding">
+            <i class="fa fa-reply"></i> Go back to Login page?</a>
+    </div>
+
+
+</form>
+

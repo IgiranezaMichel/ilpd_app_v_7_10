@@ -1,0 +1,199 @@
+
+<section class="content-header">
+    <h1>
+        Dashboard
+        <small>Stock summary</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Dashboard</li>
+    </ol>
+</section>
+
+<section class="content">
+        <!-- Small boxes (Stat box) -->
+    <div class="row">
+        <div class="col-lg-3 col-sm-6">
+                <!-- small box -->
+            <div class="small-box bg-yellow">
+                <div class="inner">
+                    <h3>
+                        @models.stock.Item.finder.where().eq("deleteStatus",false).findRowCount()
+                    </h3>
+                    <p>Items</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-bag"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+            <!-- ./col -->
+        <div class="col-lg-3 col-sm-6">
+                <!-- small box -->
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3>@models.stock.Item.finder.where().eq("deleteStatus",false).eq("iType","Consumable").findRowCount()</h3>
+                    <p>Consumable items</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-bag"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+            <!-- ./col -->
+        <div class="col-lg-3 col-sm-6">
+                <!-- small box -->
+            <div class="small-box bg-blue">
+                <div class="inner">
+                    <h3>@models.stock.Item.finder.where().eq("deleteStatus",false).eq("iType","Non-consumable").findRowCount()</h3>
+                    <p>Non-Consumable items</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-bag"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+            <!-- ./col -->
+        <div class="col-lg-3 col-sm-6">
+                <!-- small box -->
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>@models.stock.Category.finder.where().eq("deleteStatus",false).findRowCount()</h3>
+                    <p>Items categories</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+            <!-- ./col -->
+        <div class="col-lg-3 col-sm-6">
+                <!-- small box -->
+            <div class="small-box bg-yellow-gradient">
+                <div class="inner">
+                    <h3>@models.stock.Group.finder.where().eq("deleteStatus",false).findRowCount()</h3>
+                    <p>Category groups</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-person-add"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+            <!-- ./col -->
+        <div class="col-lg-3 col-sm-6">
+                <!-- small box -->
+            <div class="small-box bg-aqua-gradient">
+                <div class="inner">
+                    <h3>@models.stock.Supplier.finder.where().eq("deleteStatus",false).findRowCount()</h3>
+                    <p>Suppliers</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+            <!-- ./col -->
+            <!-- ./col -->
+        <div class="col-lg-3 col-sm-6">
+                <!-- small box -->
+            <div class="small-box bg-blue-gradient">
+                <div class="inner">
+                    <h3>@models.stock.Position.finder.where().eq("deleteStatus",false).findRowCount()</h3>
+                    <p>Positions</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+            <!-- ./col --
+            <!-- ./col -->
+        <div class="col-lg-3 col-sm-6">
+                <!-- small box -->
+            <div class="small-box bg-green-gradient">
+                <div class="inner">
+                    <h3>@models.stock.Unit.finder.where().eq("deleteStatus",false).findRowCount()</h3>
+                    <p>Units</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-erlenmeyer-flask"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+            <!-- ./col -->
+            <!-- ./col -->
+        <div class="col-lg-3 col-sm-6">
+                <!-- small box -->
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <h3>@models.stock.Item.finder.where().eq("deleteStatus",false).lt("balanceQty",10).findRowCount()</h3>
+                    <p>Low stock items (i.e: < 10)</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+            <!-- ./col -->
+            <!-- ./col -->
+        <div class="col-lg-3 col-sm-6">
+                <!-- small box -->
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <h3>@Counts.formatAmount(Counts.currentStockValue())</h3>
+                    <p>Current stock value</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+            <!-- ./col -->
+            <!-- ./col -->
+        <div class="col-lg-3 col-sm-6">
+                <!-- small box -->
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <h3>@Counts.formatAmount(Counts.thisMonthStockOutItems())</h3>
+                    <p>This month stock out items</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+            <!-- ./col -->
+            <!-- ./col -->
+        <div class="col-lg-3 col-sm-6">
+                <!-- small box -->
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <h3>@Counts.formatAmount(Counts.thisMonthStockInItems())</h3>
+                    <p>This Month stock in items</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+            <!-- ./col -->
+    </div>
+        <!-- /.row -->
+        <!-- Main row -->
+    <div class="row">
+            <!-- right col -->
+    </div>
+        <!-- /.row (main row) -->
+</section>

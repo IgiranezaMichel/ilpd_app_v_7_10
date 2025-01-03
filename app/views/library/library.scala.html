@@ -1,0 +1,16 @@
+@(anounceRoles : List[AnounceRole], userType : String, user : Users , anns : List[Announce] )
+@main("Librarian page",""){
+  @header(anounceRoles, userType, true  , user )
+  @leftMenu("ILDPLibrary",user)
+  <div class="content-wrapper">
+
+    <div class="data-deposit" style="padding:5px;">
+
+
+    </div>
+
+    @communication.render(anns)
+
+  </div>
+  @footer(user)
+}

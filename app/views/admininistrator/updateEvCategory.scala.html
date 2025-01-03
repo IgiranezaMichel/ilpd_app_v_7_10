@@ -1,0 +1,24 @@
+@( ev : EvCategory )
+
+
+    <div class="loginForm">
+        <form action="@routes.UpdateForm.updateEvCat(ev.id)" method="POST" onsubmit="return allForms(this)">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-envelope"></i>
+
+                    <h3 class="box-title">Update Evaluation category</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group has-feedback">
+                        <p>Category</p>
+                        <input type="text" class="form-control" name="content" autocomplete="off" placeholder="Update category" value="@ev.content"/>
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default">Update
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>

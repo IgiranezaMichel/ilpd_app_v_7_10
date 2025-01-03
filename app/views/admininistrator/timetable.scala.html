@@ -1,0 +1,93 @@
+@(t: Training,lecture: Lecture,bool: Boolean)
+    @import scala.Predef;var check = false;var a = Long.parseLong("0");
+
+    @subMain(bool) {
+
+        <style>
+                html, body {
+                    height: 100% !important;
+                }
+        </style>
+
+        <div class="col-md-12 percentHeighted">
+            <div style="padding: 15px 0 15px 0;">
+                <div class="user-block">
+                    <img class="img-circle img-bordered-sm" src="@routes.Assets.at("images/boys.jpg")" alt="user image">
+                    <span class="username">
+                        <a href="#"><b>(</b> @t.tNames()<b>)</b></a>
+                        <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
+                    </span>
+                    <span class="description"> @t.iMode.campusProgram.print() </span>
+                </div>
+            </div>
+            <div class="table-pr percentHeighted">
+                <table class="width100 td-padd">
+
+                    <thead>
+                        <tr>
+                            <th style="text-align: center !important;">Days<b>/</b>Hours</th>
+                            <th>Component</th>
+                            @if(!session.containsKey("Instructor")){
+                                <th>Instructor</th>
+                            }
+<th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for(row <-Counts.scheduleListByTraining(t.id,lecture.id)){
+                            @if(!Attendance.componentWasAttended(row.getLong("cId"),row.getLong("sId"))){
+                                <tr>
+                                    <td>@Counts.dateConverter(row.getString("day")).format("dd-MM-yyyy") / @row.getString("hour")</td>
+                                    <td>@row.getString("component")</td>
+                                    @if(!session.containsKey("Instructor")){
+                                        <td>@row.getString("teacher")</td>
+                                    }
+                                    <td>
+                                        <a href="@routes.Application.attendanceCheck(row.getLong("sId"))" class="btn btn-ilpd btn-sm btnMakeAttendance" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myModal">
+                                            <i class="ion-ios-list-outline"></i> Make attendance</a>
+                                    </td>
+                                </tr>
+                            }
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+                <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Attendance list</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-loading" style="width:50px; margin:auto;padding-top:50px; padding-bottom:50px;">
+                        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                        <img src="@routes.Assets.at("images/loader2.gif")" alt="Loading...">
+                        <span class="sr-only">Loading... please wait</span>
+                    </div>
+                    <div class="div-result"></div>
+                    <div class="div-body"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    }
+
+
+<script >
+    $(function () {
+       $(document).on('click','#saveAttendanceBtn',function () {
+           $(document).find('.error-place').html("");
+       });
+    });
+</script>

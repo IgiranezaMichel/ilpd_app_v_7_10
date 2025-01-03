@@ -1,0 +1,90 @@
+@(stu: Student)
+
+@if(stu != null) {
+
+    <div align="center">
+        <div class="profiler">
+            <div class="embeder"><img src="@routes.Assets.at("uploads/" + stu.applicant.profile)"></div>
+        </div>
+    </div>
+    <ul class="timeline">
+        <li><i class="fa fa-graduation-cap bg-aqua"></i>
+            <div class="timeline-item">
+                <label class="time">@stu.firstName</label>
+
+                <h3 class="timeline-header no-border"><a href="#">First name</a> </h3>
+            </div>
+        </li>
+
+        <li><i class="fa fa-graduation-cap bg-aqua"></i>
+            <div class="timeline-item">
+                <label class="time">@stu.familyName</label>
+
+                <h3 class="timeline-header no-border"><a href="#">Last name</a> </h3>
+            </div>
+        </li>
+        <li><i class="fa fa-graduation-cap bg-aqua"></i>
+            <div class="timeline-item">
+                <label class="time">@stu.applicant.gender</label>
+
+                <h3 class="timeline-header no-border"><a href="#">Student sex</a> </h3>
+            </div>
+        </li>
+
+
+        <li><i class="fa fa-graduation-cap bg-aqua"></i>
+            <div class="timeline-item">
+                <label class="time">@stu.training.tNames()</label>
+
+                <h3 class="timeline-header no-border"><a href="#">Period</a> </h3>
+            </div>
+        </li>
+
+
+    </ul>
+
+    <div class="has-feedback">
+
+        @card(stu, false)
+        <div class="margin pull-left">
+            <div class="btn-group">
+                <button type="button" class="btn btn-success">Change status</button>
+                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                    <span class="sr-only">Change status</span>
+                </button>
+                <ul class="dropdown-menu linked-in" role="menu">
+                    <li><a href="@routes.Application.setStatuses(stu.id, "active")" @if(stu.status.equals("active")) {
+                        class="checked-elem" }>Active</a></li>
+                    <li><a href="@routes.Application.setStatuses(stu.id, "suspended")" @if(stu.status.equals("suspended")) {
+                        class="checked-elem" }>Suspended</a></li>
+                    <li><a href="@routes.Application.setStatuses(stu.id, "dropout")" @if(stu.status.equals("dropout")) {
+                        class="checked-elem" }>Dropout</a></li>
+                    <li><a href="@routes.Application.setStatuses(stu.id, "graduated")" @if(stu.status.equals("graduated")) {
+                        class="checked-elem" }>Graduated</a></li>
+                    <li><a href="@routes.Application.setStatuses(stu.id, "alumni")">Alumni</a></li>
+                </ul>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-default btn-flat flat">@stu.training.tNames()</button>
+                <button type="button" class="btn btn-info dropdown-toggle btn-flat flat" data-toggle="dropdown">
+                    <span>Change period</span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu linked-in" role="menu">
+                @for(t: Training <- Training.allOpen()) {
+                    @if(t.id != stu.training.id) {
+                        <li style="vertical-align: text-top !important;">
+                            <a href="@routes.StudentController.changeStudentTraining(stu.id,t.id)">@t.tNames()</a>
+                        </li>
+                    }
+                }
+                </ul>
+            </div>
+        </div>
+        <button class="btn btn-success pull-right" onclick="return viewCard(this, self.event)">
+            Generate student card</button>
+    </div>
+}
+

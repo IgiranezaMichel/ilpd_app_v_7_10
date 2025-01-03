@@ -1,0 +1,71 @@
+@(stock: models.stock.Supplied, items : List[models.stock.Item] , suppliers : List[models.stock.Supplier] )
+    <div class="loginForm" id="form1" no-prop="true">
+        <div class="box box-ilpd">
+            <div class="box-header with-border text-left resp-width">
+                <i class="fa fa-plus"></i>
+                <h3 class="box-title">Edit quantity in stock</h3>
+            </div>
+            <form action="@routes.StockTabsController.saveSupplied()" method="POST" onsubmit="return allForms(this)" >
+                <div class="box-body text-left width-100">
+                    <div class="form-group has-feedback width-100">
+                        <select name="itemID" class="form-control">
+                            <option value="">-- Choose item --</option>
+                            @for( item <- items ){
+                                @if(stock.item.id==item.id){
+                                    <option value="@item.id" selected>@item.name ( @item.category.name )</option>
+                                }else{
+                                    <option value="@item.id">@item.name ( @item.category.name )</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <br>
+                    <div class="form-group has-feedback width-100">
+                        <select name="supplierID" class="form-control">
+                            <option value="">-- Choose supplier --</option>
+                            @for( supplier <- suppliers ){
+                                @if(stock.supplier.id==supplier.id){
+                                    <option value="@supplier.id" selected>@supplier.name</option>
+                                }else{
+                                    <option value="@supplier.id">@supplier.name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback width-100">
+                        <select name="fund" class="form-control">
+                            <option value="">-- Source of fund --</option>
+                            @for( fund : Source <- Source.all() ){
+                                @if(stock.fund.equalsIgnoreCase(fund.name)){
+                                    <option value="@fund.name" selected>@fund.name</option>
+                                }else{
+                                    <option value="@fund.name">@fund.name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback width-100">
+                        <label for="name">Supplied quantity</label>
+                        <input type="text" value="@stock.suppliedQty" class="form-control" id="name" number="true" name="suppliedQty" placeholder="quantity items">
+                    </div>
+                    <div class="form-group relative  width-100">
+                        <label for="acronym">Unit price</label>
+                        <input type="text" value="@stock.unitPrice" class="form-control" id="acronym" number="true" name="unitPrice" placeholder="Unit price">
+                        <input type="hidden" name="id" value="@stock.id" required>
+                    </div>
+                    <div class="form-group relative">
+                        <label for="acronym">Expiration date</label>
+                        <input type="date" class="form-control datepicker" id="aquistionDate" data-escape="1" name="aquistionDate" placeholder="Aquisition date">
+                    </div>
+                    <div class="form-group relative">
+                        <label for="acronym">Aquisition date</label>
+                        <input type="date" class="form-control datepicker" id="expirationDate" data-escape="1" name="expirationDate" placeholder="Expiration date">
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-ilpd">Save changes
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>

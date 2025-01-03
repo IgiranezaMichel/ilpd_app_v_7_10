@@ -1,0 +1,134 @@
+@(training : Training, list : List[Student] , module : Module)
+@import scala.Predef;var catMarks=0.0;var reMarks=0.0;var resitExamMarks=0.0;var examMarks=0.0;var inc=1;var tot1 = 0.0;var tot2 = 0.0;var tot3 = 0.0;var tot4 = 0.0; var sName = ""; var x = 0;var p = 0;var xp = 0;var m=0; var percentMarks =0.0
+<div style="margin-bottom: 100px; padding-left: 1%;">
+    <h4>&nbsp; @module.moduleName</h4>
+    <div class="row no-print">
+        <div class="col-xs-12">
+            <div class="col-xs-12">
+                <a class="btn btn-info pull-right" href="@routes.Application.moduleReportMarks(training.id, module.id)" target="_blank">Print mark</a>
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default_@training.id">
+                    Approve marks
+                </button>
+
+                <div class="modal fade" id="modal-default_@training.id">
+                    <div class="modal-dialog">
+                        <form action="@routes.Registration.approveTrainingMarks(training.id)" method="POST" onsubmit="return allForms(this)">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">Confirm the marks approval for @training.print()</h4>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Confirm</button>
+                            </div>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 table-responsive">
+            <table id="tblData" class="table table-condensed table-striped table-hover table-bordered table-responsive">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Reg No</th>
+                        <th>CAT / @module.catMax</th>
+                        <th>Re-Exer.  / @module.reMax</th>
+                        <th>EXAM / @module.examMax</th>
+                        <th>TOTAL/ @(module.catMax+module.reMax+module.examMax)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for( s <- list ){
+                    @(catMarks=(Counts.getStudentCatMarksModule(s.id, module.id)))
+                    @(reMarks=Counts.getStudentResearchMarksModule(s.id,module.id))
+                    @(examMarks=SubMark.componetExamResultModule(s.id, module.id, s.training.id))
+                    @(resitExamMarks=SubMark.reSitExamResultModule(s.id, module.id))
+                    <tr>
+                        <td>&nbsp;@inc</td>
+                        <td>@s.toString2()</td>
+                        <td>
+                            @if(SubMark.byDualInResitModule(s.id, module.id) == null && AssignmentResult.numberAssignmentDone(s.id, module.id, s.training.id) > 0.0) {
+                                @(Student.rounding(catMarks))
+                            }else{
+                                N/A
+                            }
+                        </td>
+                        @if(SubMark.byDualInResitModule(s.id, module.id) == null && AssignmentResult.numberResearchDone(s.id, module.id, s.training.id)> 0.0 ) {
+                            <td>@(Student.rounding(reMarks))</td>
+                        }else{
+                            <td>N/A</td>
+                        }
+                        @if(SubMark.byDualInResitModule(s.id, module.id) == null && Counts.getExamMaxTrainingModule(s.training.id,module.id) > 0){
+                            <td>@(Student.rounding(examMarks))</td>
+                        }else{
+                            <td>N/A</td>
+                        }
+                        <td>
+                            @* C, R & E *@
+                            @if(SubMark.byDualInResitModule(s.id, module.id) == null && AssignmentResult.numberAssignmentDone(s.id, module.id, s.training.id) > 0.0 && AssignmentResult.numberResearchDone(s.id, module.id, s.training.id) > 0.0 &&  Counts.getExamMaxTrainingModule(s.training.id, module.id) > 0) {
+                                @(Student.rounding(catMarks + reMarks + examMarks))
+                                @(percentMarks = percentMarks + (catMarks + reMarks + examMarks))
+                            }
+                            @* C & E *@
+                            @if(SubMark.byDualInResitModule(s.id, module.id) == null && AssignmentResult.numberAssignmentDone(s.id, module.id, s.training.id) > 0.0 && AssignmentResult.numberResearchDone(s.id, module.id, s.training.id) <= 0.0 &&  Counts.getExamMaxTrainingModule(s.training.id, module.id) > 0.0) {
+                                @Student.rounding(((catMarks + examMarks) * 100) / (module.catMax + module.examMax))
+                                @(percentMarks = percentMarks + (((catMarks + examMarks) * 100) / (module.catMax + module.examMax)))
+                            }
+                            @* C & R *@
+                            @if(SubMark.byDualInResitModule(s.id, module.id) == null && AssignmentResult.numberAssignmentDone(s.id, module.id, s.training.id) > 0.0 && AssignmentResult.numberResearchDone(s.id, module.id, s.training.id)> 0.0 &&  Counts.getExamMaxTrainingModule(s.training.id, module.id) <= 0.0) {
+                                @Student.rounding(((catMarks + reMarks) * 100) / (module.catMax + module.reMax))
+                                @(percentMarks = percentMarks + (((catMarks + reMarks) * 100) / (module.catMax + module.reMax)))
+                            }
+                            @* C *@
+                            @if(SubMark.byDualInResitModule(s.id, module.id) == null && AssignmentResult.numberAssignmentDone(s.id, module.id, s.training.id) > 0.0 && AssignmentResult.numberResearchDone(s.id, module.id, s.training.id) <= 0.0 &&  Counts.getExamMaxTrainingModule(s.training.id, module.id) <= 0.0) {
+                                @Student.rounding((catMarks * 100) / module.catMax)
+                                @(percentMarks = percentMarks + ((catMarks * 100) / module.catMax))
+                            }
+                            @* R & E *@
+                            @if(SubMark.byDualInResitModule(s.id, module.id) == null && AssignmentResult.numberAssignmentDone(s.id, module.id, s.training.id) <= 0.0 && AssignmentResult.numberResearchDone(s.id, module.id, s.training.id)> 0.0 &&  Counts.getExamMaxTrainingModule(s.training.id, module.id) > 0.0) {
+                                @Student.rounding(((reMarks + examMarks) * 100) / (module.reMax + module.examMax))
+                                @(percentMarks = percentMarks + (((reMarks + examMarks) * 100) / (module.reMax + module.examMax)))
+                            }
+                            @* R *@
+                            @if(SubMark.byDualInResitModule(s.id, module.id) == null && AssignmentResult.numberAssignmentDone(s.id, module.id, s.training.id) <= 0.0 && AssignmentResult.numberResearchDone(s.id, module.id, s.training.id)> 0.0 &&  Counts.getExamMaxTrainingModule(s.training.id, module.id) <= 0.0) {
+                                @Student.rounding((reMarks * 100) / module.reMax)
+                                @(percentMarks = percentMarks + ((reMarks * 100) / module.reMax))
+                            }
+                            @* E *@
+                            @if(SubMark.byDualInResitModule(s.id, module.id) == null && AssignmentResult.numberAssignmentDone(s.id, module.id, s.training.id) <= 0.0 && AssignmentResult.numberResearchDone(s.id, module.id, s.training.id) <= 0.0 &&  Counts.getExamMaxTrainingModule(s.training.id, module.id) > 0.0) {
+                                @Student.rounding((examMarks * 100) / module.examMax)
+                                @(percentMarks = percentMarks + ((examMarks * 100) / module.examMax))
+                            }
+                            @* RE-SIT *@
+                            @if(SubMark.byDualInResitModule(s.id, module.id) != null) {
+                                @if(SubMark.byDualInResitModule(s.id, module.id) != null) {
+                                    <span style="color: #9c079c !important;">
+                                    @if(((examMarks * 100) / module.examMax) < ProfileInfo.unique().scoreThree) {
+                                        @Student.rounding((examMarks * 100) / module.examMax)
+                                    }else{
+                                        @Student.rounding(ProfileInfo.unique().scoreThree)
+                                    }</span>
+                                }
+                            }
+                            @if(AssignmentResult.numberAssignmentDone(s.id, module.id, s.training.id) <= 0.0 && AssignmentResult.numberResearchDone(s.id, module.id, s.training.id) <= 0.0 &&  Counts.getExamMaxTrainingModule(s.training.id, module.id) <= 0.0) {
+                                N/A
+                            }else{
+                                @(inc = inc + 1)
+                            }
+
+                        </td>
+                    </tr>
+                    @(inc = inc + 1)
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

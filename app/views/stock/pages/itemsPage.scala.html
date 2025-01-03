@@ -1,0 +1,35 @@
+
+<script>
+        tabs(".tabsacademic");
+</script>
+<div class="tabsacademic nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        <li>
+            <a data-toggle="tab" exclude="true" href="#tab1" type="server" data="@routes.StockTabsController.ItemsPage("sources")">
+            <i class="icon-arrow-down"></i>Source of funds</a>
+        </li>
+        <li>
+            <a data-toggle="tab" exclude="true" href="#tab2" type="server" data="@routes.StockTabsController.ItemsPage("groups")">
+            <i class="icon-arrow-down"></i>Groups</a>
+        </li>
+        <li>
+            <a data-toggle="tab" exclude="true" href="#tab3" type="server" data="@routes.StockTabsController.ItemsPage("categories")">
+            <i class="icon-arrow-down"></i>Categories</a>
+        </li>
+        <li>
+            <a data-toggle="tab" exclude="true" href="#tab4" type="server" data="@routes.StockTabsController.ItemsPage("items")">
+            <i class="icon-arrow-down"></i>Consumable items</a>
+        </li>
+        <li>
+            <a data-toggle="tab" exclude="true" href="#tab5" type="server" data="@routes.StockTabsController.ItemsPage("assets")">
+            <i class="icon-arrow-down"></i>Non consumable items (Assets)</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab1" class="tab-pane active"></div>
+        <div id="tab2" class="tab-pane"></div>
+        <div id="tab3" class="tab-pane"></div>
+        <div id="tab4" class="tab-pane"></div>
+        <div id="tab5" class="tab-pane"></div>
+    </div>
+</div>

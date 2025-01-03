@@ -1,0 +1,16 @@
+@(t:Training)
+@import scala.Predef;var g="";
+<div class="loginForm">
+    <form action="@routes.UpdateForm.updateData("UndoGraduationResit",t.id)" method="POST" onsubmit="return allForms(this)">
+        <div class="box box-ilpd">
+            <div class="box-header text-left resp-width">
+                <i class="fa fa-pencil"></i>
+                <h3 class="box-title">Are you sure to undo the Examination board(Re-sit)?</h3>
+            </div>
+            <div class="box-footer clearfix">
+                <button type="submit" class="pull-right btn btn-ilpd"> UN DO
+                    <i class="fa fa-refresh-circle-right"></i></button>
+            </div>
+        </div>
+    </form>
+</div>

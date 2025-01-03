@@ -1,0 +1,23 @@
+@( announce: Announce)
+@if( announce != null ) {
+    <div class="loginForm">
+        <div class="box box-info">
+            <div class="box-header text-left resp-width">
+                <i class="fa fa-envelope"></i>
+                <h3 class="box-title">VIEW IMAGE</h3>
+            </div>
+            <div class="box-body">
+                <form action="@routes.UpdateForm.updateProductChangeImage(announce.id)" method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="file" name="attachment" />
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn-default pull-right" type="submit">Add attachment</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}

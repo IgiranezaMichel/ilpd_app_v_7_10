@@ -1,0 +1,58 @@
+2019-05-29 19:41:56,987 - [INFO] - from play in play-internal-execution-context-14 
+database [default] connected at jdbc:mysql://127.0.0.1/ilpddb
+
+2019-05-29 19:42:05,354 - [INFO] - from play in play-internal-execution-context-14 
+Application started (Dev)
+
+2019-05-29 19:42:08,491 - [ERROR] - from application in New I/O worker #2 
+
+
+! Internal server error, for (GET) [/assets/javascripts/jquery.min.js] ->
+
+java.util.concurrent.RejectedExecutionException: Task java.util.concurrent.ExecutorCompletionService$QueueingFuture@568aebb2 rejected from java.util.concurrent.ThreadPoolExecutor@ed51e0f[Terminated, pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 96]
+	at java.util.concurrent.ThreadPoolExecutor$AbortPolicy.rejectedExecution(ThreadPoolExecutor.java:2063) ~[na:1.8.0_211]
+	at java.util.concurrent.ThreadPoolExecutor.reject(ThreadPoolExecutor.java:830) ~[na:1.8.0_211]
+	at java.util.concurrent.ThreadPoolExecutor.execute(ThreadPoolExecutor.java:1379) ~[na:1.8.0_211]
+	at java.util.concurrent.ExecutorCompletionService.submit(ExecutorCompletionService.java:181) ~[na:1.8.0_211]
+	at sbt.CompletionService$.submit(CompletionService.scala:30) ~[na:na]
+	at sbt.ConcurrentRestrictions$$anon$4.submitValid(ConcurrentRestrictions.scala:161) ~[na:na]
+	at sbt.ConcurrentRestrictions$$anon$4.submit(ConcurrentRestrictions.scala:149) ~[na:na]
+	at sbt.Execute.submit(Execute.scala:237) ~[na:na]
+	at sbt.Execute.ready(Execute.scala:217) ~[na:na]
+	at sbt.Execute.notifyDone(Execute.scala:162) ~[na:na]
+	at sbt.Execute$$anonfun$retire$3.apply(Execute.scala:137) ~[na:na]
+	at sbt.Execute$$anonfun$retire$3.apply(Execute.scala:137) ~[na:na]
+	at scala.collection.immutable.List.foreach(List.scala:318) ~[scala-library.jar:na]
+	at sbt.Execute.retire(Execute.scala:137) ~[na:na]
+	at sbt.Execute$$anonfun$work$1.apply$mcV$sp(Execute.scala:252) ~[na:na]
+	at sbt.Execute$$anon$1.process(Execute.scala:19) ~[na:na]
+	at sbt.Execute.next$1(Execute.scala:88) ~[na:na]
+	at sbt.Execute.processAll(Execute.scala:91) ~[na:na]
+	at sbt.Execute.runKeep(Execute.scala:69) ~[na:na]
+	at sbt.EvaluateTask$.liftedTree1$1(EvaluateTask.scala:183) ~[na:na]
+	at sbt.EvaluateTask$.sbt$EvaluateTask$$run$1(EvaluateTask.scala:183) ~[na:na]
+	at sbt.EvaluateTask$$anonfun$runTask$2.apply(EvaluateTask.scala:196) ~[na:na]
+	at sbt.EvaluateTask$$anonfun$runTask$2.apply(EvaluateTask.scala:196) ~[na:na]
+	at sbt.Signals0.withHandler(Signal.scala:55) ~[na:na]
+	at sbt.Signals$.withHandler(Signal.scala:13) ~[na:na]
+	at sbt.EvaluateTask$.runTask(EvaluateTask.scala:196) ~[na:na]
+	at sbt.EvaluateTask$$anonfun$apply$1$$anonfun$apply$3.apply(EvaluateTask.scala:117) ~[na:na]
+	at sbt.EvaluateTask$$anonfun$apply$1$$anonfun$apply$3.apply(EvaluateTask.scala:116) ~[na:na]
+	at scala.Option$WithFilter.map(Option.scala:206) ~[scala-library.jar:na]
+	at sbt.EvaluateTask$$anonfun$apply$1.apply(EvaluateTask.scala:116) ~[na:na]
+	at sbt.EvaluateTask$$anonfun$apply$1.apply(EvaluateTask.scala:115) ~[na:na]
+	at sbt.EvaluateTask$.withStreams(EvaluateTask.scala:153) ~[na:na]
+	at sbt.EvaluateTask$.apply(EvaluateTask.scala:115) ~[na:na]
+	at sbt.Project$.runTask(Project.scala:445) ~[na:na]
+	at sbt.Project$.runTask(Project.scala:441) ~[na:na]
+	at play.PlayReloader$$anon$1.reload(PlayReloader.scala:295) ~[na:na]
+	at play.core.ReloadableApplication$$anonfun$get$1.apply(ApplicationProvider.scala:104) ~[play_2.10-2.2.6.jar:2.2.6]
+	at play.core.ReloadableApplication$$anonfun$get$1.apply(ApplicationProvider.scala:102) ~[play_2.10-2.2.6.jar:2.2.6]
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24) ~[scala-library.jar:na]
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24) ~[scala-library.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinTask$AdaptedRunnableAction.exec(ForkJoinTask.java:1361) ~[scala-library.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260) ~[scala-library.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339) ~[scala-library.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979) ~[scala-library.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107) ~[scala-library.jar:na]
+

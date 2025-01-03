@@ -1,0 +1,101 @@
+<style>
+    .back {
+        background-size: cover;
+        margin-bottom: 0 !important;
+        overflow: hidden;
+        position: relative;
+        opacity: 0.9;
+        background-image: url(@routes.Assets.at("images/bgbg.jpg"));
+    }
+</style>
+<div class="data-deposit back">
+    <div class="login-box">
+        <div class="box box-ilpd shaded login-box-height">
+            <div class="data-ding login-data">
+                <div class="box-header with-border">
+                    <i class="fa fa-lock"></i>
+                    <h3 class="box-title">Sign in to start your session</h3>
+                </div>
+                <div class="login-logo" style="padding: 2px">
+                    <img src="@routes.Assets.at("images/logo.png")" alt="ILPD" style="max-width: 100%;"
+                    class="img-responsive" />
+                </div>
+                <div style="padding-bottom: -4% !important; margin-top: -3% !important;" class="box-header with-border">
+                    <h4>Already have an account, Please sign in:</h4>
+                    <h6><i><center>If keep loading, please enable account first then login</center></i></h6>
+                </div>
+                <div style="margin-top: -20px !important;" class="box-body">
+                    <form action="@routes.Application.performLogin()" method="POST" onsubmit="return validate(this, function (res, f) {hoss.login(f)});">
+                        <div class="box-body no-padding">
+                            <div class="form-group has-feedback">
+                                <input type="email" name="email" class="form-control" placeholder="Email address" autocomplete="off"/>
+                                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <input type="password" name="password" class="form-control" placeholder="Password" autocomplete="new-password" value=""/>
+                                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <button type="submit" class="btn btn-ilpd btn-block btn-flat">
+                                        <i class="fa fa-lock pull-right" style="margin-top: 3px"></i>
+                                        Sign in</button>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="btn-group" style="position: relative; margin-top: -15px !important;">
+                                @if(Training.allActive().size() > 0) {
+                                    <a href="@routes.Registration.studentRegForm()"
+                                    onclick="return runSignUp(this, 1, '.login-first', this.href);"
+                                    class="btn btn-link btn-default pull-left btn-flat">
+                                        <i class="fa fa-graduation-cap pull-right" style="margin-top: 3px"></i>
+                                        Start your application here</a>
+                                }
+                                <a target="_blank" href="@routes.Application.enableStudentAccount"
+                                class="btn btn-link btn-default pull-right btn-flat">
+                                    <i class="fa fa-spinner pull-right" style="margin-top: 3px"></i>
+                                    Enable account
+                                </a>&nbsp;&nbsp;
+                            </div>
+                        </div>
+                        <div style="position: relative; margin-top: -7% !important;">
+                            <a href="@routes.Application.getEmailForReset"
+                            class="btn btn-link btn-default btn-block btn-flat"
+                            id="homeclicker">
+                                <i class="fa fa-lock pull-right" style="margin-top: 3px"></i>
+                                    Click here to reset your password
+                            </a>
+                        </div>
+                    </form>
+                </div>
+                <script>
+                        $(function () {
+                            var elem = I("#homeclicker");
+                            elem.onclick = function (e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                return resetP(this, e);
+                            }
+                        });
+                </script>
+
+            </div>
+
+            <div class="data-ding login-first loading">
+
+            </div>
+
+            <div class="data-ding login-roling">
+
+            </div>
+
+            <div class="data-ding student-ap">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+

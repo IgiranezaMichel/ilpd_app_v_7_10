@@ -1,0 +1,304 @@
+@(typ: String, me: Applicant, user: Users, aps: Applied)
+
+@import scala.Predef;var status = true;var apStatus = "";var id :Long = Long.parseLong("0");var types = "post";var statusComment = "";
+
+@if( aps != null ){
+    @( status = aps.status )
+    @( apStatus = aps.applicationStatus )
+    @( statusComment = aps.statusComment )
+    @( id = aps.id )
+    @( types = "under" )
+}else{
+    @( status = false )
+}
+<script>
+        var ipx = I(".reg-form");
+        hoss.handleForms( ipx  , @status );
+</script>
+@if( (aps != null)  ) {
+    <button onclick='printDiv("elemsing",this)' class="pdf-click"><i class="fa fa-book"></i> Print Pdf</button>
+}
+
+<div class="col-md-10 col-centered">
+<section class="reg-form" id="elemsing">
+    @if( aps.status ){
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-check-circle"></i> Submission success!</h4>
+            @Message.endedApp
+            <div><h4><i class="icon fa fa-check-circle"></i> Application process completed!</h4></div>
+        </div>
+    }
+    @if( apStatus.equals("derefered") ){
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+            Your application is defered you can click link below to check <span class="dropdown btn btn-info flat btn-sm">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true">
+                Attachment approval status <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu small-x-ul flat" style="min-width: 300px;">
+            @for( i <- me.myFiles() ) {
+                <li> @Html(Vld.identifier(i.amV()))
+                <label class="right-label" >&nbsp;&nbsp;  @register.button(i.amV())</label>
+                <span class="spanner"><a href="#@routes.Application.detailedView(i.id,types)" style="color: #999;"> @i.file.fileName</a> </span>
+                </li>
+            }
+            </ul>
+        </span>
+            <a style="font-size: 24px;" class="btn btn-link" href="@routes.Application.resetApp(id)"><i class="fa fa-warning"></i> Click here to Re-send application</a>
+            <div><h4><i class="icon fa fa-ban"></i> Application status reason!</h4></div>
+            <div>@statusComment</div>
+        </div>
+    }
+
+    @generalHeader("Student Reg Form") {
+        admission office <br/>
+        Application form <br><br>
+        <label class="small-font"></label>
+    }
+    <div class="form-body">
+        <script>
+            var aD = (new Date().getFullYear()) - @ProfileInfo.unique().minAge;
+                        startPicker = new Pikaday({
+                            field: document.getElementById('start'),
+                            minDate: new Date(),
+                            maxDate: new Date(2020, 12, 31),
+                            formatStrict: true,
+                            onSelect: function(e) {
+                                startDate = this.getDate();
+                                //updateStartDate();
+                            }
+                        }),
+                        birthPicker = new Pikaday({
+                            field: document.getElementById('birth'),
+                            minDate: new Date(1680,12,31),
+                            maxDate: new Date(aD, 12, 31),
+                            formatStrict: true,
+                            yearRange:200,
+                            onSelect: function(e) {
+                                startDate = this.getDate();
+                                //updateStartDate();
+                            }
+                        })
+        </script>
+
+        @if(typ.equals("under") || typ.equals("underT") || 1 > 0 ) {
+
+            @basic(me, typ , user )
+
+
+            <div class="separated" title="Previous Education">
+                <form action="@routes.Registration.saveApplicant("3")" method="POST" id="formPort" name="forms">
+                    <div class="box box-info">
+                        <div class="box-header text-left resp-width">
+                            <i class="fa fa-pencil"></i>
+
+                            <h3 class="box-title">2.Previous Education</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="col-md-12"></div>
+                            <div class="col-md-12">
+                            @if(me.applied.training.iMode.campusProgram.program.cle) {
+                                <h4>Education Background </h4>
+                                <div class="form-group has-feedback others">
+                                    <label>Education Background <em>*</em> </label>
+                                    <select required name="educationBackground" id="educationBackground" class="form-control">
+                                        <option value="">--select--</option>
+                                        <option value="Primary" @Counts.selected("Primary",me.educationBackground)>Primary</option>
+                                        <option value="Secondary" @Counts.selected("Secondary",me.educationBackground)>Secondary</option>
+                                        <option value="Bachelor" @Counts.selected("Bachelor",me.educationBackground)>Bachelor</option>
+                                        <option value="Masters" @Counts.selected("Masters",me.educationBackground)>Masters</option>
+                                        <option value="Other" @Counts.selected("Other",me.educationBackground)>Other</option>
+                                    </select>
+                                </div>
+                            }else{
+                                <h4>Bachelor’s degree </h4>
+                                <div class="form-group has-feedback others">
+                                    <label>Name of University <em>*</em> </label>
+                                    <input class="form-control" type="text" name="aSchool" @if(me != null){value="@me.aSchool" }>
+                                </div>
+
+
+                                <div class="form-group has-feedback others">
+                                    <label>From</label>
+                                    <input max="@(new Date().format("yyyy"))"  class="form-control" type="number" number="true" escape="1" name="aFromu" @if(me != null){value="@me.aFromu"}>
+                                </div>
+
+
+                                <div class="form-group has-feedback others">
+                                    <label>To</label>
+                                    <input max="@(new Date().format("yyyy"))" class="form-control" type="number" number="true" escape="1" name="aTo" @if(me != null){value="@me.aTo"}>
+                                </div>
+                            }
+
+
+                            </div>
+
+                        </div>
+                        <div class="box-footer clearfix">
+                            <button type="submit" class="pull-right btn btn-success" id="meBut">Save & Continue
+                                <i class="fa fa-arrow-circle-right"></i> </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+
+
+
+
+
+
+            <div class="separated" title="Payment Info">
+                <form action="@routes.Registration.saveApplication("4")" method="POST" id="formPort" name="forms">
+                    <div class="box box-info">
+                        <div class="box-header text-left resp-width">
+                            <i class="fa fa-pencil"></i>
+
+                            <h3 class="box-title">3.Fees Information</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="form-group has-feedback others"><label>Who will pay your fees?<em>*</em></label>
+                                <div class="radio_place">
+                                    <div class="myRadio">
+                                        <span class="t-radio">
+                                            <input type="radio" id="ySelf" onchange="unchecker(this,'#diviser')" name="feespayment" value="myself" @if(aps != null && aps.feespayment.equals("myself")) {
+                                            checked="checked"}>
+                                            <label for="ySelf">Yourself</label>
+                                        </span>
+                                        <span class="t-radio">
+                                            <input type="radio" id="spnsr" onchange="checker(this,'#diviser')" name="feespayment" value="sponsor" @if(aps != null && aps.feespayment.equals("sponsor")) {
+                                            checked="checked"}>
+                                            <label for="spnsr">Sponsor</label>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="diviser" @if(aps != null && aps.feespayment.equals("myself")) {
+                                style="display:none;"}>
+                                <div class="form-group has-feedback others">
+                                    <label> Sponsor Name </label>
+                                    <input class="form-control" type="text" escape="1" name="sponsorName" @if(aps != null) {
+                                        value="@aps.sponsorName"}></div>
+                                <div class="form-group has-feedback others">
+                                    <label> Sponsor phone </label>
+                                    <input class="form-control" type="text" escape="1" name="sponsorPhone" @if(aps != null) {
+                                        value="@aps.sponsorPhone"}></div>
+                                <div class="form-group has-feedback others">
+                                    <label> Sponsor email </label>
+                                    <input class="form-control" type="text" email="true" escape="1" name="sponsorEmail" @if(aps != null) {
+                                        value="@aps.sponsorEmail"}></div>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label for="">
+                                    <input type="checkbox" name="needAccomodation" @if(me!=null && me.needAccomodation){checked}> I need Accomodation
+                                    <span class="label label-info">@Counts.formatAmount(aps.training.accomodationFees) Rwf</span>
+                                </label>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label for="">
+                                    <input type="checkbox" name="needCatering" @if(me!=null && me.needCatering){checked}> I need restauration
+                                    <span class="label label-info">@Counts.formatAmount(aps.training.restaurationFees) Rwf</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="box-footer clearfix">
+                            <button type="submit" class="pull-right btn btn-success" id="meBut">Save & Continue
+                                <i class="fa fa-arrow-circle-right"></i> </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="separated" title="Contact person">
+                <form action="@routes.Registration.saveApplication("6")" method="POST" id="formPort" name="forms">
+                    <div class="box box-info">
+                        <div class="box-header text-left resp-width">
+                            <i class="fa fa-pencil"></i>
+
+                            <h3 class="box-title">4. Contact person in case of emergency</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="col-md-12">
+
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group has-feedback others">
+                                    <label>Next of keen <em>*</em> </label>
+                                    <input class="form-control" type="text" name="contactPerson" @if(aps != null){value="@aps.contactPerson" }>
+                                </div>
+
+
+                                <div class="form-group has-feedback others">
+                                    <label>Next of keen 's email</label>
+                                    <input class="form-control" type="text" email="true" name="contactEmail" @if(aps != null){value="@aps.contactEmail"}>
+                                </div>
+
+
+                                <div class="form-group has-feedback others">
+                                    <label>Next of keen 's phone</label>
+                                    <input class="form-control" number="true" type="text" name="contactPhone" @if(aps != null){value="@aps.contactPhone"}>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="box-footer clearfix">
+                            <button type="submit" class="pull-right btn btn-success" id="meBut">Save & Continue
+                                <i class="fa fa-arrow-circle-right"></i> </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+
+
+
+
+            <div class="separated" title="Application purpose">
+                <form action="@routes.Registration.saveApplication("5")" method="POST" id="formPort" name="forms">
+                    <div class="box box-info">
+                        <div class="box-header text-left resp-width">
+                            <i class="fa fa-pencil"></i>
+
+                            <h3 class="box-title">5.disability or medical</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="form-group has-feedback others"><label>Do you have any disability?<em>*</em></label>
+                                <div class="radio_place">
+                                    <div class="myRadio">
+                                        <span class="t-radio">
+                                            <input type="radio" id="falseDisabled" onchange="unchecker(this,'#disableText')" name="d" value="myself" @if(aps != null && aps.feespayment.equals("sponsor")) {
+                                                checked="checked"}>
+                                            <label for="falseDisabled">No </label>
+                                        </span>
+                                        <span class="t-radio">
+                                            <input type="radio" id="trueDisabled" onchange="checker(this,'#disableText')" name="d" value="sponsor" @if(aps != null && aps.feespayment.equals("myself")) {
+                                                checked="checked"}>
+                                            <label for="trueDisabled">Yes </label>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group has-feedback others" id="disableText">
+                                <p>please specify here.</p>
+                                <textarea title="" class="form-control" escape="1" name="statement">@aps.statement</textarea>
+                            </div>
+                        </div>
+                        <div class="box-footer clearfix">
+                            <button type="submit" class="pull-right btn btn-success" id="meBut">Save & Continue
+                                <i class="fa fa-arrow-circle-right"></i> </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            @uploadFiles(me, aps.training.iMode.campusProgram.program.id , status )
+
+        }
+    </div>
+</section>
+</div>

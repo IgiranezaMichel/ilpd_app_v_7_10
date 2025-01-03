@@ -1,0 +1,32 @@
+@( roles : List[UserRole] , user : Users )
+<form action="@routes.Application.FinalLogin()" method="POST" onsubmit="return validate(this,function(res,f){saveStudent(f)});">
+  <div class="box-header text-left">
+    <i class="fa fa-user-circle"></i>
+    <h3 class="box-title">Choose user to proceed as</h3>
+  </div>
+  <div class="box-body">
+    <div class="text-center">
+    <div class="image-div large-size">
+      <img src="@routes.Assets.at(Vld.imagePro(user.profile))" alt="ILPD" style="max-width:100%;"/>
+    </div>
+    </div>
+    <div style="max-height: 200px;overflow-y: auto">
+    @for( role <- roles ){
+      <div class="col-md-12" style="margin-top:9px; color: #0f0f0f !important;"><label class="radio-container">
+        <input type="radio" value="@role.id" name="roleId"/>
+        <span class="radio-mark"></span>
+      </label> @role.role.roleName.toUpperCase()</div>
+    }
+    </div>
+  </div>
+  <div class="box-footer">
+    <img src="@routes.Assets.at("images/loader.gif")" height="40" class="regLoader"><button type="submit" class="pull-right btn btn-default">SIGN IN
+    <i class="fa fa-arrow-circle-right"></i></button>
+  </div>
+  <div class="col-md-12">
+    <a href="@routes.Registration.studentRegForm()" onclick="return runSignUp(this,0);"
+    class="btn btn-link text-left btn-flat no-padding">
+        <i class="fa fa-reply"></i> Go back to Login page?</a>
+  </div>
+</form>
+

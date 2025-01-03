@@ -1,0 +1,63 @@
+@(trainings: List[Training])
+<div class="row content">
+
+
+    <div class="col-md-6 col-md-offset-3">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-check-square"></i> Choose period to continue</h3>
+                <div class="box-tools">
+                </div>
+            </div>
+            <form action="@routes.PaymentController.recordPaymentByTraining(0," ")" target="_blank" method="get">
+                <div class="box-body">
+                    <label for="">Search and select training</label>
+                    <div class="form-group">
+                        <input type="text" class="live-search-box form-control" data-escape="1" placeholder="search by training name ..." data-escape="1">
+                        <div style="max-height: 200px !important; overflow-y: scroll !important; margin-left: -5% !important;">
+                        @for(ix <- trainings) {
+                            <ul class="live-search-list">
+                                <li>
+                                    <div class="timel">
+                                        <h5 class="timel-h">
+                                            <span class="t-radio">
+                                                <input type="radio" id="element@ix.id" name="training" value="@ix.id">
+                                                <label for="element@ix.id">@ix.tNames()</label>
+                                            </span>
+                                        </h5>
+                                    </div>
+                                </li>
+                            </ul>
+                        }
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button class="btn btn-primary btn-block center-block" type="submit">
+                        Continue <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+
+            </form>
+
+
+        </div>
+    </div>
+</div>
+
+<script>
+        jQuery(document).ready(function($){
+            $('.live-search-list li').each(function(){
+                $(this).attr('data-search-term', $(this).text().toLowerCase());
+            });
+            $('.live-search-box').on('keyup', function(){
+                var searchTerm = $(this).val().toLowerCase();
+                $('.live-search-list li').each(function(){
+                    if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+</script>

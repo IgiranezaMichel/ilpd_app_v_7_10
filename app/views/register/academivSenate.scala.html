@@ -1,0 +1,40 @@
+<div class="container">
+        <div class="box-info center-block">
+            <div class="box-header text-left resp-width">
+                <h3 class="box-title"><i class="fa fa-cogs"></i>The Classification of the ILPD’s Postgraduate Diplomas as per CGPA is as follows:</h3>
+                <h6><i>The Classification of the ILPD’s Postgraduate Diplomas as per CGPA is as follows:</i></h6>
+            </div>
+            <div>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <td>CGPA.</td>
+                        <td>Classification of Diploma</td>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <td>@ProfileInfo.unique().distinctionMin - @ProfileInfo.unique().distinctionMax</td>
+                        <td>First Class (Distinction)</td>
+                    </tr>
+                    <tr>
+                        <td>@ProfileInfo.unique().meritMin - @ProfileInfo.unique().meritMax</td>
+                        <td>Second Class Upper (Merit)</td>
+                    </tr>
+                    <tr>
+                        <td>@ProfileInfo.unique().satisfactoryMin - @ProfileInfo.unique().satisfactoryMax</td>
+                        <td>Second Class Lower (Satisfactory)</td>
+                    </tr>
+                    <tr>
+                        <td>@ProfileInfo.unique().passMin - @ProfileInfo.unique().passMax</td>
+                        <td>Pass</td>
+                    </tr>
+                    <tr>
+                        <td>@ProfileInfo.unique().failMin - @ProfileInfo.unique().failMax</td>
+                        <td>Fail</td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+</div>

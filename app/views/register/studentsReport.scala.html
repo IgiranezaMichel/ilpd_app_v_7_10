@@ -1,0 +1,546 @@
+@( cle : Boolean )
+
+@main("Student report",""){
+    <section class="content-header">
+        <h1>
+            Student
+            <small>report</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Reports</a></li>
+            <li class="active">Student reports</li>
+        </ol>
+    </section>
+    <div class="content" style="padding-left: 20px ">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h2 class="box-title text-success">
+                           <i class="ion ion-ios-people-outline"></i> XStudents report
+                            <small><i class="fa fa-info-circle"></i> This page has been enhanced for printing. Click on the links below to print the below conten in new tab.</small>
+                        </h2>
+                    </div>
+                    <div class="box-body">
+                        <div class="panel-group" id="accordion">
+                            <div class="row">
+                                <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#app-accordion" href="#stuCampus">
+                                            Campus <i class="fa fa-plus-circle pull-right"></i></a>
+                                    </h4>
+                                </div>
+                                <div id="stuCampus" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div class="row">
+
+                                            <form class="form-inline" target="_blank" action="@routes.Reports.byCampus("campusStudent")" method="post">
+
+                                                <div class="form-group">
+                                                    <select name="campusId" id="campus" class="form-control" required>
+                                                        <option value="">--Select Campus--</option>
+                                                        <option value="0">All</option>
+                                                        @for(c : Campus <- Campus.all()) {
+                                                            <option value="@c.id">@c.campusName</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fa fa-print"></i> Generate report
+                                                </button>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#app-accordion" href="#stProgram">
+                                            Program <i class="fa fa-plus-circle pull-right"></i></a>
+                                    </h4>
+                                </div>
+                                <div id="stProgram" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <form class="form-inline" target="_blank" action="@routes.Reports.byCampus("programStudent")" method="post">
+                                                <div class="form-group">
+                                                    <select name="programId" id="campus" class="form-control" required>
+                                                        <option value="">--Select Campus--</option>
+                                                        <option value="0">All</option>
+                                                        @for(c : Program <- Program.all(cle)) {
+                                                            <option value="@c.id">@c.programName (@c.programAcronym)</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fa fa-print"></i> Generate report
+                                                </button>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#studentIntake">Intake <i class="fa fa-plus-circle pull-right"></i></a>
+                                    </h4>
+                                </div>
+                                <div id="studentIntake" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <form class="form-inline" target="_blank" action="@routes.Reports.getStudentByIntake()" method="post">
+                                                <div class="form-group">
+                                                    <select name="intakeId" id="campus" class="form-control" required>
+                                                        <option value="">--Select intake--</option>
+                                                        <option value="0">All</option>
+                                                        @for(c : Intake <- Intake.all()) {
+                                                            <option value="@c.id">@c.print()</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fa fa-print"></i> Generate report
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#studentStudyMode">
+                                            Study Mode <i class="fa fa-plus-circle pull-right"></i></a>
+                                    </h4>
+                                </div>
+                                <div id="studentStudyMode" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div  class="row">
+                                            <form class="form-inline" target="_blank" action="@routes.Reports.getStudentByStudyMode()" method="post">
+                                                <div class="form-group">
+                                                    <select name="modeId" id="campus" class="form-control" required>
+                                                        <option value="">--Select study mode--</option>
+                                                        <option value="0">All</option>
+                                                        @for(c : StudyMode <- StudyMode.all()) {
+                                                            <option value="@c.id">@c.modeName</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fa fa-print"></i> Generate report
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#studentcollapse3">
+                                            Intake + Study mode <i class="fa fa-plus-circle pull-right"></i></a>
+                                    </h4>
+                                </div>
+                                <div id="studentcollapse3" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <form class="form-inline" target="_blank" action="@routes.Reports.getStudentByIntakeStudyMode()" method="post">
+                                                <div class="form-group">
+                                                    <select name="intakeId" id="campus" class="form-control" required>
+                                                        <option value="">--Select Intake--</option>
+                                                        @for(i : Intake <- Intake.all()) {
+                                                            <option value="@i.id"><b>*</b> @i.print()</option>
+                                                                }
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <select name="modeId" id="campus" class="form-control" required>
+                                                        <option value="">--Select study mode--</option>
+                                                        @for(c : StudyMode <- StudyMode.all()) {
+                                                            <option value="@c.id">@c.modeName</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fa fa-print"></i> Generate report
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#studentcollapse3l">
+                                            Intake + Gender <i class="fa fa-plus-circle pull-right"></i></a>
+                                    </h4>
+                                </div>
+                                <div id="studentcollapse3l" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <form class="form-inline" target="_blank" action="@routes.Reports.getStudentByIntakeGender()" method="post">
+                                                <div class="form-group">
+                                                    <select name="intakeId" id="campus" class="form-control" required>
+                                                        <option value="">--Select Intake--</option>
+                                                        @for(i : Intake <- Intake.all()) {
+                                                            <option value="@i.id"><b>*</b> @i.print()</option>
+                                                                }
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <select name="gender" id="campus" class="form-control" required>
+                                                        <option value="all">--all gender--</option>
+                                                        <option value="male">Male</option>
+                                                        <option value="female">Female</option>
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fa fa-print"></i> Generate report
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#studentcollapse3ls">
+                                            Intake + Status <i class="fa fa-plus-circle pull-right"></i></a>
+                                    </h4>
+                                </div>
+                                <div id="studentcollapse3ls" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <form class="form-inline" target="_blank" action="@routes.Reports.getStudentByIntakeStatus()" method="post">
+                                                <div class="form-group">
+                                                    <select name="intakeId" id="campus" class="form-control" required>
+                                                        <option value="">--Select Intake--</option>
+                                                        @for(i : Intake <- Intake.all()) {
+                                                            <option value="@i.id"><b>*</b> @i.print()</option>
+                                                                }
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <select name="status" class="form-control" required>
+                                                        <option value="all">--All status--</option>
+                                                        <option value="active">Active</option>
+                                                        <option value="Graduated">Graduated</option>
+                                                        <option value="suspended">Suspended</option>
+                                                        <option value="dropout">Dropout</option>
+                                                        <option value="Alumni">Alumni</option>
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fa fa-print"></i> Generate report
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#studentcollapse4">Intake + Program <i class="fa fa-plus-circle pull-right"></i></a>
+                                    </h4>
+                                </div>
+                                <div id="studentcollapse4" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <form class="form-inline" target="_blank" action="@routes.Reports.getStudentByIntakeProgram()" method="post">
+                                                <div class="form-group">
+                                                    <select name="intakeId" id="campus" class="form-control" required>
+                                                        <option value="">--Select Intake--</option>
+                                                        <option value="0">All</option>
+                                                        @for(i : Intake <- Intake.all()) {
+                                                            <option value="@i.id"><b>*</b> @i.print()</option>
+                                                                }
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <select name="programId" id="campus" class="form-control" required>
+                                                        <option value="">--Select Program--</option>
+                                                        <option value="0">All</option>
+                                                        @for(p : Program <- Program.all(cle)) {
+                                                            <option value="@p.id">@p.programName</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fa fa-print"></i> Generate report
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#app-accordion" href="#stImdePro">
+                                            Program +intake +study mode <i class="fa fa-plus-circle pull-right"></i></a>
+                                    </h4>
+                                </div>
+                                <div id="stImdePro" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <form class="form-inline" target="_blank" action="@routes.Reports.programIntakeMode("student")" method="post">
+                                                <div class="form-group">
+                                                    <select name="programId" id="campus" class="form-control" required>
+                                                        <option value="">--Select Program--</option>
+                                                        @for(p : Program <- Program.all(cle)) {
+                                                            <option value="@p.id">@p.programName</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <select name="intakeId" id="campus" class="form-control" required>
+                                                        <option value="">--Select Intake--</option>
+                                                        @for(i : Intake <- Intake.all()) {
+                                                            <option value="@i.id"><b>*</b> @i.print() </option>
+                                                                }
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <select name="modeId" id="campus" class="form-control" required>
+                                                        <option value="">--Select study mode--</option>
+                                                        @for(c : StudyMode <- StudyMode.all()) {
+                                                            <option value="@c.id">@c.modeName</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fa fa-print"></i> Generate report
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#studentcollapse5">Gender <i class="fa fa-plus-circle pull-right"></i></a>
+                                    </h4>
+                                </div>
+                                <div id="studentcollapse5" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                               <p>
+                                                   <a class="text-sm btn btn-link btn-block center-block" href="@routes.Reports.getStudentByGender("male")" target="_blank"> Male</a>
+                                               </p>
+                                            </div>
+                                            <div class="col-sm-6">
+                                              <p>
+                                                  <a class="text-sm btn btn-link btn-block center-block" href="@routes.Reports.getStudentByGender("female")" target="_blank"> Female</a>
+                                              </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#studentcollapse6">Nationalty  <i class="fa fa-plus-circle pull-right"></i></a>
+                                    </h4>
+                                </div>
+                                <div id="studentcollapse6" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <form class="form-inline" target="_blank" action="@routes.Reports.getStudentByCountry()" method="post">
+                                                <div class="form-group">
+                                                    <select name="country" id="campus" class="form-control" required>
+                                                        <option value="">--Select study mode--</option>
+                                                        <option value="all">All</option>
+                                                        @for(c : Country <- Country.all()) {
+                                                            <option value="@c.name">@c.name</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fa fa-print"></i> Generate report
+                                                </button>
+                                            </form>
+
+
+                                        @*@for(country<-Country.all()){*@
+                                            @*<div class="col-sm-2">*@
+                                                @*<p><a class="text-sm btn btn-link btn-block center-block" href="@routes.Reports.getStudentByCountry(country.name)" style="font-size: 12px;" target="_blank">@country.nicename</a></p>*@
+                                            @*</div>*@
+                                        @*}*@
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#studentcollapse7">Martial status <i class="fa fa-plus-circle pull-right"></i></a>
+
+                                    </h4>
+                                </div>
+                                <div id="studentcollapse7" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                               <p>
+                                                   <a class="text-sm btn btn-link btn-block center-block" href="@routes.Reports.getStudentByMaritial("single ")" target="_blank"> Single</a>
+                                               </p>
+                                            </div>
+                                            <div class="col-sm-4">
+                                               <p>
+                                                   <a class="text-sm btn btn-link btn-block center-block" href="@routes.Reports.getStudentByMaritial("married")" target="_blank"> Married</a>
+                                               </p>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <p>
+                                                    <a class="text-sm btn btn-link btn-block center-block" href="@routes.Reports.getStudentByMaritial("widow")" target="_blank"> widow</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#app-accordion" href="#appcollapse778">
+                                            Students report per university attended  <i class="fa fa-plus-circle pull-right"></i></a>
+                                    </h4>
+                                </div>
+                                <div id="appcollapse778" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <form class="form-inline" target="_blank" action="@routes.Reports.getStudentByUniversity()" method="post">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <select name="aSchool" class="form-control" required>
+                                                            <option value="all">--Select university/college attended--</option>
+                                                            @for(a : Applicant <- Applicant.universityCollegue()) {
+                                                                @if(a.aSchool.size > 2) {
+                                                                    <option value="@a.aSchool">@a.aSchool</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <i class="fa fa-print"></i> Generate report
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#app-accordion" href="#appcollapse778v">
+                                            Students report per initake and university attended  <i class="fa fa-plus-circle pull-right"></i></a>
+                                    </h4>
+                                </div>
+                                <div id="appcollapse778v" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <form class="form-inline" target="_blank" action="@routes.Reports.getStudentByIntakeUniversity()" method="post">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <select name="intakeId" class="form-control" required>
+                                                            <option value="">--Select Intake--</option>
+                                                            <option value="0">All</option>
+                                                            @for(i : Intake <- Intake.all()) {
+                                                                <option value="@i.id"><b>*</b> @i.print()</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <select name="aSchool" class="form-control" required>
+                                                            <option value="disabled">--Select university/college attended--</option>
+                                                            <option value="all">All</option>
+                                                            @for(a : Applicant <- Applicant.universityCollegue()) {
+                                                                @if(a.aSchool.size > 2) {
+                                                                    <option value="@a.aSchool">@a.aSchool</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <i class="fa fa-print"></i> Generate report
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#app-accordion" href="#appcollapse778va">
+                                            Students report per intake and nationality  <i class="fa fa-plus-circle pull-right"></i></a>
+                                    </h4>
+                                </div>
+                                <div id="appcollapse778va" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <form class="form-inline" target="_blank" action="@routes.Reports.getStudentByIntakeNationality()" method="post">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <select name="intakeId" class="form-control" required>
+                                                            <option value="">--Select Intake--</option>
+                                                            <option value="0">All</option>
+                                                            @for(i : Intake <- Intake.all()) {
+                                                                <option value="@i.id"><b>*</b> @i.print()</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                    <select name="countryName" class="form-control" required>
+                                                        <option value="">--Select country--</option>
+                                                        <option value="all">All</option>
+                                                        @for(c : Country <- Country.all()) {
+                                                            <option value="@c.name">@c.name</option>
+                                                        }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <i class="fa fa-print"></i> Generate report
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- /.content -->
+    <div class="clearfix"></div>
+}
+

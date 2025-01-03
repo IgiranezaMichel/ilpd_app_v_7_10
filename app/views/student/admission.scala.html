@@ -1,0 +1,171 @@
+@(app: Applied, title : String)
+@import scala.Predef;var inc = 1;
+@main(app.applicant.familyName + " admission letter", "") {
+    <div class="container">
+        <div style="font-family: 'Book Antiqua' !important; size: 12px !important; text-align: justify !important;" class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <a href="@routes.Reports.printAdmission(app.id)" target="_blank" class="btn btn-success btn-block no-print"><i class="fa fa-book"></i> Print Pdf</a>
+                <br>
+                <div class="box box-ilpd" id="myBox">
+                    <div class="box-header with-border">
+                        <table class="table" style="border: none;">
+                            <tr>
+                                <td style="border-right: 2px solid #E200E2;
+                                    vertical-align: middle;
+                                    border-top: none;">
+                                    <span>
+                                        <i class="fa fa-circle"></i>
+                                        <i class="fa fa-circle" style="color: #E200E2!important;"></i>
+                                        <i class="fa fa-circle" style="color: #E200E2;"></i>
+                                    </span>
+                                </td>
+                                <td style="vertical-align: top;
+                                    border-top: none;">
+                                    <span>
+                                        Institute of Legal Practice
+                                        and Development
+                                    </span>
+                                </td>
+                                <td style="vertical-align: bottom; border-top: none;">
+                                    <small>
+                                        <em class="text-left">Excellence in Legal Practice</em>
+                                    </small>
+                                </td>
+                                <td style="border-top: none;">
+                                    <img src="@routes.Assets.at("images/smLogo.png")" alt="" class="img-responsive pull-right" style="width: 50px">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="box-body " style="font-family: 'Book Antiqua' !important; padding: 20px; margin-right: 20px !important; margin-left: 20px !important;">
+                        <div style="margin-right: 20px !important; margin-left: 20px !important;" class="row">
+                            <div class="col-md-12 text-bold" style="line-height: 2margin-left: 20px; !important; margin-right: 20px !important;">
+                            @if(app.training.iMode.campusProgram.program.cle) {
+                                <span class="pull-left"> OFFICE OF DTR/COORDINATOR </span>
+                            }
+                                @if(!app.training.iMode.campusProgram.program.cle) {
+                                    <span> <center>OFFICE OF THE ACADEMIC REGISTRAR</center> </span>
+                                }
+                                <span class="pull-right">Date: @app.applicant.date.format("dd/MM/yyy")</span> <br>
+                                <span>Student name : @app.applicant.toString</span> <br>
+                                @if(app.applicant.student != null){
+                                    <span>Student Reg No: @app.applicant.student.regNo</span> <br>
+                                }else{
+
+                                }
+                                <span>Date :  @(new Date())</span>
+                                <br>
+                                <br>
+                                <br>
+                                <span>Dear @app.applicant.toString,</span> <br>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 20px; line-height: 2; margin-left: 20px !important; margin-right: 20px !important;">
+                            <div class="col-md-12">
+                                <p>
+                                    <u>RE</u>: PROVISIONAL ADMISSION TO THE POSTGRADUATE DIPLOMA IN
+                                    @app.training.iMode.campusProgram.program.programName.toUpperCase() PROGRAM
+                                    <span style="border-bottom: 1px solid">
+                                        <b><em>
+                                            (@app.training.iMode.campusProgram.program.programAcronym)
+                                        </em></b>
+                                    </span>.
+                                    <br/><br/>
+
+                                <p>In reference to your academic documents submitted to the Office of the Academic Registrar of the Institute
+                                of Legal Practice and Development, I am pleased to inform you that you are provisionally admitted to the program of
+                                <u>Post Graduate Diploma in @app.training.iMode.campusProgram.program.programName /@app.training.iMode.intake.intakeName. </u> </p>
+
+                                <p>The cost of the program is
+                                    application fee <b>
+                                    (@Counts.formatAmount(app.training.iMode.intake.registrationFees) Rwf)</b> ,
+                                    tuition fee <b>
+                                    (
+                                @if(app.training.schoolFees==0){
+                                  @if(app.applicant.isEacInhabitant){
+                                    <span>@app.training.eacStudentTuitionFees</span>
+                                }else{
+                                  <span>@app.training.nonEacStudentTuitionFees</span>
+                                }}else{
+                                   <span>@app.training.schoolFees</span>
+                                }
+                                Rwf)
+
+                                  </b>, accommodation
+                                    <b>(@if(app.applicant.needAccomodation) {
+                                        <span>@Counts.formatAmount(app.training.accomodationFees)</span>
+                                    } else {
+                                        <span>0</span>
+                                    }  Rwf)</b>,
+                                    food and refreshments <b>(@if(app.applicant.needCatering) {
+                                        <span>@Counts.formatAmount(app.training.restaurationFees)</span>
+                                    } else {
+                                        <span>0</span>
+                                    }  Rwf)</b>
+                                    @if(app.training.otherFees > 0) {
+                                        <span>
+                                            and @app.training.otherFeesSpec <b>@Counts.formatAmount(app.training.otherFees)
+                                            Rwf</b>
+                                        </span>
+                                    } else {
+                                        <span>.</span>
+                                    }
+                                    to be paid through the following Bank Accounts:</p>
+
+                                <p>
+                                    Account Name: Institute of Legal Practice and Development <br/>
+                                    Account Number: 1000004096 <br/>
+                                    Bank: National Bank of Rwanda <br/>
+                                    Swift Code: BNRWRWRW <br/>
+                                    Or <br/>
+                                    Account Name: Institute of Legal Practice and Development <br/>
+                                    Account Number: 100011286188 <br/>
+                                    Bank: Bank of Kigali <br/>
+                                    Swift Code: BKIGRWRW <br/>
+
+                                </p>
+
+                                <p>
+                                    Your will get your final admission letter after paying at least the first instalment of the tuition fees equivalent to <b>insert the amount</b>.
+                                    Failure to comply with the payment of the first instlament may lead to the cancellation of this provisional admission.
+                                </p>
+                                <p>The proposed starting date of the program is <b>@app.training.startDate.format("MMM dd, yyyy") </b> .</p>
+                                <p>On behalf of ILPD Management, I extend to you a warm welcome and wish you success in your studies at ILPD.</p>
+                                <p>Yours faithfully,</p>
+                                <p>
+                                    Done at Nyanza, @(new Date()).format("MMM dd, yyyy")<br/>
+                                    <img src="@routes.Assets.at("uploads/"+ProfileInfo.unique().registrarSignature)" style="height: 100px" alt=""><br/>
+                                    Mugisha Richard<br/>
+                                    Academic Registrar<br/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer" style="font-family: 'Book Antiqua',seriflay run !important;">
+                        <p class="text-center">
+                            @ProfileInfo.unique().address <br>
+                            E: <a href="@ProfileInfo.unique().email">@ProfileInfo.unique().email</a> / <a href="@ProfileInfo.unique().website" target="_blank">@ProfileInfo.unique().website</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+            var doc = new jsPDF();
+            var specialElementHandlers = {
+                '#editor': function (element, renderer) {
+                    return true;
+                }
+            };
+
+            $('#cmd').click(function () {
+                doc.fromHTML($('#content').html(), 15, 15, {
+                    'width': 170,
+                    'elementHandlers': specialElementHandlers
+                });
+                doc.save('sample-file.pdf');
+            });
+    </script>
+
+}

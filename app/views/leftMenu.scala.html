@@ -1,0 +1,1490 @@
+@(userType: String, user: Users)
+<aside class="frame main-sidebar light-shadow">
+    <div class="user-panel">
+        <div class="pull-left image">
+            <img src="@routes.Assets.at(if(user != null && !user.profile.equals("")) {
+                "uploads/" + user.profile
+            } else {
+                "images/boys.jpg"
+            })" class="img-circle" alt="User Image">
+        </div>
+        <div class="pull-left info">
+            <p>@if(user != null) {@user.email}</p>
+            <a href="#">
+                <i class="fa fa-circle text-ilpd"></i>
+                @if(user != null) {
+                    @if(user.role.equalsIgnoreCase("student")) {
+                        @if(Counts.isAccepted()) {
+                            @user.role
+                        } else {
+                            Applicant
+                        }
+                    } else {
+                        @user.role
+                    }
+                }
+            </a>
+        </div>
+    </div>
+    <ul class="sidebar-menu" data-widget="tree">
+        @if(userType.equals("Rector") || userType.equals("VRAC")) {
+            <li class="activity">
+                <a href="@routes.Application.dashboard()" page="#tabs0" class="request">
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    <span class="pull-right-container">
+                    </span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="#" noded="true">
+                    <i class="fa fa-line-chart"></i> <span>System reports</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    <li class="active"><a href="@routes.Reports.getFinancialReport"><i class="fa fa-circle"></i>
+                        Financial reports</a></li>
+                    <li><a href="@routes.Reports.getApplicationReport"><i class="fa fa-circle"></i>
+                        Application reports</a></li>
+                    <li>
+                        <a href="@routes.Reports.getStudentReport"><i class="fa fa-circle"></i>
+                            Student reports</a>
+                    </li>
+                    <li><a href="@routes.Reports.getAttendanceReport"><i class="fa fa-circle"></i>
+                        Attendance reports</a></li>
+                    <li><a href="@routes.Reports.timeTableReport()"><i class="fa fa-circle"></i>
+                        Time table reports</a></li>
+                    <li><a href="@routes.Reports.evaluationReport()"><i class="fa fa-circle"></i>
+                        Evaluation reports</a></li>
+                    <li><a href="@routes.Reports.summaryReport()"><i class="fa fa-circle"></i> Summary report</a></li>
+                </ul>
+            </li>
+            @if(userType.equals("VRAC")) {
+                <li class="treeview">
+                    <a href="@routes.StockTabsController.ItemsPage("reports")" page="#tiner7">
+                        <i class="fa fa-print"></i>
+                        <span>Stock reports</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="#" noded="true">
+                        <i class="fa fa-wrench"></i> <span>Academic settings</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none;">
+                        @if(!userType.equals("VRAC")) {
+                            <li class="active">
+                                <a href="@routes.Application.showSchedules(0, " ")" page="#tabz">
+                                    <i class="fa fa-circle"></i> Set time table</a>
+                            </li>
+                        }
+                        <li class="treeview">
+                            <a href="@routes.Application.modulePages()" page="#tabs1">
+                                <i class="fa fa-graduation-cap"></i>
+                                <span>Manage modules</span>
+                            </a>
+                        </li>
+                        <li class="treeview">
+                            <a href="@routes.Application.trainingPermission()" page="#tabs1">
+                                <i class="fa fa-lock"></i>
+                                <span>Training permissions</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="@routes.Application.showSchedulesQuality(0, " ")" page="#tabz">
+                                <i class="fa fa-circle"></i> View time table</a>
+                        </li>
+                    </ul>
+                </li>
+            }
+        }
+        @if(userType.equals("Staff")) {
+            <li class="activity">
+                <a href="@routes.Application.dashboard()" page="#tabs0" class="request">
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    <span class="pull-right-container">
+                    </span>
+                </a>
+            </li>
+        }
+        @if(userType.equals("admin")) {
+            <li class="activity">
+                <a href="@routes.Application.dashboard()" page="#tabs0" class="request">
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    <span class="pull-right-container">
+                    </span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="@routes.Application.academicPage()" page="#tabs1">
+                    <i class="fa fa-graduation-cap"></i>
+                    <span>Academic settings</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="@routes.Application.moreSettingsPage()" page="#tabs1">
+                    <i class="fa fa-gear"></i>
+                    <span>Program settings</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="@routes.Application.modulePages()" page="#tabs1">
+                    <i class="fa fa-graduation-cap"></i>
+                    <span>Manage modules</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="@routes.Application.trainingPermission()" page="#tabs1">
+                    <i class="fa fa-lock"></i>
+                    <span>Training permissions</span>
+                </a>
+            </li>
+            <li>
+                <a href="@routes.Application.requirements()" page="#tabs2">
+                    <i class="fa fa-suitcase"></i> <span>Requirements</span>
+                </a>
+            </li>
+            <li>
+                <a href="@routes.Application.deliberationSettings()" page="#tabs2">
+                    <i class="fa fa-suitcase"></i> <span>Deliberation settings</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="@routes.Application.updateInfo()" page="#tabs3">
+                    <i class="fa fa-cogs"></i>
+                    <span>User settings</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="@routes.Application.evSettingsPage()">
+                    <i class="fa fa-gear"></i>
+                    <span>Evaluation settings</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="@routes.StockTabsController.ItemsPage("reports")" page="#tiner7">
+                    <i class="fa fa-print"></i>
+                    <span>Stock reports</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="#" noded="true">
+                    <i class="fa fa-line-chart"></i> <span>System reports</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    <li><a href="@routes.Reports.getApplicationReport"><i class="fa fa-circle"></i>
+                        Application reports</a></li>
+                    <li>
+                <li>
+                    <a href="@routes.Reports.getStudentReport"><i class="fa fa-circle"></i>
+                        Student reports</a>
+                </li>
+                    <li><a href="@routes.Reports.getAttendanceReport"><i class="fa fa-circle"></i>
+                        Attendance reports</a></li>
+                    <li>
+                        <a href="@routes.Reports.getAuditReport"><i class="fa fa-circle"></i>
+                            Audit log reports</a>
+                    </li>
+                    <li>
+                <li><a href="@routes.Reports.summaryReport()"><i class="fa fa-circle"></i> Summary report</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="@routes.StockTabsController.ItemsPage("dynamicReport")" page="#tiner7">
+                    <i class="fa fa-print"></i>
+                    Asset/stock dynamic reports
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+            </li>
+
+
+            <li class="treeview">
+                <a href="@routes.HomeController.getTrainingView()" page="#tiner8">
+                    <i class="fa fa-universal-access"></i>
+                    <span>Reset student account</span>
+                </a>
+            </li>
+        }
+        @if(userType.equals("student")) {
+            <li class="activity">
+                <a href="@routes.Application.dashboard()" page="#tabs0">
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    <span class="pull-right-container">
+                    </span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="#" noded="true">
+                    <i class="fa fa-user"></i> <span>Profile</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    <li class=""><a href="@routes.Application.getProfile()"><i class="fa fa-circle"></i>
+                        My profile</a></li>
+                    <li>
+                        <a href="@routes.Application.studentRegistration()" page="#userTab0" class="request">
+                            <i class="fa fa-circle"></i> Application</a>
+                    </li>
+
+                </ul>
+            </li>
+
+
+            @if(Counts.isAccepted()) {
+                <li class="treeview">
+                    <a href="#" noded="true">
+                        <i class="fa fa-tags"></i> <span>Finance</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none;">
+                        <li><a href="@routes.PaymentController.paymemtHistory()"><i class="fa fa-circle"></i>
+                            Payment transactions</a></li>
+                        <li><a href="@routes.PaymentController.paymentSuccess()"><i class="fa fa-circle"></i>
+                            Payment history</a></li>
+                        <li><a href="@routes.PaymentController.studentRefunds()"><i class="fa fa-circle"></i>
+                            My refunds</a></li>
+                        <li><a href="@routes.PaymentController.studentRefund()"><i class="fa fa-circle"></i>
+                            Refund request</a></li>
+                    </ul>
+                </li>
+            }
+            @if(React.applicant() != null &&  React.applicant().applied.applicationStatus.equalsIgnoreCase("accepted")) {
+                <li>
+                    <a href="@routes.Application.myAddmission()">
+                        <i class="fa fa-circle"></i>
+                        <span>Provision letter</span>
+                    </a>
+                </li>
+            }
+            @if(user.me() != null) {
+                <li>
+                    <a href="@routes.Application.myAddmission()" target="_blank">
+                        <i class="fa fa-circle"></i>
+                        <span>Admission letter</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="@routes.Application.myComponentsViews()" target="_blank">
+                        <i class="fa fa-file"></i>
+                        <span>My components</span>
+                    </a>
+                </li>
+                @if(Counts.isAccepted()) {
+                    <li class="">
+                        <a href="@routes.Application.getAssignment()">
+                            <i class="fa fa-file"></i>
+                            <span>Assignments/Research</span>
+                        </a>
+                    </li>
+                }
+                <li>
+                    <a href="@routes.Application.updateAll(Applied.getApplied(user).training.id,"studentCourseMaterial")">
+                        <i class="fa fa-magnet"></i>
+                        <span>View course materials</span>
+                    </a>
+                </li>
+                @if(Counts.isAccepted() && !Counts.isCle()) {
+                    <li>
+                        <a href="@routes.StudentController.myInternships()">
+                            <i class="fa fa-paperclip"></i>
+                            <span>Internship</span>
+                        </a>
+                    </li>
+                }
+                <li>
+                    <a href="@routes.StudentController.evaluation()">
+                        <i class="fa fa-th-list"></i>
+                        <span>Lecturers evaluation</span>
+                    </a>
+                </li>
+                @if(Counts.isAccepted()) {
+                    <li>
+                        <a href="@routes.StudentController.studentAttendance()">
+                            <i class="fa fa-file"></i>
+                            <span>My attendances</span>
+                        </a>
+                    </li>
+                }
+                @if(Counts.isAccepted() && !Counts.isCle()) {
+                    <li class="treeview">
+                        <a href="#" noded="true">
+                            <i class="fa fa-list"></i> <span>Student works results</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu" style="display: none;">
+                            @if(Counts.isShowViewKarks()) {
+                              @if(Counts.isShowTranscript()) {
+                                @if(Counts.isViewMarks()) {
+                                  <li>
+                                    <a href="@routes.Application.componentsResults()"><i class="fa fa-circle"></i>
+                                      Components result</a>
+                                  </li>
+                                }
+                              }
+                              @if(Counts.isResultAllowed()) {
+                                @if(Counts.isViewMarks()) {
+                                  <li>
+                                    <a href="@routes.Application.myTranscript(true)"><i class="fa fa-circle"></i>
+                                      View transcript</a>
+                                  </li>
+                                }
+                              }
+                              @if(Counts.isHasGraduated()) {
+                                @if(Counts.isViewMarks()) {
+                                  <li>
+                                    <a href="@routes.StockTabsController.ItemsPage("reseatPage")">
+                                      <i class="fa fa-circle"></i>
+                                      Deliberation results
+                                    </a>
+                                  </li>
+                                }
+                              }
+                              @*
+                              @if(Counts.isHasGraduatedFinal) {
+                                @if(Counts.isViewMarks()) {
+                                  <li>
+                                    <a href="@routes.StockTabsController.ItemsPage("certificate")">
+                                      <i class="fa fa-circle"></i>
+                                      Print certificate
+                                    </a>
+                                  </li>
+                                }
+                              } *@
+                            }
+                        </ul>
+                    </li>
+                }
+            }
+        }
+        @if(userType.equals("Planning") ) {
+            <li class="activity">
+                <a href="@routes.Application.dashboard()" page="#tabs0" class="request">
+                    <i class="ion ion-android-menu"></i> <span>Dashboard</span>
+                    <span class="pull-right-container">
+                    </span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="#" noded="true">
+                    <i class="fa fa-line-chart"></i> <span>System reports</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    <li><a href="@routes.Reports.getApplicationReport"><i class="fa fa-circle"></i>
+                        Application reports</a></li>
+                    <li>
+                        <a href="@routes.Reports.getStudentReport"><i class="fa fa-circle"></i>
+                            Student reports</a>
+                    </li>
+                    <li><a href="@routes.Reports.getAttendanceReport"><i class="fa fa-circle"></i>
+                        Attendance reports</a></li>
+                    <li><a href="@routes.Reports.timeTableReport()"><i class="fa fa-circle"></i>
+                        Time table reports</a></li>
+                    <li><a href="@routes.Reports.evaluationReport()"><i class="fa fa-circle"></i>
+                        Evaluation reports</a></li>
+
+                    @if(userType.equals("registrar")) {
+                        <li class="active"><a href="@routes.Reports.getFinancialReport"><i class="fa fa-circle"></i>
+                            Financial reports</a></li>
+                    }
+                </ul>
+            </li>
+            <li class="active"><a href="@routes.Reports.getFinancialReport"><i class="fa fa-circle"></i>
+                Financial reports</a></li>
+        }
+        @if(userType.equals("registrar") || userType.equals("DTR/Coordinator") ) {
+            <li class="activity">
+                <a href="@routes.Application.dashboard()" page="#tabs0" class="request">
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    <span class="pull-right-container">
+                    </span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="#" noded="true">
+                    <i class="fa fa-users"></i> <span>Applicants</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    <li>
+                        <a href="@routes.Application.sortPage(":all")">
+                            <i class="fa fa-circle"></i> All Applicants
+                        </a>
+                    </li>
+                    <li class="active"><a no-event="true" href="@routes.Application.sortPage("new")" class="clicker"><i class="fa fa-circle"></i>
+                        New applicant</a></li>
+                    <li>
+                        <a no-event="true" href="@routes.Application.sortPage("derefered")" class="clicker">
+                            <i class="fa fa-circle"></i> Differed
+                        </a>
+                    </li>
+                    <li class="treeview">
+                        <a href="#" noded="true">
+                            <i class="fa fa-circle"></i>
+                            Provisionally accepted
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="@routes.ApplicantController.allApplicantsByPayment(0," ","paid")" page="#tabz"><i class="fa fa-circle"></i> Paid</a>
+                            </li>
+                            <li>
+                                <a href="@routes.ApplicantController.allApplicantsByPayment(0," ","unpaid")" page="#tabz"><i class="fa fa-circle"></i> Unpaid</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="@routes.ApplicantController.allApplicants(0, " ")" page="#tabz">
+                            <i class="fa fa-circle"></i> Edit Application
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            @if(userType.equals("DTR/Coordinator")) {
+                <li>
+                    <a href="@routes.StockTabsController.meritCertificate()">
+                        <i class="fa fa-list-ol"></i>
+                        <span> Certificate and analysis</span>
+                    </a>
+                </li>
+            }
+            @if(userType.equals("registrar")) {
+                <li>
+                    <a href="@routes.StockTabsController.ItemsPage("assignmentReportClaim")">
+                        <i class="fa fa-circle"></i> Assignment Result && Claim</a>
+                </li>
+                <li class="treeview">
+                    <a href="#" noded="true">
+                        <i class="fa fa-book"></i> <span>Library info</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none;">
+
+                        <li class="active">
+                            <a no-event="true" href="@routes.LibraryController.libraryReport()" class="clicker">
+                                <i class="fa fa-circle"></i> Library student status
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="@routes.Reports.libraryReport()">
+                                <i class="fa fa-circle"></i> Library report</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="@routes.CoordinatorController.assignmentPage()">
+                        <i class="fa fa-file"></i> <span>Set assignments/Research</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="#" noded="true">
+                        <i class="fa fa-list-ul"></i> <span> Submitted assignments</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none;">
+                        <li class="active"><a href="@routes.CoordinatorController.viewLecturersTimetabled("assignmentMarks")"><i class="fa fa-circle"></i>
+                            Record assignment marks </a></li>
+                        <li class="active"><a href="@routes.CoordinatorController.viewLecturersTimetabled("changeAssignmentMarks")"><i class="fa fa-circle"></i>
+                            Change Ass & Res. marks </a></li>
+                        <li class="active"><a href="@routes.CoordinatorController.viewLecturersTimetabled("IndividualAssignments")"><i class="fa fa-circle"></i>
+                            Individual submissions </a></li>
+                        <li><a href="@routes.CoordinatorController.viewLecturersTimetabled("GroupAssignments")"><i class="fa fa-circle"></i>
+                            Group submissions</a>
+                        </li>
+                        <li>
+                            <a href="@routes.StockTabsController.ItemsPage("assignmentReport")">
+                                <i class="fa fa-circle"></i> Assignment report</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="@routes.CoordinatorController.viewLecturersTimetabled("assignmentReport")">
+                        <i class="fa fa-circle"></i> Marks by assignment</a>
+                </li>
+                <li>
+                    <a href="@routes.Application.studentAttendanceClaime()">
+                        <i class="fa fa-clock-o"></i>
+                        <span>Attendances claim</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="#" noded="true">
+                        <i class="fa fa-list-alt"></i> <span>Set student Marks</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none;">
+                        <li class="active">
+                            <a href="@routes.CoordinatorController.viewLecturersTimetabled("SetModuleMarks")">
+                                <i class="fa fa-circle"></i>
+                                Module marks
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="@routes.CoordinatorController.viewLecturersTimetabled("componentMarks")">
+                                <i class="fa fa-circle"></i>
+                                Set component max
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@routes.CoordinatorController.viewLecturersTimetabled("componentMarksClaim")">
+                                <i class="fa fa-circle"></i>
+                                Component marks claim
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@routes.CoordinatorController.viewLecturersTimetabled("SetComponentMarks")">
+                                <i class="fa fa-circle"></i>
+                                Component marks
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@routes.Application.fetchSetResitMarkPage()"><i class="fa fa-circle"></i>
+                                Re-sit marks</a>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="@routes.Application.signatureForm()"><i class="fa fa-circle"></i>
+                    Add signature</a></li>
+            }
+
+            <li class="treeview">
+                <a href="#" noded="true">
+                    <i class="fa fa-wrench"></i> <span>Academic settings</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    <li class="active">
+                        <a href="@routes.Application.showSchedules(0, " ")" page="#tabz">
+                            <i class="fa fa-circle"></i> Set time table</a>
+                    </li>
+                    <li class="treeview">
+                        <a href="@routes.Application.modulePages()" page="#tabs1">
+                            <i class="fa fa-graduation-cap"></i>
+                            <span>Manage modules</span>
+                        </a>
+                    </li>
+                    <li class="treeview">
+                        <a href="@routes.Application.trainingPermission()" page="#tabs1">
+                            <i class="fa fa-lock"></i>
+                            <span>Training permissions</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#" noded="true">
+                    <i class="fa fa-book"></i> <span>Internship claims</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    <li class="active">
+                        <a no-event="true" href="@routes.Application.pendingIntershipClaims()" class="clicker">
+                            <i class="fa fa-circle"></i> Pending claims
+                            <span class="label bg-blue">@Counts.totalPendingAppeals()</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@routes.Application.processedIntershipClaims()">
+                            <i class="fa fa-circle"></i> Processed claims
+                            <span class="label bg-blue">@Counts.totalProcessedAppeals()</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#" noded="true">
+                    <i class="fa fa-warning"></i> <span>Class deliberations</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    <li class="active">
+                        <a no-event="true" href="@routes.Application.updateAll(0, "graduationMenu")" class="clicker">
+                            <i class="fa fa-circle"></i>  Examination board (FRESH)
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a no-event="true" href="@routes.Application.updateAll(0, "graduationMenuReceipt")" class="clicker">
+                            <i class="fa fa-circle"></i> Examination board (RE-SIT)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@routes.Application.updateAll(0, "graduationMenuFinale")">
+                            <i class="fa fa-circle"></i> Final Academic senate
+                        </a>
+                    </li>
+                    <li><a href="@routes.Reports.deliberationTableReport()"><i class="fa fa-circle"></i>
+                        Deliberation reports</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#" noded="true">
+                    <i class="fa fa-question-circle"></i> <span>Deliberations appeals</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    <li class="active">
+                        <a no-event="true" href="@routes.Application.reSitRequests()" class="clicker">
+                            <i class="fa fa-circle"></i> Re-sit requests
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a no-event="true" href="@routes.Application.retakemoduleRequests()" class="clicker">
+                            <i class="fa fa-circle"></i> Retake-modules requests
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@routes.Application.retakeProgramRequests()">
+                            <i class="fa fa-circle"></i>Retake-program requests
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="@routes.CoordinatorController.viewLecturersTimetabled("Attendance")"><i class="fa fa-circle"></i> <span>
+                    Attendance</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="#" noded="true">
+                    <i class="fa fa-list"></i> <span>Marks & Report</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    <li class="active">
+                        <a href="@routes.Application.fetchSetMarkPage()">
+                            <i class="fa fa-circle"></i> <span> Set student Marks</span>
+                        </a>
+                    </li>
+                    <li><a href="@routes.Reports.marksReport()"><i class="fa fa-circle"></i> Marks reports</a></li>
+                    <li><a href="@routes.Application.allTranscript()"><i class="fa fa-circle"></i>Transcript</a></li>
+                    <li>
+                        <a no-event="true" href="@routes.Application.updateAll(0, "degreeTranscript")" class="clicker">
+                            <i class="fa fa-circle"></i>  Certificate & transcripts
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#" noded="true">
+                    <i class="fa fa-line-chart"></i> <span>System reports</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    <li><a href="@routes.Reports.getApplicationReport"><i class="fa fa-circle"></i>
+                        Application reports</a></li>
+                    <li>
+                        <a href="@routes.Reports.getStudentReport"><i class="fa fa-circle"></i>
+                            Student reports</a>
+                    </li>
+                    <li><a href="@routes.Reports.getAttendanceReport"><i class="fa fa-circle"></i>
+                        Attendance reports</a></li>
+                    <li><a href="@routes.Reports.timeTableReport()"><i class="fa fa-circle"></i>
+                        Time table reports</a></li>
+                    <li><a href="@routes.Reports.evaluationReport()"><i class="fa fa-circle"></i>
+                        Evaluation reports</a></li>
+
+                    @if(userType.equals("registrar")) {
+                        <li><a href="@routes.Reports.summaryReport()"><i class="fa fa-circle"></i>
+                            Summary report</a></li>
+                        <li class="active"><a href="@routes.Reports.getFinancialReport"><i class="fa fa-circle"></i>
+                            Financial reports</a></li>
+                    }
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-print"></i>
+                    <span> Academic dynamic reports </span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    @if(userType.equals(SuperBase.sessionAssistant) || userType.equals(SuperBase.sessionRegister)) {
+                        <li><a href="@routes.ReportsController.index("app")"><i class="fa fa-circle"></i>
+                            Application</a></li>
+                        <li><a href="@routes.ReportsController.index("att")"><i class="fa fa-circle"></i>
+                            Attendance</a></li>
+                    }
+                    @if(userType.equals(SuperBase.sessionCFO) || userType.equals(SuperBase.sessionFinance)) {
+                        <li><a href="@routes.ReportsController.index("fin")"><i class="fa fa-circle"></i>
+                            Finance</a></li>
+                    }
+                    <li><a href="@routes.ReportsController.index("extra-dynamic")" data-addition="extra-report"><i class="fa fa-circle"></i>
+                        Start generation</a></li>
+
+                </ul>
+            </li>
+
+        }
+        @if(userType.equals("Instructor")) {
+            <li class="activity">
+                <a href="@routes.Application.dashboard()" page="#tabs0" class="request">
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    <span class="pull-right-container">
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="@routes.StockTabsController.ItemsPage("courseMaterials")">
+                    <i class="fa fa-magnet"></i>
+                    <span>Course materials</span>
+                    <span class="pull-right-container">
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="@routes.Application.assignmentPage()">
+                    <i class="fa fa-pencil"></i> <span>Set assignments/reseach</span>
+                    <span class="pull-right-container">
+                    </span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="#" noded="true">
+                    <i class="fa fa-list-ul"></i> <span> Assignment</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    <li class="active">
+                        <a href="@routes.Application.assignmentMarks(false)">
+                            <i class="fa fa-circle"></i>
+                            Record marks</a>
+                    </li>
+                    <li class="active">
+                        <a href="@routes.Application.editAssignmentMarks(false)">
+                            <i class="fa fa-circle"></i>
+                            Edit marks</a>
+                    </li>
+                    <li class="active">
+                        <a href="@routes.Application.viewMines(false)">
+                            <i class="fa fa-circle"></i>
+                            Individual submission</a>
+                    </li>
+                    <li>
+                        <a href="@routes.Application.viewMinesGroup()">
+                            <i class="fa fa-circle"></i> Group submission</a>
+                    </li>
+                    <li>
+                        <a href="@routes.StockTabsController.ItemsPage("assignmentReport")">
+                            <i class="fa fa-circle"></i> Assignment report</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#" noded="true">
+                    <i class="fa fa-list-alt"></i> <span> Set student Marks</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    <li class="active">
+                        <a href="@routes.Application.moduleMarks()"><i class="fa fa-circle"></i>
+                            Module marks</a>
+                    </li>
+                    <li>
+                        <a href="@routes.LectureController.componentMax(userType)">
+                            <i class="fa fa-circle"></i> Set component max</a>
+                    </li>
+                    <li>
+                        <a href="@routes.Application.fetchSetMarkPage()"><i class="fa fa-circle"></i>
+                            Component marks</a>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="@routes.Application.setAttending()"><i class="fa fa-circle"></i> <span>
+                Attendance</span></a></li>
+        }
+        @if(userType.equals("Coordinator") ||userType.equals("mark_officer") || userType.equals("VRAC")) {
+            @if(!userType.equals("VRAC")) {
+                <li class="activity">
+                    <a href="@routes.Application.dashboard()" page="#tabs0" class="request">
+                        <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="@routes.Application.showSchedules(0, " ")" page="#tabz">
+                        <i class="fa fa-circle"></i> Set time table</a>
+                </li>
+                <li>
+                    <a href="@routes.CoordinatorController.assignmentPage()">
+                        <i class="fa fa-pencil"></i> <span>Set assignments/reseach</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="@routes.CoordinatorController.courseMaterialPage()">
+                        <i class="fa fa-book"></i> <span>Course material</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="#" noded="true">
+                        <i class="fa fa-list-ul"></i> <span> Submitted assignments/Res.</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none;">
+                        <li class="active"><a href="@routes.CoordinatorController.viewLecturersTimetabled("assignmentMarks")"><i class="fa fa-circle"></i>
+                            Record assignment marks </a></li>
+                        <li class="active"><a href="@routes.CoordinatorController.viewLecturersTimetabled("changeAssignmentMarks")"><i class="fa fa-circle"></i>
+                            Change Ass & Res. marks </a></li>
+                        <li class="active"><a href="@routes.CoordinatorController.viewLecturersTimetabled("IndividualAssignments")"><i class="fa fa-circle"></i>
+                            Individual submissions </a></li>
+                        <li><a href="@routes.CoordinatorController.viewLecturersTimetabled("GroupAssignments")"><i class="fa fa-circle"></i>
+                            Group submissions</a>
+                        </li>
+                        <li>
+                            <a href="@routes.StockTabsController.ItemsPage("assignmentReport")">
+                                <i class="fa fa-circle"></i> Assignment report</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="@routes.StockTabsController.ItemsPage("assignmentReportClaim")">
+                        <i class="fa fa-circle"></i> Assignment Result && Claim</a>
+                </li>
+                <li>
+                    <a href="@routes.CoordinatorController.viewLecturersTimetabled("assignmentReport")">
+                        <i class="fa fa-circle"></i> Marks by assignment</a>
+                </li>
+                <li class="treeview">
+                    <a href="#" noded="true">
+                        <i class="fa fa-list-alt"></i> <span> Set student Marks</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none;">
+                        <li class="active">
+                            <a href="@routes.CoordinatorController.viewLecturersTimetabled("SetModuleMarks")">
+                                <i class="fa fa-circle"></i>
+                                Module marks
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="@routes.CoordinatorController.viewLecturersTimetabled("componentMarks")">
+                                <i class="fa fa-circle"></i>
+                                Set component max
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@routes.CoordinatorController.viewLecturersTimetabled("SetComponentMarks")">
+                                <i class="fa fa-circle"></i>
+                                Component marks
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@routes.Application.fetchSetResitMarkPage()"><i class="fa fa-circle"></i>
+                                Re-sit marks</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="@routes.CoordinatorController.viewLecturersTimetabled("Attendance")"><i class="fa fa-circle"></i> <span>
+                        Attendance</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="@routes.CoordinatorController.internships()">
+                        <i class="fa fa-paperclip"></i>
+                        <span>Internships</span>
+                    </a>
+                </li>
+                <li><a href="@routes.Reports.evaluationReport()"><i class="fa fa-circle"></i>
+                    Evaluation reports</a>
+                </li>
+                <li class="treeview">
+                    <a href="#" noded="true">
+                        <i class="fa fa-line-chart"></i> <span>System reports</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none;">
+                        <li class="active"><a href="@routes.Reports.getFinancialReport"><i class="fa fa-circle"></i>
+                            Financial reports</a></li>
+                        <li><a href="@routes.Reports.getApplicationReport"><i class="fa fa-circle"></i>
+                            Application reports</a></li>
+                        <li>
+                            <a href="@routes.Reports.getStudentReport"><i class="fa fa-circle"></i>
+                                Student reports</a>
+                        </li>
+                        <li><a href="@routes.Reports.getAttendanceReport"><i class="fa fa-circle"></i>
+                            Attendance reports</a></li>
+
+                        <li><a href="@routes.Reports.timeTableReport()"><i class="fa fa-circle"></i>
+                            Time table reports</a></li>
+                        <li><a href="@routes.Reports.summaryReport()"><i class="fa fa-circle"></i>
+                            Summary report</a></li>
+                    </ul>
+                </li>
+            }
+
+            <li class="treeview">
+                <a href="#" noded="true">
+                    <i class="fa fa-list"></i> <span>Marks & Report</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    @if(!userType.equals("VRAC")) {
+                        <li class="active">
+                            <a href="@routes.Application.fetchSetMarkPage()">
+                                <i class="fa fa-circle"></i> <span> Set student Marks</span>
+                            </a>
+                        </li>
+                    }
+                    <li><a href="@routes.Reports.marksReport()"><i class="fa fa-circle"></i> Marks reports</a></li>
+                    <li><a href="@routes.Application.allTranscript()"><i class="fa fa-circle"></i> Transcript</a></li>
+                    <li><a href="@routes.Application.allDegrees()"><i class="fa fa-circle"></i> Degrees</a></li>
+                </ul>
+            </li>
+        }
+        @if(session.containsKey("Library")) {
+            <li class="">
+                <a href="@routes.LibraryController.libraryReport()" class="request">
+                    <i class="fa fa-book"></i>
+                    <span> Library student status</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="@routes.LibraryController.getLibraryStatus()">
+                    <i class="ion-ios-book-outline"></i>
+                    <span>Library status</span>
+                </a>
+            </li>
+        }
+        @if(userType.equals("Finance")) {
+            <li class="activity">
+                <a href="@routes.Application.dashboard()" page="#tabs0" class="request">
+                    <i class="ion ion-android-menu"></i> <span>Dashboard</span>
+                    <span class="pull-right-container">
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="@routes.ApplicantController.allApplicants(0, " ")" page="#tabz">
+                    <i class="fa fa-info"></i> <span>Student Status</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="@routes.PaymentController.recordPayment()">
+                    <i class="fa fa-list-ol"></i> <span>Payment history</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="@routes.PaymentController.refundView()">
+                    <i class="fa fa-money"></i> <span>Refunds requests</span>
+                </a>
+            </li>
+            <li><a href="@routes.PaymentController.studentRefundCancel()"><i class="fa fa-circle"></i>
+                Manage refunded</a></li>
+            <li class="treeview">
+                <a href="#" noded="true">
+                    <i class="fa fa-book"></i> <span>Library</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="@routes.Reports.libraryReport()">
+                        <i class="fa fa-circle"></i> Library report</a>
+                    </li>
+
+                    <li class="">
+                        <a href="@routes.LibraryController.libraryReport()">
+                            <i class="fa fa-circle"></i>
+                            <span> Library student status</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="@routes.LibraryController.getLibraryStatus()">
+                            <i class="fa fa-circle"></i>
+                            <span>Library status</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="">
+                <a href="@routes.Application.getStudentDamage()">
+                    <i class="fa fa-plus-square-o"></i>
+                    <span>Record damage</span>
+                </a>
+            </li>
+
+            <li class="">
+                <a href="@routes.Application.getClearance()">
+                    <i class="fa fa-check-circle-o"></i>
+                    <span>Student clearance</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="#" noded="true">
+                    <i class="fa fa-line-chart"></i> <span>System reports</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    <li class="active"><a href="@routes.Reports.getFinancialReport"><i class="fa fa-circle"></i>
+                        Financial reports</a></li>
+                    <li class="active"><a href="@routes.Reports.financialReportBySatus("refundReport")">
+                        <i class="fa fa-circle"></i>
+                        Refunds reports</a></li>
+                    <li><a href="@routes.Reports.getApplicationReport"><i class="fa fa-circle"></i>
+                        Application reports</a></li>
+                    <li>
+                        <a href="@routes.Reports.getStudentReport"><i class="fa fa-circle"></i>
+                            Student reports</a>
+                    </li>
+                    <li><a href="@routes.Reports.getAttendanceReport"><i class="fa fa-circle"></i>
+                        Attendance reports</a></li>
+                    <li><a href="@routes.Reports.timeTableReport()"><i class="fa fa-circle"></i>
+                        Time table reports</a></li>
+                    <li><a href="@routes.Reports.summaryReport()"><i class="fa fa-circle"></i> Summary report</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="@routes.StockTabsController.ItemsPage("dynamicReport")" page="#tiner7">
+                    <i class="fa fa-print"></i>
+                    Asset/stock dynamic reports
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+            </li>
+        }
+        @if(userType.equals(SuperBase.sessionAssistant) || userType.equals(SuperBase.sessionRegister) || userType.equals(SuperBase.sessionAdmin) || userType.equals(React.qualityInsurance)) {
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-print"></i>
+                    <span> Academic dynamic reports </span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    @if(userType.equals(SuperBase.sessionAssistant) || userType.equals(SuperBase.sessionRegister) || userType.equals(SuperBase.sessionAdmin) || userType.equals(React.qualityInsurance)) {
+                        @if(!userType.equals(React.qualityInsurance)) {
+                            <li><a href="@routes.ReportsController.index("app")"><i class="fa fa-circle"></i>
+                                Application</a></li>
+                            <li><a href="@routes.ReportsController.index("att")"><i class="fa fa-circle"></i>
+                                Attendance</a></li>
+                        }
+                    }
+                    @if(!userType.equals(React.qualityInsurance)) {
+                        @if(userType.equals(SuperBase.sessionCFO) || userType.equals(SuperBase.sessionFinance) || userType.equals(SuperBase.sessionAdmin) || userType.equals(React.qualityInsurance)) {
+                            <li><a href="@routes.ReportsController.index("fin")"><i class="fa fa-circle"></i>
+                                Finance</a></li>
+                        }
+                    }
+                    <li><a href="@routes.ReportsController.index("extra-dynamic")" data-addition="extra-report"><i class="fa fa-circle"></i>
+                        Start generation</a></li>
+
+                </ul>
+            </li>
+        }
+        @if(userType.equals("Accountant") || userType.equals("Auditor") || userType.equals("Manager")) {
+            <li class="activity">
+                <a href="@routes.Application.dashboard()" page="#tabs0" class="request">
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    <span class="pull-right-container">
+                    </span>
+                </a>
+            </li>
+            @if(userType.equals("Manager")){
+
+                <li class="treeview">
+                    <a href="@routes.StockTabsController.RemoveDepreciated()" target="_blank">
+                        <i class="fa fa-tint"></i>
+                        <span>Approve depreciated</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="@routes.StockTabsController.RemoveDefective()" target="_blank">
+                        <i class="fa fa-tint"></i>
+                        <span>Approve defective/Expired</span>
+                    </a>
+                </li>
+            }
+            @if(!userType.equals("Manager") && !userType.equals("Accountant") && !userType.equals("Auditor")){
+                <li class="treeview">
+                    <a href="#" noded="true">
+                        <i class="fa fa-line-chart"></i> <span>System reports</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none;">
+                        <li class="active"><a href="@routes.Reports.getFinancialReport"><i class="fa fa-circle"></i>
+                            Financial reports</a></li>
+                        <li class="active"><a href="@routes.Reports.financialReportBySatus("refundReport")">
+                            <i class="fa fa-circle"></i>
+                            Refunds reports</a></li>
+                        <li><a href="@routes.Reports.getApplicationReport"><i class="fa fa-circle"></i>
+                            Application reports</a></li>
+                        <li>
+                            <a href="@routes.Reports.getStudentReport"><i class="fa fa-circle"></i>
+                                Student reports</a>
+                        </li>
+                        <li><a href="@routes.Reports.getAttendanceReport"><i class="fa fa-circle"></i>
+                            Attendance reports</a></li>
+                        <li><a href="@routes.Reports.getAttendanceReport"><i class="fa fa-circle"></i>
+                            Attendance reports</a></li>
+                        <li><a href="@routes.Reports.summaryReport()"><i class="fa fa-circle"></i> Summary report</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-print"></i>
+                        <span> Academic dynamic reports </span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none;">
+                        @if(userType.equals(SuperBase.sessionAssistant) || userType.equals(SuperBase.sessionRegister)) {
+                            <li><a href="@routes.ReportsController.index("app")"><i class="fa fa-circle"></i>
+                                Application</a></li>
+                            <li><a href="@routes.ReportsController.index("att")"><i class="fa fa-circle"></i>
+                                Attendance</a></li>
+                        }
+                        @if(userType.equals(SuperBase.sessionCFO) || userType.equals(SuperBase.sessionFinance)) {
+                            <li><a href="@routes.ReportsController.index("fin")"><i class="fa fa-circle"></i>
+                                Finance</a></li>
+                        }
+                        <li><a href="@routes.ReportsController.index("extra-dynamic")" data-addition="extra-report"><i class="fa fa-circle"></i>
+                            Start generation</a></li>
+
+                    </ul>
+                </li>
+            }
+            <li class="treeview">
+                <a href="@routes.StockTabsController.ItemsPage("reports")" page="#tiner7">
+                    <i class="fa fa-print"></i>
+                    <span>Stock reports</span>
+                </a>
+            </li>
+        }
+        @if(userType.equals("HeadOfUnit")) {
+            <li class="activity">
+                <a href="@routes.Application.dashboard()" page="#tabs0" class="request">
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    <span class="pull-right-container">
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="@routes.HUnitController.myRequest()" page="#tabsuiop">
+                    <i class="fa fa-list"></i> <span>Pending requests</span>
+                    <span class="pull-right-container">
+                    </span>
+                </a>
+            </li>
+        }
+
+
+        @if( userType.equals(React.qualityInsurance) ){
+            <li><a href="@routes.Reports.evaluationReport()"><i class="fa fa-circle"></i>
+                Evaluation reports</a>
+            </li>
+            <li class="treeview">
+                <a href="#" noded="true">
+                    <i class="fa fa-line-chart"></i> <span>System reports</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    <li><a href="@routes.Reports.getApplicationReport"><i class="fa fa-circle"></i>
+                        Application reports</a></li>
+                    <li>
+                        <a href="@routes.Reports.getStudentReport"><i class="fa fa-circle"></i>
+                            Student reports</a>
+                    </li>
+                    <li><a href="@routes.Reports.getAttendanceReport"><i class="fa fa-circle"></i>
+                        Attendance reports</a></li>
+                    <li><a href="@routes.Reports.summaryReport()"><i class="fa fa-circle"></i> Summary report</a></li>
+                    <li class="active"><a href="@routes.Reports.getFinancialReport"><i class="fa fa-circle"></i>
+                        Financial reports</a></li>
+                </ul>
+            </li>
+            <li class="active">
+                <a href="@routes.Application.showSchedulesQuality(0, " ")" page="#tabz">
+                    <i class="fa fa-circle"></i> View time table</a>
+            </li>
+            <li><a href="@routes.Reports.marksReport()"><i class="fa fa-circle"></i> Marks reports</a></li>
+            <li><a href="@routes.Application.allTranscript()"><i class="fa fa-circle"></i> Transcript</a></li>
+        }
+
+
+        @if(userType.equals("DAF")) {
+            <li class="activity">
+                <a href="@routes.Application.dashboard()" page="#tabs0" class="request">
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    <span class="pull-right-container">
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="@routes.DAFController.myRequest()" page="#tabsuiop">
+                    <i class="fa fa-list-ol"></i> <span>Pending requests(DAF)</span>
+                    <span class="pull-right-container">
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="@routes.HUnitController.myRequestDaf()" page="#tabsuiop">
+                    <i class="fa fa-list"></i> <span>Pending requests (H0U)</span>
+                    <span class="pull-right-container">
+                    </span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="#" noded="true">
+                    <i class="fa fa-line-chart"></i> <span>System reports</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    <li class="active"><a href="@routes.Reports.getFinancialReport"><i class="fa fa-circle"></i>
+                        Financial reports</a></li>
+                    <li><a href="@routes.Reports.getApplicationReport"><i class="fa fa-circle"></i>
+                        Application reports</a></li>
+                    <li>
+                        <a href="@routes.Reports.getStudentReport"><i class="fa fa-circle"></i>
+                            Student reports</a>
+                    </li>
+                    <li><a href="@routes.Reports.getAttendanceReport"><i class="fa fa-circle"></i>
+                        Attendance reports</a></li>
+                    <li><a href="@routes.Reports.timeTableReport()"><i class="fa fa-circle"></i>
+                        Time table reports</a></li>
+                    <li><a href="@routes.Reports.summaryReport()"><i class="fa fa-circle"></i> Summary report</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="@routes.StockTabsController.ItemsPage("reports")" page="#tiner7">
+                    <i class="fa fa-print"></i>
+                    <span>Stock reports</span>
+                </a>
+            </li>
+        }
+        @if(session.containsKey("Logistic") && !session.containsKey("DAF") || session.containsKey("Manager") && !session.containsKey("DAF")) {
+            <li class="activity">
+                <a href="@routes.Application.dashboard()" page="#tabs0" class="request">
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    <span class="pull-right-container">
+                    </span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="@routes.StockTabsController.ItemPage()">
+                    <i class="fa fa-wrench"></i>
+                    <span>Item settings</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="@routes.StockTabsController.StaffTabs()">
+                    <i class="fa fa-user"></i>
+                    <span>Suppliers</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="@routes.StockTabsController.MovementTabs()">
+                    <i class="fa fa-tint"></i>
+                    <span>Stock movement</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="@routes.StockTabsController.RemoveDepreciated()" target="_blank">
+                    <i class="fa fa-tint"></i>
+                    <span>Remove depreciated</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="@routes.StockTabsController.harmonizeStock()">
+                    <i class="fa fa-pie-chart"></i>
+                    <span>Harmonize stock</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="@routes.StockTabsController.RemoveDefective()" target="_blank">
+                    <i class="fa fa-tint"></i>
+                    <span>Remove defective/ Expired</span>
+                </a>
+            </li>
+            <li>
+                <a href="@routes.StockTabsController.ItemsPage("reports")" page="#tiner7">
+                    <i class="fa fa-print"></i>
+                    <span>Stock/asset reports</span>
+                </a>
+            </li>
+            <li>
+                <a href="@routes.StockTabsController.ItemsPage("dynamicReport")" page="#tiner7">
+                    <i class="fa fa-print"></i>
+                    Asset/stock dynamic reports
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+            </li>
+        }
+        @if(!userType.equals("student")) {
+            <li class="treeview">
+                <a href="@routes.Application.requestPerCategory()" page="#tiner767">
+                    <i class="fa fa-refresh"></i>
+                    <span>Item requisitions</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="@routes.StockTabsController.RequestPages("myItemRequests")" page="#tiner767">
+                    <i class="fa fa-list-alt"></i>
+                    <span>My item requests</span>
+                </a>
+            </li>
+        }
+        @if(userType.equals("registrar") || userType.equals("admin") || userType.equals("Instructor") || userType.equals("Coordinator") || userType.equals("mark_officer") || userType.equals("Finance") || userType.equals("VRAF") || userType.equals("VRAC")) {
+            <li><a href="@routes.Application.eventpage()"><i class="fa fa-circle"></i> Events</a></li>
+            <li>
+                <a href="@routes.Application.announcePage()">
+                    <i class="fa fa-bell-o"></i>
+                    <span>Announcements</span>
+                </a>
+            </li>
+        }
+
+        @if(userType.equals("admin")) {
+            <li class="treeview">
+                <a href="@routes.StockTabsController.ItemsPage("harmonizeCourses")" page="#tiner7">
+                    <i class="fa fa-print"></i>
+                    <span>Harmonize course materials</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="@routes.StockTabsController.ItemsPage("harmonizeApplicants")" page="#tiner7">
+                    <i class="fa fa-users"></i>
+                    <span>Harmonize applicants</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="@routes.StockTabsController.harmonizeStock()">
+                    <i class="fa fa-pie-chart"></i>
+                    <span>Harmonize stock</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="@routes.StockTabsController.ItemsPage("deleteUncompleted")" page="#tiner7">
+                    <i class="fa fa-users"></i>
+                    <span style="color: red !important;">Delete uncompleted</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="@routes.StockTabsController.ItemsPage("hashPassword")" page="#tiner7">
+                    <i class="fa fa-users"></i>
+                    <span>Hash password</span>
+                </a>
+            </li>
+        }
+    </ul>
+    @if(userType.equals("Registrar")) {
+        <div class="list-applied po-lefted" no-prop="true">
+            <div class="has-feedback box-body">
+                <button class="close-red" style="z-index: 222;" onclick="remover(this.parentNode.parentNode)"><i class='fa fa-close'></i></button>
+            </div>
+            <div class="has-feedback">
+                <div class="liquify super-focus"><input type="text" placeholder="Search Applicant" oninput="applied(this, true)">
+                    <i class="fa fa-arrow-circle-down" onclick="manageChange(this)"></i>
+                    <nav class="listing-req height">
+                        <span value=":new">
+                            <label class="pull-right" style="vertical-align: bottom;
+                                margin-top: 4px;">
+                                <small class="label pull-right bg-green">@Applied.countable("")</small>
+                            </label>
+                            New Applicant </span>
+                        <span value=":derefered">
+                            <label class="pull-right" style="vertical-align: bottom;
+                                margin-top: 4px;">
+                                <small class="label pull-right bg-green">@Applied.countable("derefered")</small>
+                            </label>
+                            Defered
+                        </span>
+
+                        <span value=":accepted">
+                            <label class="pull-right" style="vertical-align: bottom;
+                                margin-top: 4px;">
+                                <small class="label pull-right bg-green">@Applied.countable("accepted")</small>
+                            </label>
+                            Pending accepted
+                        </span>
+                        <span value=":all">
+                            <label class="pull-right" style="vertical-align: bottom;
+                                margin-top: 4px;">
+                                <small class="label pull-right bg-green">@Applied.countable(":all")</small>
+                            </label>
+                            All applicants
+                        </span>
+                    </nav>
+                </div>
+                <div class="liquify-content">
+                    <div align="center" id="mayinya"><img src="@routes.Assets.at("images/loader2.gif")" height="50"></div>
+                </div>
+            </div>
+        </div>
+    }
+</aside>
+

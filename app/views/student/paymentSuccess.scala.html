@@ -1,0 +1,92 @@
+@(payments: List[Payment], applicant : Applicant , totalAmountToPay: Double)
+@import scala.Predef;var sum = 0.0; var total = 0.0;
+
+<div class="row content">
+    <div class="col-md-12">
+        <section class="">
+            <h3>
+                Payments
+                <small>History</small>
+            </h3>
+        </section>
+    </div>
+    <div class="col-md-12">
+        <div class="box box-ilpd">
+            <div class="box-header with-border">
+                <h4 class="box-title"><i class="fa fa-history"></i> Payment history</h4>
+                <div class="box-tools">
+                    <div align="right" class="left-form">
+                    </div>
+                </div>
+            </div>
+                <!-- /.box-header -->
+            <div class="box-body">
+                <div class="">
+                    <table class="table table-bordered table-condensed table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Payment type</th>
+                                <th>Paid amount</th>
+                                <th style="width: 40px">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for(payment <- payments) {
+                            @(sum = sum + payment.feesAmount)
+                            <tr>
+                                <td>@payment.date.format("dd/MM/yyy - hh:mm:ss")</td>
+                                <td>
+                                @if(payment.paymentType.equalsIgnoreCase("bank slip")) {
+                                    <span class="label label-primary">@payment.paymentType</span>
+                                } else {
+                                    <span class="label label-default">@payment.paymentType</span>
+                                }
+                                </td>
+                                <td>@Counts.formatAmount(payment.feesAmount + payment.applicationFees + payment.restaurantAmount + payment.accomodationAmount + payment.otherFees)</td>
+                                <td>
+                                    <span class="label label-success"><i class="fa fa-check-circle-o"></i>
+                                        @payment.status
+                                    </span>
+                                </td>
+                            </tr>
+                            @(total = total + payment.feesAmount + payment.applicationFees + payment.restaurantAmount + payment.accomodationAmount + payment.otherFees)
+                        }
+                            <tr>
+                                <td colspan="2">TOTAL AMOUNT PAID</td>
+                                <td colspan="3">@Counts.formatAmount(total) Rwf</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+                <!-- /.box-body -->
+            <div class="box-footer">
+                <div class="btn-group btn-group-sm pull-right">
+                    <button class="btn btn-info btn-flat">
+                        Amount to pay: @Counts.formatAmount(applicant.getAmountToPay) RWF
+                    </button>
+                    @if(applicant.account!=null){
+                        <button class="btn btn-success btn-flat">
+                            Amount paid: @Counts.formatAmount(applicant.getTotalAmountPaid  - Refund.getTotalInReFunded(applicant.account.id)) RWF
+                        </button>
+                        <button class="btn btn-default btn-flat">
+                        @if(applicant.getTotalAmountRemain > 0) {
+                            Amount remain:
+                        }else{
+                            Amount to be refunded:
+                        }
+                            @if(applicant.getTotalAmountRemain < 0){
+                                @Counts.formatAmount((applicant.getTotalAmountRemain * -1) - Refund.getTotalInReFunded(applicant.account.id))
+                            }else{
+    @Counts.formatAmount(applicant.getTotalAmountRemain)
+                            } RWF
+                        </button>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

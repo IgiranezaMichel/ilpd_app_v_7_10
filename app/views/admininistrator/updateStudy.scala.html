@@ -1,0 +1,29 @@
+@(mode : StudyMode)
+@if(mode != null) {
+  <div class="loginForm">
+    <form action="@routes.UpdateForm.updateMode(mode.id)" method="POST" onsubmit="return allForms(this)">
+      <div class="box box-info">
+        <div class="box-header text-left resp-width">
+          <i class="fa fa-envelope"></i>
+          <h3 class="box-title">Update Study mode</h3>
+        </div>
+        <div class="box-body">
+        <div class="form-group has-feedback">
+            <label>mode name <em>*</em></label>
+            <input class="form-control" id="XMMIPANGO" name="modeName" placeholder="Enter modename" value="@mode.modeName">
+        </div>
+        <div class="form-group has-feedback">
+            <label>mode acronym <em>*</em></label>
+            <input class="form-control" id="XMMIPANGO" name="modeAcronym" placeholder="Enter modename" value="@mode.modeAcronym">
+        </div>
+        </div>
+        <div class="box-footer clearfix">
+          <button type="submit" class="pull-right btn btn-default">Update user
+            <i class="fa fa-arrow-circle-right"></i></button>
+        </div>
+      </div>
+    </form>
+  </div>
+} else {
+  <div>Error with reference</div>
+}

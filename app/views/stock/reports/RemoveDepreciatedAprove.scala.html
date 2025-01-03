@@ -1,0 +1,84 @@
+@(items:List[models.stock.Item],string: String)
+@import scala.Predef;var inc=1;var depDate=new Date();var remain = 0;
+@main(string,"") {
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="invoice">
+                    <div class="row">
+                        <div class="row no-print">
+                            <div class="col-xs-12">
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 table-responsive">
+                            <h4 class="text-blue">
+                                @string
+                                <small class="pull-right">Date: @(new Date().format("dd-MM,yyyy"))</small>
+                            </h4>
+                            <table class="table table-hover table-striped" id="example">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Category</th>
+                                        <th>Type</th>
+                                        <th>Unit measure</th>
+                                        <th>Qty</th>
+                                        <th>Entry date</th>
+                                        <th>Depr.min years</th>
+                                        <th>Depr.date</th>
+                                        <th>Status</th>
+                                        <th>Request</th>
+                                        <th>Approve</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @for(g <- items) {
+                                    @(depDate=Counts.dateAddMonth(g.date,g.depleciationMinMonths))
+                                    @(remain = g.getBeginningStockQty(new Date().format("yyyy-MM-dd")))
+                                    @if(remain > 0) {
+                                        <tr>
+                                            <td>@inc</td>
+                                            <td>@g.name</td>
+                                            <td>@g.category.name</td>
+                                            <td>@(g.iType)</td>
+                                            <td>@g.unitMeasure</td>
+                                            <td>@Counts.formatAmount(remain)</td>
+                                            <td>@g.date.format("dd-MM,yyyy")</td>
+                                            <td>@g.depleciationMinMonths</td>
+                                            <td>
+                                            @depDate.format("dd-MM,yyyy")
+                                            </td>
+                                            <td>
+                                            @if(Counts.dateIsBefore(depDate) && g.iType != null && g.iType.equalsIgnoreCase("Non-consumable")) {
+                                                <span class="text-danger">Depreciated</span>
+                                            } else {
+                                                <span class="text-success">Good</span>
+                                            }
+                                            </td>
+                                        @if(g.removed.equalsIgnoreCase("pending")) {
+                                        <td>
+                                            <small class="label bg-blue">Pending</small>
+                                        </td>
+                                        }
+                                            <td><button class="btn btn-info btn-sm btn-circle" href="@routes.Application.updateAll(g.id, "remove-depr-approve")" onclick="return createModal(this, self.event);"><i class="fa fa-minus-circle"></i></button></td>
+                                        </tr>
+                                    }
+                                    @(inc=inc+1)
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+

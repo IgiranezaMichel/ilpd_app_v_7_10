@@ -1,0 +1,138 @@
+@( module : Module , progs : List[Program] )
+@if( module != null ){
+    <div class="loginForm">
+        <form action="@routes.UpdateForm.updateModule(module.id)" method="POST" onsubmit="return allForms(this)">
+            <div class="box box-info">
+                <div class="box-header with-border text-left resp-width">
+                    <i class="fa fa-pencil"></i>
+
+                    <h3 class="box-title">Update module</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group has-feedback">
+                        <p>Module program</p>
+                        <select class="form-control" name="prog">
+                            <option value="">-- Choose program --</option>
+                            @for( i <- progs ){
+                                <option value="@i.id" @if(module.program.id.equals(i.id)){selected}> @i.programName (@i.programAcronym)</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <p>Module has component ?</p>
+                    <select class="form-control" name="hasComponent">
+                        <option value="">-- Module has component ? --</option>
+                        <option value="false" @if(!module.hasComponent){selected}>Yes, it has</option>
+                        <option value="true" @if(module.hasComponent){selected}>No, it doesn't</option>
+                    </select>
+                </div>
+                    <div class="form-group has-feedback" id="lectureF">
+                        <p>Choose Head of Module</p>
+                        <select class="form-control" name="lecting">
+                            <option value="">-- Choose Head of Module --</option>
+                            @for( i:Lecture <- Lecture.all() ){
+                                <option value="@i.id" @if(module.lecture.id.equals(i.id)){selected}>@i.hisNames()</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback others">
+                        <label style="display: block;">Is this a module or moot court/Internship ?</label>
+                        @if(module.moduleInternship.equalsIgnoreCase("module")){
+                        <div class="myRadio">
+                            <span class="t-radio"><input type="radio" name="moduleInternship" value="module" checked>
+                                <label for="radioMale">Module</label>
+                            </span>
+                            <span class="t-radio"><input type="radio" name="moduleInternship" value="Moot court">
+                                <label for="radioFemale">Moot court</label>
+                            </span>
+                            <span class="t-radio"><input type="radio" name="moduleInternship" value="Internship">
+                                <label for="radioFemale">Internship</label>
+                            </span>
+                        </div>
+                        }
+                        @if(module.moduleInternship.equalsIgnoreCase("Moot court")){
+                        <div class="myRadio">
+                            <span class="t-radio"><input type="radio" name="moduleInternship" value="module">
+                                <label for="radioMale">Module</label>
+                            </span>
+                            <span class="t-radio"><input type="radio" name="moduleInternship" value="Moot court" checked>
+                                <label for="radioFemale">Moot court</label>
+                            </span>
+                            <span class="t-radio"><input type="radio" name="moduleInternship" value="Internship">
+                                <label for="radioFemale">Internship</label>
+                            </span>
+                        </div>
+                        }
+                        @if(module.moduleInternship.equalsIgnoreCase("Internship")){
+                        <div class="myRadio">
+                            <span class="t-radio"><input type="radio" name="moduleInternship" value="module">
+                                <label for="radioMale">Module</label>
+                            </span>
+                            <span class="t-radio"><input type="radio" name="moduleInternship" value="Moot court">
+                                <label for="radioFemale">Moot court</label>
+                            </span>
+                            <span class="t-radio"><input type="radio" name="moduleInternship" value="Internship" checked>
+                                <label for="radioFemale">Internship</label>
+                            </span>
+                        </div>
+                        }
+                    </div>
+                    <div class="form-group has-feedback">
+                        <p>Module name</p>
+                        <input type="text" class="form-control" name="moduleName" autocomplete="off" placeholder="Update module name" value="@module.moduleName"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <p>Module code</p>
+                        <input class="form-control" name="moduleCode" placeholder="Update module code" value="@module.moduleCode"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <p>Order number</p>
+                        <input class="form-control" name="orderNumber" placeholder="Enter order number" value="@module.orderNumber"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <p>Module credits</p>
+                        <input class="form-control" name="credits" number="true" placeholder="Update module credits" value="@module.credits"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <p>Research max</p>
+                        <input class="form-control" name="reMax" number="true" placeholder="Update assignment max" value="@module.reMax" />
+                    </div>
+                    <div class="form-group has-feedback">
+                        <p>Cat max</p>
+                        <input class="form-control" name="catMax" number="true" placeholder="Update cat max" value="@module.catMax" />
+                    </div>
+                    <div class="form-group has-feedback">
+                        <p>Exam max</p>
+                        <input class="form-control" name="examMax" placeholder="Update exam max" value="@module.examMax" number="true"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <p>Re-seat research max</p>
+                        <input type="text" class="form-control" number="true" value="@module.reseatResearchMax"
+                        name="reseatResearchMax" autocomplete="off" placeholder="Re-seat research max"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <p>Re-seat exam max</p>
+                        <input type="text" class="form-control" number="true" value="@module.minMarks"
+                        name="minMarks" autocomplete="off" placeholder="Re-seat exam max"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <p>Amount for resit</p>
+                        <input type="text" class="form-control" number="true" value="@module.resitAmount"
+                        name="resitAmount" autocomplete="off" placeholder="Enter amount for resit"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <p>Amount for retake</p>
+                        <input type="text" class="form-control" number="true" value="@module.retakeAmount"
+                        name="retakeAmount" autocomplete="off" placeholder="Enter amount for retake"/>
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default">Update module
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+}else{
+    <div>Error With Reference</div>
+}

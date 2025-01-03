@@ -1,0 +1,44 @@
+@(currentPage: com.avaje.ebean.Page[Applicant],status:String)
+<div class="">
+    <ul class="timeline">
+        @for(app: Applicant <- currentPage.getList) {
+            <li>
+                <span class="fa hideOver bg-silver">
+                    <img src="@routes.Assets.at(Counts.profileImage(app.profile))">
+                </span>
+                <div class="timeline-item">
+                    <h3 class="timeline-header no-border">
+                        <a href="@routes.ApplicantController.applicantDetails(app.id)" class="js-app-details">
+                        @app.toString
+                        </a>
+                    </h3>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
+<div id="pagination" class="paginationDiv pull-right">
+    <ul class="pagination">
+        @if(currentPage.hasPrev) {
+            <li class="prev">
+                <a onclick="getPage('@routes.ApplicantController.allApplicantsByPayment(currentPage.getPageIndex-1,"partial",status)')">&larr; </a>
+            </li>
+        } else {
+            <li class="prev disabled">
+                <a>&larr;</a>
+            </li>
+        }
+        <li class="current">
+            <a>@currentPage.getDisplayXtoYofZ(" - ", " / ")</a>
+        </li>
+        @if(currentPage.hasNext) {
+            <li class="next">
+                <a onclick="getPage('@routes.ApplicantController.allApplicantsByPayment(currentPage.getPageIndex+1,"partial",status)')" >&rarr; </a>
+            </li>
+        } else {
+            <li class="next disabled">
+                <a>&rarr;</a>
+            </li>
+        }
+    </ul>
+</div>

@@ -1,0 +1,200 @@
+@( cle : Boolean )
+
+@main("Attendance report", "") {
+    <section class="content-header">
+        <h1>
+            Attendance
+            <small>report</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Reports</a></li>
+            <li class="active">Attendance reports</li>
+        </ol>
+    </section>
+        <!-- Main content -->
+    <div class="content" style="padding-left: 20px ">
+        <div class="box box-primary">
+                <!-- Add the bg color to the header using any of the bg-* classes -->
+            <div class="box-header with-border">
+                <h4 class="box-title text-success"><i class="fa fa-list-ul"></i> Attendance report</h4>
+                <small>
+                    This page has been enhanced for printing. Click on the links below to print the below content in new tab.</small>
+            </div>
+            <div class="box-body">
+                <div class="panel-group" id="attaccordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="btn-block" data-toggle="collapse" data-parent="#attaccordion" href="#attModule">
+                                    Component report  <i class="fa fa-minus-circle pull-right"></i>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="attModule" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="box-body">
+                                    <form target="_blank" action="@routes.Reports.componentAttendanceReport()" method="post" id="module_report_form">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="campus">Choose campus</label>
+                                                    <select name="campus" id="campus" class="form-control" required>
+                                                        <option value="">--select--</option>
+                                                        @for(campus : Campus <- Campus.all()) {
+                                                            <option value="@campus.id">@campus.campusName</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="iMode">Choose period</label>
+                                                    <select name="iMode" id="iMode" class="form-control" required>
+                                                        <option value="">--select--</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="component">Choose component</label>
+                                                    <select name="component" id="component" class="form-control" required>
+                                                        <option value="">--select--</option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <button type="submit" class="btn btn-primary center-block btn-block"><i class="ion-ios-printer-outline"></i>
+                                                    Generate report</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="btn-block" data-toggle="collapse" data-parent="#attaccordion" href="#attModuleReport">
+                                    Module report  <i class="fa fa-minus-circle pull-right"></i>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="attModuleReport" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="box-body">
+                                    <form target="_blank" action="@routes.Reports.moduleAttendanceReport()" method="post" id="module_report_form">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="period">Choose period</label>
+                                                    <select name="period" id="period" class="form-control" required>
+                                                        <option value="">--select period--</option>
+                                                        @for(m:Training<- Training.cleAbout2(cle)){
+                                                            <option value="@m.id">@m.print()</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="module">Choose Module</label>
+                                                    <select name="module" id="module" class="form-control" required>
+                                                        <option value="">--select module--</option>
+                                                        @for(m : Module<- Module.all()){
+                                                            <option value="@m.id">@m.moduleName</option>
+                                                        }
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <button type="submit" class="btn btn-primary center-block btn-block">
+                                                    <i class="ion-ios-printer-outline"></i>
+                                                    Generate report</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- /.content -->
+    <div class="clearfix"></div>
+}
+
+<script >
+    //Date picker
+    $('.datepicker').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'dd-mm-yyyy'
+    });
+    $(function () {
+        $(document).on('change', '#campus', function () {
+            var self = $(this);
+            $.ajax({
+                url: '/report/campus/' + self.val() + "/",
+                method: 'get',
+                dataType: 'json'
+            }).done(function (response) {
+                var iMode = $('#iMode');
+                iMode.html('');
+                iMode.append($('<option>', {
+                    value: '',
+                    text: '--select--'
+                }));
+
+                $.each(response, function (index, item) {
+
+                    iMode.append($('<option>', {
+                        value: item.id,
+                        text: item.print
+                    }));
+
+                });
+            })
+        });
+
+
+        $(document).on('change', '#iMode', function () {
+            var self = $(this);
+            $.ajax({
+                url: '/report/iMode/' + self.val() + "/",
+                method: 'get',
+                dataType: 'json'
+            }).done(function (response) {
+                var comp = $('#component');
+                comp.html('');
+                comp.append($('<option>', {
+                    value: '',
+                    text: '--select--'
+                }));
+
+                $.each(response, function (index, item) {
+                    comp.append($('<option>', {
+                        value: item.id,
+                        text:item.comp_name
+                    }));
+                    console.log("Index:" + index + " ,Value:" + item.comp_name)
+                });
+            })
+        });
+    })
+
+    $("#module_report_form").parsley();
+
+</script>

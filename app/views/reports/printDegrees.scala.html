@@ -1,0 +1,99 @@
+@(students:List[Student], training: Training , modules:List[Module])
+@import scala.Predef;var inc = 1;var inc1=1;var resitExamMarks=0.0;var tot = 0; var tMax = 0.0; var catMarks=0.0;var reMarks=0.0;var examMarks=0.0; var total = 0.0;var totalModuleMarks=0.0;
+@main("Student certificates",""){
+    <style>
+            .back1 {
+                background-color: transparent !important;
+                background-image: url(@routes.Assets.at("images/Sample-final.png")) !important;
+                background-size: 100% auto !important;
+                background-repeat: no-repeat !important;
+                background-position: left top !important;
+                height: 100vh !important;
+                width: 842px !important;
+            }
+            .regNo{
+                margin-top: 20% !important;
+                margin-left: 10% !important;
+                font-size: 24px !important;
+            }
+    </style>
+    <section class="content-header">
+        <div class="row no-print">
+            <div class="col-xs-12">
+                <button onclick="printReport();" class="btn btn-ilpd btn-flat box-shadow-normal" style="margin-right: 5% !important;">
+                    <i class="fa fa-print"></i> Print certificate
+                </button>
+            </div>
+        </div>
+    </section>
+        @for(student <- students){
+        @if(student.status.equalsIgnoreCase("distinction") || student.status.equalsIgnoreCase("Merit") || student.status.equalsIgnoreCase("Satisfactory") || student.status.equalsIgnoreCase("pass")){
+        <div class="col-md-10 col-centered back1">
+        @if(inc == 1){
+        <div style="margin-top: 3% !important;" class="box-body">
+        }else{
+            <div style="margin-top: 0% !important;" class="box-body">
+        }
+            <p class="regNo" style="margin-top: 1% !important;">@student.regNo</p>
+            <div style="margin-top: 48% !important;" class="text-center">
+                <h1 style="margin-top: -16% !important; margin-left: 39% !important; color: #AC4599; text-transform: lowercase; font-family: 'Edwardian Script ITC'; font-size: 80px;">
+                @Counts.firstWord(student.training.iMode.campusProgram.program.programName.toUpperCase())
+                </h1>
+                <h1 style="margin-left:-30% !important; margin-top: -5% !important; color: #AC4599; text-transform: lowercase; font-family: 'Edwardian Script ITC'; font-size: 80px;">
+                    @Counts.secondWord(student.training.iMode.campusProgram.program.programName.toUpperCase()) @Counts.thirdWord(student.training.iMode.campusProgram.program.programName.toUpperCase()) @Counts.fourthWord(student.training.iMode.campusProgram.program.programName.toUpperCase())
+                </h1>
+                <h3 style="padding-left: 150px;
+                    margin-top: 15% !important;
+                    padding-right: 200px;
+                    color: #2C3B41;
+                    text-transform: capitalize;
+                    font-family: 'Pacifico', cursive;">
+                @student.toString()
+                </h3>
+                <br>
+                <br>
+                <br>
+                <br>
+                <h3 class="pull-right" style="text-transform: uppercase; font-family: Book Antiqua; margin-top: 8%; margin-left: -10% !important;margin-right: 32% !important;; font-size: 26px !important;">
+                        &nbsp;<b>@student.training.iMode.campusProgram.program.programName.toUpperCase()</b>
+                </h3>
+                <br>
+                <br>
+                <br>
+                <h3 style="text-transform: uppercase; margin-top: 8% !important;">
+                    <span style="text-transform: capitalize; margin-left: 0% !important;">
+                        @student.training.trainer
+                        @if(student.training.graduation!=null){
+                            @student.training.endDate.format("dd MMM,yyyy")
+                        }else{
+                            <span class="text-info">Uknown date</span>
+                        }
+                    </span>
+                </h3>
+                <br>
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div style="">
+                <div class="pull-left">
+                    <img src="@routes.Assets.at("uploads/"+ProfileInfo.unique().rector)" style="height: 100px;" alt="">
+                    <h4 ></h4>
+                </div>
+                <div class="pull-right">
+                    <img src="@routes.Assets.at("uploads/"+ProfileInfo.unique().registrarSignature)" style="height: 100px" alt="">
+                    <h4 ></h4>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+            @(inc = inc + 1)
+            }
+        }
+}
+<script type="text/javascript">
+        window.print();
+</script>

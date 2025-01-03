@@ -1,0 +1,26 @@
+@( lst : List[Student] )
+
+
+<div>
+        <!-- /.box-header -->
+    <div class="box-body no-padding">
+        <table class="table table-condensed">
+            <tbody>
+                <tr>
+                    <th>Profile</th>
+                    <th>Student name</th>
+                    <th>reg No</th>
+                    <th style="width: 40px">modules</th>
+                </tr>
+                @for( i <- lst ) {
+                    <tr class="fetch-students" href="@routes.Application.loadTranscript(i.id,true)">
+                        <td><div class="round-image sm-round"><img src="@routes.Assets.at(Vld.imagePro(i.applicant.profile))" alt=""></div></td>
+                        <td>@i.toString() </td>
+                        <td>@i.regNo </td>
+                        <td><span class="badge bg-red">@i.myModules().size()</span></td>
+                    </tr>
+                }
+            </tbody></table>
+    </div>
+        <!-- /.box-body -->
+</div>

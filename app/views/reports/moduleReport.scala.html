@@ -1,0 +1,71 @@
+@(students:List[Student],training: Training,module:Module)
+@import scala.Predef;var inc=1;
+@main("Report by Module",""){
+    <div class="invoice">
+        <div class="row">
+            <div class="row no-print">
+                <div class="col-xs-12">
+                    <div class="row no-print">
+                        <div class="col-xs-12">
+
+                            <a href="javascript:window.print();" class="btn btn-default pull-right btn-print">
+                                <i class="fa fa-print"></i> Print
+                            </a>
+                            <button onclick="exportTableToExcel('tblData', 'Attendance report')" class="btn btn-ilpd btn-flat box-shadow-normal" style="margin-right: 10px;">
+                                <i class="fa fa-file-excel-o"></i> Print excel report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+            @shared.ildpHeader.render()
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 table-responsive">
+                <h5>Module: <b>@module.moduleName</b></h5>
+                <h5>Period: <b>@training.iMode.print()</b></h5>
+                <table id="tblData" class="table table-condensed table-striped table-hover table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Reg number</th>
+                            <th>Full name</th>
+                            <th>Phone number</th>
+                            <th>Attendance %</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @for(student <-students){
+                        <tr>
+                            <td>@inc</td>
+                            <td>@student.regNo</td>
+                            <td>@student.applicant.applied.contactPhone</td>
+                            <td>@student.toString</td>
+                            @if(Counts.getPercentageScorePerModule(student, student.training, module) < 80) {
+                                <td>
+                                <span style="color: red;">@Counts.getPercentageScorePerModule(student, student.training, module)</span>
+                                </td>
+                            }else{
+                                <td>
+                                <span style="color: green;"> @Counts.getPercentageScorePerModule(student, student.training, module)</span>
+                            </td>
+                            }
+                        </tr>
+
+                        @(inc=inc+1)
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+        @shared.reportFooter.render()
+        </div>
+    </div>
+
+        <!-- /.content -->
+    <div class="clearfix"></div>
+}
+

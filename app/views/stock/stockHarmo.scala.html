@@ -1,0 +1,81 @@
+@(items: List[models.stock.Item], categories: List[models.stock.Category])
+@import scala.Predef;var inc=1;var depDate=new Date();var remain = 0; var date = new Date().format("yyyy-MM-dd");
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-ilpd">
+            <div class="box-header with-border">
+                <h3 class="box-title">Items</h3>
+            </div>
+                <!-- /.box-header -->
+            <div class="box-body">
+                <div class="">
+                    <table class="table table table-hover table-striped table-condensed manageTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Category</th>
+                                <th>Unit measure</th>
+                                <th>Qty</th>
+                                <th>Add item</th>
+                                <th>Remove qty</th>
+                                <th>Delete item</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for(item:models.stock.Item <- items) {
+                            @(remain = item.getBeginningStockQty(Counts.getTomorrow().toDate.format("yyyy-MM-dd")))
+                            <tr>
+                                <td>@item.name</td>
+                                <td>@(item.iType)</td>
+                                <td>@item.category.name</td>
+                                <td>@item.unitMeasure</td>
+                                <td>
+                                @if(remain > 0) {
+                                    @Counts.formatAmount(remain)
+                                }else{
+                                    0
+                                }
+                                </td>
+                                <td>
+                                    <button href="@routes.ItemsController.AddHarmonization(item.id)" onclick="createModal(this, self.event)" class="btn btn-link ">
+                                        <i class="fa fa-plus-circle"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button href="@routes.ItemsController.removeHarmonization(item.id)" onclick="createModal(this, self.event)" class="btn btn-link ">
+                                        <i class="fa fa-minus-circle"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button href="@routes.ItemsController.deleteHarmonization(item.id)" onclick="createModal(this, self.event)" class="btn btn-link ">
+                                        <i style="color: red !important;" class="fa fa-trash-o"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+        $('.manageTable').DataTable();
+        $(function () {
+            $(document).on('change','.selecType',function (e) {
+                if ($(this).val()!=="Consumable"){
+                    $(".hideItemsYear").removeClass('div-hide');
+                }else{
+                    $(".hideItemsYear").addClass('div-hide');
+                }
+            });
+        });
+</script>
+<script>
+        $(function () {
+            $('.select2').select2()
+        })
+</script>

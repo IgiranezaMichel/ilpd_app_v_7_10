@@ -1,0 +1,73 @@
+@(refundList : List[Refund], trainings : List[Training], intakeList :List[Intake])
+@main("Financial report", "") {
+    <section class="content-header">
+        <h1>
+            Refund
+            <small>reports</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Reports</a></li>
+            <li class="active">Refund reports</li>
+        </ol>
+    </section>
+
+        <!-- Main content -->
+    <div class="content" style="padding-left: 20px">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h4 class="box-title text-success">
+                    <i class="fa fa-money"></i> Refund report
+                </h4>
+                <small>
+                    This page has been enhanced for printing. Click on the links below to print the below content in new tab.</small>
+            </div>
+            <div class="box-body">
+                <div class="panel-group" id="faccordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#faccordion" href="#fintake">
+                                    Refund report by Intake and refund status
+                                    <i class="fa fa-plus-circle pull-right"></i>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="fintake" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <form action="@routes.Reports.financialReportBySatus("refurnrepoerFinance")" class="form-inline" method="get" target="_blank">
+                                            <div class="form-group">
+                                                <select name="intakeId" id="intake" class="form-control">
+                                                    <option value="">-select intake---</option>
+                                                    <option value="0">--All--</option>
+                                                    @for(intake <- intakeList) {
+                                                        <option value="@intake.id">@intake.intakeName</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <select name="status" id="status" class="form-control">
+                                                    <option value="">-select status---</option>
+                                                    <option value="all">All</option>
+                                                    <option value="true">Refunded</option>
+                                                    <option value="false">Not-Refunded</option>
+                                                </select>
+                                            </div>
+                                            <button class="btn btn-primary" type="submit">Generate report</button>
+                                        </form>
+                                        <br><br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- /.content -->
+    <div class="clearfix"></div>
+}

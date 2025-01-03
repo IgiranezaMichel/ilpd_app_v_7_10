@@ -1,0 +1,21 @@
+@( anns : List[Announce] )
+@if( anns != null ) {
+  <div class="announce-print default-toggle" no-prop="true">
+  @for(ip <- anns) {
+    @if( !ip.deleteStatus ) {
+      <div class="ann-data transit" onclick="fullNoteRead(this, event)" href="@routes.Application.announceFullView(ip.id)">
+        <a href="@routes.Application.markViewed(ip.id)" onclick="rejectNote(this, event)" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
+        <div class="data-desc"><i class="fa fa-warning text-yellow"></i>
+            &nbsp; @ip.category</div>
+        <div class="has-feedback c-title">@ip.title</div>
+        <div class="heighted loading hide load-data"></div>
+        @if( ip.pubDate != null ){
+          <h5 class="text-red"><i class="fa fa-ticket text-aqua"></i> <b>Event date</b> : @ip.pubDate</h5>
+        }
+        <div class="data-desc"><i class="fa fa-calendar-times-o text-green"></i>
+            &nbsp; @ip.date.format("dd-MM-yyyy")</div>
+      </div>
+    }
+  }
+  </div>
+}

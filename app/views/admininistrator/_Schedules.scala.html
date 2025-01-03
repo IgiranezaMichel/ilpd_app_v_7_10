@@ -1,0 +1,104 @@
+@(currentPage: com.avaje.ebean.Page[Schedule])
+
+<div class="box box-ilpd">
+            <form action="@routes.Application.scheduleByLecture()" method="get" target="_blank">
+                <div class="box-body">
+                    <div class="row">
+                    <div class="col-md-4">
+                        <h4 class="box-title">
+                            <i class="fa fa-calendar-check-o"></i>
+                            Time table by lecturer</h4>
+                    </div>
+                        <div class="col-md-4">
+                    <div class="form-group has-feedback">
+                        <select name="lectureId" class="form-control" required>
+                            <option value="">-- Choose lecturer --</option>
+                            @for( i : Lecture <- Lecture.all() ){
+                                <option value="@i.id">@i.hisNames()</option>
+                            }
+                        </select>
+                    </div>
+                        </div>
+                        <div class="col-md-4">
+                    <button type="submit" class="pull-right btn btn-default">View time table
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+    <div class="box-body">
+        <div class="box-header with-border">
+            <h4 class="box-title">
+                <i class="fa fa-calendar-check-o"></i>
+                Available module schedule</h4>
+        </div>
+        <table class="table table table-bordered table-hover table-striped table-condensed manageTable">
+            <thead>
+                <tr>
+                    <th>Day - Hour</th>
+                    <th>lecture</th>
+                    <th>component</th>
+                    <th>room</th>
+                    <th>period</th>
+                    <th>Date range</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(i: Schedule <- currentPage.getList) {
+                    <tr>
+                        <td>@i.date.format("dd/MM/yyyy") , @i.date.format("EEE") , @i.getHour</td>
+                        <td>@i.lecture.hisNames()</td>
+                        <td>@i.component.compName</td>
+                        <td>@i.room.roomName</td>
+                        <td>@i.training.tNames()</td>
+                        <td>@i.dateRange.toString </td>
+                        <td>
+                            <button class="btn btn-info btn-sm btn-circle" href="@routes.Application.updateAll(i.id, "schedule")" onclick="return createModal(this, self.event);"><i class="fa fa-pencil"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm btn-circle" onclick="createDel(this)" value="@routes.Application.deleteAll(i.id, "schedule")"><i class="ion-ios-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="box-footer">
+        <div id="pagination" class="paginationDiv pull-right">
+            <ul class="pagination">
+                @if(currentPage.hasPrev) {
+                    <li class="prev">
+                        <a onclick="getPage('@routes.Application.showSchedules(currentPage.getPageIndex-1,"partial")')">&larr; </a>
+                    </li>
+                } else {
+                    <li class="prev disabled">
+                        <a>&larr;</a>
+                    </li>
+                }
+                <li class="current">
+                    <a>@currentPage.getDisplayXtoYofZ(" - ", " / ")</a>
+                </li>
+                @if(currentPage.hasNext) {
+                    <li class="next">
+                        <a onclick="getPage('@routes.Application.showSchedules(currentPage.getPageIndex+1,"partial")')" >&rarr; </a>
+                    </li>
+                } else {
+                    <li class="next disabled">
+                        <a>&rarr;</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+        $('.datepicker').datepicker({
+            autoclose: true,
+            format: 'yyyy/mm/dd',
+            todayHighlight: true
+        });
+</script>
+<script>
+        $('.manageTable').DataTable();
+</script>

@@ -1,0 +1,36 @@
+@(user: Users)
+    <div class="loginForm">
+        <form action="@routes.UpdateForm.updateStudentInfo()" method="post" onsubmit="return allForms(this)">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-pencil"></i>
+                    <h3 class="box-title">Update existing user</h3>
+                </div>
+                @if(user != null ) {
+                    <div class="box-body">
+                        <div class="form-group has-feedback">
+                            <input type="email" value="@user.email" class="form-control" name="email" max="3000" email="true" placeholder="Enter student email"/>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <input type="text" value="@user.phone" class="form-control" name="phone" max="13" placeholder="Enter phone number"/>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <input type="password" value="@user.password" class="form-control" name="password" max="3000" placeholder="Password"/>
+                        </div>
+                    </div>
+                    <input type="hidden" name="userId" value="@user.id">
+                    <div class="box-footer clearfix">
+                        <button type="submit" class="pull-right btn btn-default">Update
+                            <i class="fa fa-arrow-circle-right"></i></button>
+                    </div>
+                } else {
+                    <div class="box-body">
+                       <div class="alert alert-danger">
+                           <h4><i class="fa fa-warning"></i> Error !! Problem of incomplete data.</h4>
+                       </div>
+                    </div>
+                }
+
+            </div>
+        </form>
+    </div>

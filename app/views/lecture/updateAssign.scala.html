@@ -1,0 +1,62 @@
+@(assignment: Assignment/*,lect : Lecture , q : String , myAssign : List[models.Schedule] */)
+
+<div class="loginForm" id="form1" no-prop="true">
+    <div class="box box-info">
+        <div class="box-header text-left resp-width">
+            <i class="fa fa-envelope"></i>
+
+            <h3 class="box-title">Add new assignment ...</h3>
+        </div>
+      @*
+        <form action="@routes.Registration.saveAssignment()" method="POST" onsubmit="return allForms(this)">
+            <div class="box-body">
+
+                <div class="form-group has-feedback">
+                    <select class="form-control" name="comp">
+                        <option value="">-- Choose Component --</option>
+                        @for( i <- lect.myComp() ){
+                            <option value="@i.component.id">@i.component.compName</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group has-feedback">
+                    <select class="form-control" name="trainings" id="trainingsID">
+                        <option value="">-- Choose period --</option>
+                        @for( i <- lect.myTrainingsAll() ){
+                            <option value="@i.training.id">@i.training.tNames()</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control" name="assignmentTitle" placeholder="Enter assignmentTitle"/>
+                </div>
+                <div class="form-group has-feedback">
+                    <textarea class="form-control" name="description" placeholder="Enter description"></textarea>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control" name="startDate" placeholder="Enter startDate" id="start" autocomplete="off" />
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control" name="endDate" placeholder="Enter endDate" id="date" autocomplete="off" />
+                </div>
+                <div class="form-group has-feedback">
+                    <button type="button" class="btn btn-info btn-block" onclick="I('#cli').click()">Upload attachement</button>
+                    <div class="ffa"><span></span> <i class="fa fa-check-circle"></i></div>
+                    <input type="file" onchange="(this.value) ? show(I('.ffa')) : hide(I('.ffa')); I('.ffa span').textContent=fileName(this.value);" class="form-control" name="attachment" id="cli" style="display: none" id="date"/>
+                </div>
+                <div class="form-group has-feedback">
+                    <select class="form-control" name="grouped">
+                        <option value="">-- Choose assignment type --</option>
+                        <option value="false">Single</option>
+                        <option value="true">group work</option>
+                    </select>
+                </div>
+            </div>
+            <div class="box-footer clearfix">
+                <button type="submit" class="pull-right btn btn-default">Save
+                    <i class="fa fa-arrow-circle-right"></i></button>
+            </div>
+        </form>
+        *@
+    </div>
+</div>

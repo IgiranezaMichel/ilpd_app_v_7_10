@@ -1,0 +1,20 @@
+@(payment : Payment)
+@if( payment != null ) {
+    <div class="loginForm">
+        <form action="@routes.Application.uploadStudentPayment(payment.id)" method="POST" enctype="multipart/form-data">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-envelope"></i>
+                    <h3 class="box-title">Attach payment proof</h3>
+                </div>
+                <div class="box-body">
+                    <input type="file" name="attachment" required>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default">Update
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+}

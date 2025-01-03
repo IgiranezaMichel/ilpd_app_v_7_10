@@ -1,0 +1,96 @@
+@(currentPage: com.avaje.ebean.Page[Payment], training: Training)
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover table-condensed">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Bank</th>
+                <th>Trans.No</th>
+                <th>App.fees</th>
+                <th>Tuition fees</th>
+                <th>Acc.fees</th>
+                <th>Rest.fees</th>
+                <th>Graduation fees</th>
+                <th>Status</th>
+                <th>Bank slip</th>
+                <th>Approval</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(payment:Payment <- currentPage.getList) {
+                <tr>
+                    <td>@payment.date.format("dd MM yy,hh:mm:ss")</td>
+                    <td>@payment.account.applicant.toString()</td>
+                    <td>@payment.paymentType</td>
+                    <td>@payment.bankAccount.bankAcronym</td>
+                    <td>
+                    @if(payment.slipNumber == "") {
+                        <span class="label label-danger">Not exist</span>
+                    } else {
+                        @payment.slipNumber
+                    }
+                    </td>
+                    <td>@Counts.formatAmount(payment.applicationFees)</td>
+                    <td>@Counts.formatAmount(payment.feesAmount)</td>
+                    <td>@Counts.formatAmount(payment.accomodationAmount)</td>
+                    <td>@Counts.formatAmount(payment.restaurantAmount)</td>
+                    <td>@Counts.formatAmount(payment.otherFees)</td>
+                    <td>
+                    @if(payment.status.equalsIgnoreCase("pending")){
+                        <span class="label label-info">@payment.status</span>
+                    }else{
+                        @if(payment.status.equalsIgnoreCase("approved")){
+                            <span class="label label-success">@payment.status</span>
+                        }else{
+                            <span class="label label-danger">@payment.status</span>
+                        }
+                    }
+                    @if(payment.status.equalsIgnoreCase("rejected")) {
+                        | <span style="color: red !important;">@payment.comment</span>
+                    }
+                    </td>
+                    <td>
+                        <a title="Download" href="@routes.Application.downloadFinanceAttachment(payment.id)" data-id="@payment.id" class="btn btn-default btn-flat"><i class="fa fa-download"></i>
+                            Download</a>
+                    </td>
+                    <td>
+                        <div class="btn-group btn-group-sm flat">
+                            <button title="Make decision" class="btn btn-ilpd btnVerify btn-flat" data-id="@payment.id">
+                                <i class="fa fa-check-circle"></i>
+                                Decide
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div id="pagination" class="paginationDiv pull-right">
+        <ul class="pagination">
+            @if(currentPage.hasPrev) {
+                <li class="prev">
+                    <a onclick="getPage('@routes.PaymentController.recordPaymentByTraining(currentPage.getPageIndex-1,"partial")')">&larr; </a>
+                </li>
+            } else {
+                <li class="prev disabled">
+                    <a>&larr;</a>
+                </li>
+            }
+            <li class="current">
+                <a>@currentPage.getDisplayXtoYofZ(" - ", " / ")</a>
+            </li>
+            @if(currentPage.hasNext) {
+                <li class="next">
+                    <a onclick="getPage('@routes.PaymentController.recordPaymentByTraining(currentPage.getPageIndex+1,"partial")')" >&rarr; </a>
+                </li>
+            } else {
+                <li class="next disabled">
+                    <a>&rarr;</a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

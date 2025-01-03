@@ -1,0 +1,37 @@
+@( assignment: Assignment , myAssign : List[Component] , trains : List[Training])
+
+
+<div class="loginForm">
+    <form action="@routes.Registration.uploadAssignment(assignment.id)"method="POST" onsubmit="return allForms(this)">
+        <div class="box box-info">
+            <div class="box-header text-left resp-width">
+                <i class="fa fa-envelope"></i>
+                <h3 class="box-title">Update assignments</h3>
+            </div>
+            <div class="box-body">
+                <div class="form-group has-feedback">
+                    <label for="">Upload attachment</label>
+                    <input type="file" name="attachment"/>
+                </div>
+                <script >
+                        birthPicker = new Pikaday({
+                            field: document.getElementById('date@assignment.id'),
+                            minDate: new Date(1680,12,31),
+                            formatStrict: true,
+                            yearRange:200,
+                        });
+                        birthPicker = new Pikaday({
+                            field: document.getElementById('start@assignment.id'),
+                            minDate: new Date(1680,12,31),
+                            formatStrict: true,
+                            yearRange:200,
+                        })
+                </script>
+            </div>
+            <div class="box-footer clearfix">
+                <button type="submit" class="pull-right btn btn-default"> Upload
+                    <i class="fa fa-arrow-circle-right"></i></button>
+            </div>
+        </div>
+    </form>
+</div>

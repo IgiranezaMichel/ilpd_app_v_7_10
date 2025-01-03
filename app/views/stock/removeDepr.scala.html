@@ -1,0 +1,26 @@
+@( item : models.stock.Item )
+@import scala.Predef; var remain = 0;
+@if( item != null ) {
+    <div class="loginForm">
+        <form action="@routes.UpdateForm.removeDepr(item.id)" class="validate-form" method="POST" onsubmit="return allForms(this)">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-envelope"></i>
+
+                    <h3 class="box-title">Are you sure to remove this item ?</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group has-feedback">
+                        <label for="">This request will be sent to the Budget Manager for his/her approval</label>
+                    </div>
+                    @(remain = item.getBeginningStockQty(new Date().format("yyyy-MM-dd")))
+                    <input type="hidden" value="@remain" name="quantity">
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default">Confirm request
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+}

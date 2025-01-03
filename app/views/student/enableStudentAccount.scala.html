@@ -1,0 +1,21 @@
+<link rel="stylesheet" href="@routes.Assets.at("bootstrap/css/bootstrap.min.css").absoluteURL()">
+    <div class="container">
+        <div class="box box-info">
+            <div class="box-header text-left resp-width">
+                <i class="fa fa-envelope"></i>
+                <h3 class="box-title">Enter your email to activate your account</h3>
+            </div>
+            <form action="@routes.Application.enableStudent()" method="GET">
+                <div class="box-body text-left">
+                    <div class="form-group has-feedback">
+                        <p>Enter user email</p>
+                        <input class="form-control" name="email" placeholder="Enter user email"/>
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default block"> Enable account
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>

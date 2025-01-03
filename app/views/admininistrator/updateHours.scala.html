@@ -1,0 +1,25 @@
+@( hours: Hours )
+@if( hours != null ) {
+    <div class="loginForm">
+        <form action="@routes.UpdateForm.updateHours(hours.id)" method="POST" onsubmit="return allForms(this)">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width with-border">
+                    <i class="glyphicon glyphicon-edit"></i>
+                    <h3 class="box-title">Edit hour</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group has-feedback">
+                        <p>Program name</p>
+                        <input type="text" value="@hours.hourName" class="form-control" name="hourName" autocomplete="off"  placeholder="Hour name"/>
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default"> Update
+                        <i class="fa fa-check-circle"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+}

@@ -1,0 +1,93 @@
+@(students:List[Student],training: Training, component: Component)
+<style type="text/css">
+@@media print {
+.btn-print{
+    display:none !important;
+.color-red{
+    color: red;
+}
+.color-green {
+    color: green;
+}
+}
+}
+.color-red{
+    color: red;
+}
+.color-green {
+    color: green;
+}
+</style>
+@main("Students attendance",""){
+        <div class="invoice">
+            <div class="row">
+                <div class="row no-print">
+                    <div class="col-xs-12">
+
+                        <a href="javascript:window.print();" class="btn btn-default pull-right btn-print">
+                            <i class="fa fa-print"></i> Print
+                        </a>
+                        <button onclick="exportTableToExcel('tblData', 'Attendance report')" class="btn btn-ilpd btn-flat box-shadow-normal" style="margin-right: 10px;">
+                            <i class="fa fa-file-excel-o"></i> Print excel report
+                        </button>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                @shared.ildpHeader.render()
+                </div>
+            </div>
+            <iframe id="txtArea1" style="display:none"></iframe>
+            <div class="row">
+                <div class="col-md-12 table-responsive">
+                    <h5>Component: <b>@component.compName</b></h5>
+                    <h5>Period: <b>@training.iMode.print() (@training.iMode.campusProgram.program.programAcronym)</b></h5>
+                    <table id="tblData" class="table table-condensed table-striped table-hover table-bordered table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Reg number</th>
+                                <th>Full name</th>
+                                <th>Phone number</th>
+                                <th>Attendance %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for(student <-students){
+                            <tr>
+                                <td>@student.regNo</td>
+                                <td>@student.toString</td>
+                                <td>@student.applicant.applied.contactPhone</td>
+                                @if(Counts.getPercentageScore(student, training, component) < 0) {
+                                    <td>
+                                    <span class="color-red">0</span>
+                                    </td>
+                                }
+                                @if((Counts.getPercentageScore(student, training, component)) < 80 && Counts.getPercentageScore(student, training, component) >= 0) {
+                                    <td>
+                                    <span class="color-red">@Counts.getPercentageScore(student, training, component)</span>
+                                    </td>
+                                }
+                                @if(Counts.getPercentageScore(student, training, component) >= 80 && Counts.getPercentageScore(student, training, component) <= 100) {
+                                    <td>
+                                        <span class="color-green">@Counts.getPercentageScore(student, training, component)</span>
+                                    </td>
+                                }
+                                @if(Counts.getPercentageScore(student, training, component) >= 80 && Counts.getPercentageScore(student, training, component) > 100) {
+                                    <td>
+                                        <span class="color-green">100</span>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+            @shared.reportFooter.render()
+            </div>
+        </div>
+
+        <!-- /.content -->
+    <div class="clearfix"></div>
+}
+

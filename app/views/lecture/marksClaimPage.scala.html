@@ -1,0 +1,26 @@
+@(lecture : Lecture, stuList : List[Student] , train : Training , components : List[Component] )
+
+<div>
+    <h4>&nbsp; @train.tNames()</h4>
+    <table class="table table-bordered">
+
+        <thead>
+
+            <tr>
+                <th></th>
+                <th>Components</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        @for( i <- components ) {
+            <tr class="fetch-students" href="@routes.Application.setMarkClaimPage(lecture.id, train.id,i.id)">
+                <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
+                <td>@i.compName</td>
+            </tr>
+        }
+        </tbody>
+
+    </table>
+
+</div>

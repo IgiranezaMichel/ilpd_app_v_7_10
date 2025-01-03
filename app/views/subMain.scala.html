@@ -1,0 +1,18 @@
+@( bool : Boolean )( content : Html )
+
+
+@if( bool ){
+  @main("Form print page","a"){
+    <style>
+      body{background-color: #f0f0f0}
+    </style>
+
+    @content
+  }
+}else{
+
+  @content
+
+}
+
+  

@@ -1,0 +1,62 @@
+@(nextAction: String,label: String,tr : Boolean , string : String )
+<div class="row">
+<div class="replace">
+    <div class="col-md-5 col-centered transit main-dict">
+        <div class="box box-primary">
+
+            <form action="@routes.CoordinatorController.loadForLecturer()" method="POST" onsubmit="return validate(this, function (f, form) {
+                bringReplace(form)
+            })">
+                <div class="box-header with-border">
+                    <h2 class="box-title" style="text-transform: uppercase">All @string currently on the timetable.</h2>
+                    <h5>Choose one to work in place of. </h5>
+                </div>
+                <div class="box-body">
+                    <input type="text" class="live-search-box form-control" data-escape="1" placeholder="search lecturer here ..." data-escape="1">
+                    @for(ix : Lecture  <- Schedule.allLecturersTimetabled(tr) ) {
+                    <ul class="live-search-list">
+                        <li>
+                        <div class="timel">
+                            <span> </span>
+                            <h5 class="timel-h">
+                                <span class="t-radio">
+
+                                    <input type="radio" id="element@ix.id" name="lecturers" value="@ix.id">
+                                    <label for="element@ix.id">@ix.print()</label>
+                                </span>
+                            </h5>
+                        </div>
+                        </li>
+                    </ul>
+                    }
+                <div class="box-footer">
+                    <p class="text-info">
+                            Select one and click on continue to view <span class="text-bold ">@label</span>
+                        </p>
+                    <button type="submit" class="btn btn-primary btn-block force">
+                            Continue <i class="fa fa-send"></i></button>
+                </div>
+                </div>
+                <input type="hidden" name="NextAction" value="@nextAction">
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<script >
+        jQuery(document).ready(function($){
+            $('.live-search-list li').each(function(){
+                $(this).attr('data-search-term', $(this).text().toLowerCase());
+            });
+            $('.live-search-box').on('keyup', function(){
+                var searchTerm = $(this).val().toLowerCase();
+                $('.live-search-list li').each(function(){
+                    if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+</script>

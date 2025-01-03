@@ -1,0 +1,68 @@
+@(userList : List[Users])
+@import scala.Predef;var inc=1;
+@main("Items report", "") {
+    <section class="content-header">
+        <h1>
+            Hash password
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Hash users password</a></li>
+        </ol>
+    </section>
+    <div class="content" style="padding-left: 20px ">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-ilpd">
+                    <div class="box-body">
+                        <div class="panel-group" id="app-accordion">
+                            <div class="row">
+                                <table class="table table table-hover table-striped table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Full names</th>
+                                            <th>Email address</th>
+                                            <th>User role</th>
+                                            <th>Phone number</th>
+                                            <th>Hash password</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    @for(m <- userList) {
+                                        @if(m.password.length() < 15){
+                                        <tr>
+                                            <td>@inc</td>
+                                            <td>
+                                                @if(m.role.equalsIgnoreCase("employee")) {
+                                                    @m.employee.employeeFirstName @m.employee.employeeLastName
+                                                }
+                                                @if(m.role.equalsIgnoreCase("student") && Student.byUserId(m.id) != null) {
+                                                    @Student.byUserId(m.id).firstName @Student.byUserId(m.id).familyName
+                                                }
+                                            </td>
+                                            <td>@m.email</td>
+                                            <td>@m.role</td>
+                                            <td>@m.phone</td>
+                                            <td>
+                                        <td>
+                                            <button class="btn btn-info" href="@routes.Application.updateAll(m.id, "hashPassword")" onclick="return createModal(this, self.event);">
+                                                <i class="fa fa-info"> Hash password</i>
+                                            </button>
+                                        </td>
+                                        </tr>
+                                        @(inc = inc + 1)
+                                        }
+                                    }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

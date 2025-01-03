@@ -1,0 +1,233 @@
+@(applicant: Applicant)
+@import scala.Predef;var ext = "";var name = "";var status = true;
+@main("",""){
+<div class="container">
+<form action="@routes.ApplicantController.updateApplicant2(applicant.id)" method="POST">
+<div class="nav-tabs-custom">
+    <div class="tab-content">
+            <br>
+            @if(!applicant.applied.training.iMode.campusProgram.program.cle) {
+                <input class="form-control" type="hidden" value="@applicant.profile" name="proging">
+                <div class="text-center">
+                    <div class="forImage">
+                        <div style="margin-top: 5% !important;" class="has-feedback">
+                            <img style="width: 10% !important; height: 10% !important;" src="@routes.Assets.at(if(applicant != null && !applicant.profile.equals("")) {
+                                "uploads/" + applicant.profile
+                            } else {
+                                "images/boys.jpg"
+                            })">
+                            <div class="upload-widget"><div class="up-data"><i class="fa fa-cloud-upload" onclick="reclick2(this)"></i></div></div>
+                        </div>
+                    </div> </div>
+                <div class="identity has-feedback">
+                    <input class="form-control" type="file" max="3000" name="photo" @if(applicant != null && !applicant.profile.equals("")) {
+                        escape="1"}>
+                </div>
+            }
+        <div id="names">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="firstName" class="control-label-important">First name</label>
+                        <input type="text" id="firstName" name="firstName" class="form-control" value="@applicant.firstName">
+                    </div>
+                    <div class="form-group">
+                        <label for="surname" class="control-label-important">Surname/Family name</label>
+                        <input type="text" id="surname" class="form-control" name="familyName" value="@applicant.familyName">
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="control-label-important">Email address</label>
+                        <input type="email" id="email" class="form-control" name="email" value="@applicant.user.email" disabled>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fathersName" class="control-label-important">Father's name</label>
+                        <input name="fatherName" type="text" id="fathersName" class="form-control" value="@applicant.fatherName">
+                    </div>
+                    <div class="form-group">
+                        <label for="mothersName" class="control-label-important">Father's name</label>
+                        <input type="text" id="mothersName" name="motherName" class="form-control" value="@applicant.motherName">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="control-label-important">Phone number</label>
+                        <input type="tel" id="phone" class="form-control" name="phone" value="@applicant.user.phone" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="addresses">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="country" class="control-label-important">Country</label>
+                        <select name="country" class="form-control" id="country">
+                            <option value="">--select--</option>
+                            @for(country: Country <- Country.all()) {
+                                <option value="@country.nicename"
+                                    @Counts.selected(country.nicename, applicant.country)>@country.name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="maritalStatus" class="control-label-important">Martial status</label>
+                        <select name="maritalStatus" class="form-control" id="maritalStatus">
+                            <option value="single" @Counts.selected("single", applicant.maritalStatus)>Single</option>
+                            <option value="married" @Counts.selected("married", applicant.maritalStatus)>Married</option>
+                            <option value="divorced" @Counts.selected("divorced", applicant.maritalStatus)>Divorced</option>
+                            <option value="widow" @Counts.selected("widow", applicant.maritalStatus)>Widow/widower</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nationality" class="control-label-important">Nationality</label>
+                        <input type="text" required id="nationality" class="form-control" name="nationality" value="@applicant.nationality">
+                    </div>
+                    <div class="form-group">
+                        <label for="birthPlace" class="control-label-important">Birth place</label>
+                        <input type="text" required id="birthPlace" class="form-control" name="birthPlace" value="@applicant.birthPlace">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="districts" class="control-label-important">District</label>
+                        <select name="districts.id" class="form-control" id="districts">
+                            <option value="">--select--</option>
+                            @for(d: Districts <- Districts.finder.all()) {
+                                @if(applicant.districts == null) {
+                                    <option value="@d.id">@d.districtName</option>
+                                } else {
+                                    <option value="@d.id"
+                                        @Counts.selected(applicant.districts.id, d.id)>@d.districtName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender" class="control-label-important">Gender</label>
+                        <select name="gender" required class="form-control" id="gender">
+                            <option value="male" @Counts.selected(applicant.gender, "male")>Male</option>
+                            <option value="female" @Counts.selected(applicant.gender, "female")>Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nationalDentity" class="control-label-important">National identity</label>
+                        <input type="text" required id="nationalDentity" class="form-control" name="nationalDentity" value="@applicant.nationalDentity">
+                    </div>
+                    <div class="form-group">
+                        <label for="birthDate" class="control-label-important">Birth date </label>
+                        <input type="text" required id="birthDate" class="form-control datepicker" name="birthDate" value="@applicant.birthDate">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="education">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Bachelor's degree</h4>
+                    <div class="form-group">
+                        <label for="aSchool" class="control-label-important">University</label>
+                        <input type="text" required id="aSchool" class="form-control" name="aSchool" value="@applicant.aSchool">
+                    </div>
+                    <div class="form-group">
+                        <label for="aFromu" class="control-label-important">FROM</label>
+                        <input type="number" required id="aFromu" class="form-control " name="aFromu" value="@applicant.aFromu">
+                    </div>
+                    <div class="form-group">
+                        <label for="aTo" class="control-label-important">TO</label>
+                        <input type="number" required id="aTo" class="form-control" name="aTo" value="@applicant.aTo">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h4>Fees information</h4>
+                    <div class="form-group">
+                        <label for="feespayment" class="control-label-important">Who will pay your school fees?</label>
+                        <select readonly name="feespayment" class="form-control" id="feespayment">
+                            <option value="myself" @Counts.selected("myself", applicant.applied.feespayment)>Myself</option>
+                            <option value="sponsor" @Counts.selected("sponsor", applicant.applied.feespayment)>Sponsor</option>
+                        </select>
+                    </div>
+                    <div
+                        @if(applicant.applied.feespayment.equalsIgnoreCase("myself")) {
+                            class="div-hide"
+                            }>
+                        <div class="form-group">
+                            <label for="sponsorName" class="control-label-important"> Sponsor Name </label>
+                            <input id="sponsorName" class="form-control" readonly type="text" name="sponsorName" @if(applicant.applied != null) {
+                                value="@applicant.applied.sponsorName"}>
+                        </div>
+                        <div class="form-group">
+                            <label for="sponsorPhone" class="control-label-important"> Sponsor phone </label>
+                            <input id="sponsorPhone" class="form-control" readonly type="text" name="sponsorPhone" @if(applicant.applied != null) {
+                                value="@applicant.applied.sponsorPhone"}>
+                        </div>
+                        <div class="form-group">
+                            <label for="sponsorEmail" class="control-label-important"> Sponsor email </label>
+                            <input id="sponsorEmail" readonly class="form-control" type="email" name="sponsorEmail" @if(applicant.applied != null) {
+                                value="@applicant.applied.sponsorEmail"}>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="contactPerson">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Person to contact in case of emergency</h4>
+                    <div class="form-group">
+                        <label for="contactPerson" class="control-label-important">Full name</label>
+                        <input type="text" required id="contactPerson" class="form-control" name="contactPerson" value="@applicant.applied.contactPerson">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactEmail" class="control-label-important">Email</label>
+                        <input type="email" required id="contactEmail" class="form-control " name="contactEmail" value="@applicant.applied.contactEmail">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactPhone" class="control-label-important">Phone number</label>
+                        <input type="number" required id="contactPhone" class="form-control" name="contactPhone" value="@applicant.applied.contactPhone">
+                    </div>
+                </div>
+            </div>
+        </div>
+      @*  <div id="documents">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Change documents</h4>
+                    @for(i <- AcademicFiles.byProgram(applicant.applied.training.iMode.campusProgram.program.id,applicant.id)) {
+                        @if( applicant != null && Attachment.checker(applicant.id,i.id) != null && status ){
+                            <div class="attach-box col-md-6">
+                                <label>@i.fileName @if(i.required) {<em>*</em>}</label>
+                                @( name = Attachment.checker(applicant.id,i.id).attachName )
+                                @( ext = name.substring(name.lastIndexOf('.') + 1) )
+                                @if( ext.equalsIgnoreCase("pdf") ){
+                                    <input type="file" class="file-input" style="display: none" max="100000" name="@i.uniqueName" @if(Attachment.checker(applicant.id, i.id) != null) {
+                                        escape="1"}/>
+                                }else{
+                                    <div class="imBox"><img src="@routes.Assets.at("uploads/"+name)" alt=""></div>
+                                }
+                            </div>
+                        }else{
+                                    <div class="form-group has-feedback others">
+                                        <div class="form-group has-feedback others">
+                                            <label>@i.fileName @if(i.required) {
+                                                <em>*</em>
+                                            }
+                                            </label>
+                                            <button type="button" class="btn btn-info btn-block" max="10000" onclick="changeIt(this)" type="text" @if(!i.required) {
+                                                escape="1"}><i class="fa fa-upload"></i> Upload</button>
+                                            <label class="control-label" for="inputSuccess"><i class="fa fa-check"></i>
+                                                Input with success</label>
+                                            <input type="file" class="file-input" style="display: none" max="100000" name="@i.uniqueName" @if(Attachment.checker(applicant.id, i.id) != null) {
+                                                escape="1"}/>
+                                        </div>
+                                    </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div> *@
+    </div>
+</div>
+    <button type="submit" class="btn btn-success" style="width: 100% !important; margin-bottom: 5% !important;">SUBMIT CHANGE</button>
+</form>
+</div>
+}

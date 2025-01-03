@@ -1,0 +1,117 @@
+@(applieds: List[Applied], status: String, string :String)
+@import scala.Predef;var inc=1;var pay=0.0;var paid=0.0;var remain=0.0;
+@main("Payment status report", "") {
+    <div class="invoice">
+        <div class="row">
+            <div class="row no-print">
+                <div class="col-xs-12">
+                    <div class="col-xs-12">
+
+                        <a href="javascript:window.print();" class="btn btn-default pull-right btn-print">
+                            <i class="fa fa-print"></i> Print
+                        </a>
+                        <button onclick="exportTableToExcel('tblData', 'Payment report')" class="btn btn-ilpd btn-flat box-shadow-normal" style="margin-right: 10px;">
+                            <i class="fa fa-file-excel-o"></i> Print excel report
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+            @shared.ildpHeader.render()
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 table-responsive">
+                <h4 class="text-blue">
+                    Financial report : Payment status (@status) : @string  <small class="pull-right">
+                    Date: @(new Date().format("dd-MM-yyyy"))</small></h4>
+                <table id="tblData" class="table  table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Name</th>
+                            <th>Reg No.</th>
+                            <th>Amount to pay</th>
+                            <th>Amount paid</th>
+                            <th>Amount remain</th>
+                            <th>Program</th>
+                            <th>Campus</th>
+                            <th>Gender</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for(applied <- applieds) {
+                            @if(applied != null && Applicant.finderByAppliedId(applied.id).checkStatus(status) ) {
+                                    <tr>
+                                        <td>@inc</td>
+                                        <td>@Applicant.finderByAppliedId(applied.id).toString </td>
+                                        <td>
+                                            @if(Applicant.finderByAppliedId(applied.id) != null){
+                                                @Applicant.finderByAppliedId(applied.id).regNo()
+                                            }else{
+                                                No Reg No.
+                                            }
+                                        </td>
+                                        <td>@Counts.formatAmount(Applicant.finderByAppliedId(applied.id).getAmountToPay) </td>
+                                        <td>@Counts.formatAmount(Applicant.finderByAppliedId(applied.id).getTotalAmountPaid)</td>
+                                        <td>
+                                        @if(Applicant.finderByAppliedId(applied.id).getTotalAmountRemain  > 0.0) {
+                                            <span style="font-size: 14px">@Counts.formatAmount(Applicant.finderByAppliedId(applied.id).getTotalAmountRemain)</span>
+                                        } else {
+                                            @if(Applicant.finderByAppliedId(applied.id).getTotalAmountRemain == 0.0) {
+                                                <span style="font-size: 14px">  0.0</span>
+                                            } else {
+                                                @if(Applicant.finderByAppliedId(applied.id).getTotalAmountRemain < 0.0 && Applicant.finderByAppliedId(applied.id).amountRefunded() == 0.0) {
+                                                    <span style="font-size: 14px">
+                                                        Over pay - @Applicant.finderByAppliedId(applied.id).getTotalAmountRemain </span>
+                                                } else {
+                                                    <span style="font-size: 14px">
+                                                        Paid
+                                                    </span>
+                                                }
+                                            }
+                                        }
+                                        </td>
+                                        <td>@Applicant.finderByAppliedId(applied.id).applied.training.iMode.campusProgram.program.programAcronym</td>
+                                        <td>@Applicant.finderByAppliedId(applied.id).applied.training.iMode.campusProgram.campus.campusName</td>
+                                        <td>@Applicant.finderByAppliedId(applied.id).gender</td>
+                                    </tr>
+                                    @(inc = inc + 1)
+                                @(pay = pay + Applicant.finderByAppliedId(applied.id).getAmountToPay)
+                                @(paid = paid + Applicant.finderByAppliedId(applied.id).getTotalAmountPaid)
+                                @(remain = remain + Applicant.finderByAppliedId(applied.id).getTotalAmountRemain)
+                            }
+                        }
+                        <tr>
+                            <th>No</th>
+                            <th>Name</th>
+                            <th>@Counts.formatAmount(pay) </th>
+                            <th>@Counts.formatAmount(paid) </th>
+                            <th>@Counts.formatAmount(remain) </th>
+                            <th>Program</th>
+                            <th>Campus</th>
+                            <th>Gender</th>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h6 class="text-red">
+                    <i class="fa fa-info-circle"></i>
+                    <center>This report has generated by ILPD MIS, there is no need of stamp or signature</center>
+                </h6>
+            </div>
+            <div class="col-xs-12">
+                <p class="main-footer text-center">
+                    <small>P.O. Box 49, Avenue des Sports, Nyanza, Southern Province, Rwanda
+                        <br>
+                        E: info@@ilpd.ac.rw / W: www.ilpd.ac.rw</small>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+}

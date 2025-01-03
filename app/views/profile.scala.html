@@ -1,0 +1,3 @@
+@( user : Users )
+
+<img src="@routes.Assets.at(if(user.profile.equals("")){"images/boys.jpg"}else{"uploads/"+user.profile})">

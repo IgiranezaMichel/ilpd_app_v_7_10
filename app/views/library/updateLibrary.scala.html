@@ -1,0 +1,40 @@
+@(entry: ILDPLibrary)
+<div align="center">
+    <div class="loginForm" id="form1" no-prop="true">
+
+        <div class="box box-info">
+            <div class="box-header text-left resp-width">
+                <i class="fa fa-envelope"></i>
+
+                <h3 class="box-title">Update entry</h3>
+            </div>
+            <form action="@routes.UpdateForm.updateLibrary(entry.id)" method="POST" onsubmit="return allForms(this)">
+                <div class="box-body">
+                    <div class="col-md-12 text-left">
+                        <div class="form-group has-feedback">
+                            <p>Book title</p>
+                            <input type="text" class="form-control" name="bookTitle" placeholder="Enter book title" autocomplete="off" id="bookTitle" value="@entry.bookName">
+                        </div>
+                        <div class="form-group has-feedback">
+                            <p>Book code</p>
+                            <input type="text" class="form-control" name="bookCode" placeholder="Enter book code" autocomplete="off" id="bookCode" value="@entry.bookNumber">
+                        </div>
+                        <div class="form-group has-feedback">
+                            <p>Book cost</p>
+                            <input type="text" class="form-control" name="bookCost" placeholder="Enter book cost" autocomplete="off" id="bookCost" value="@entry.bookCost">
+                        </div>
+                            @*<textarea cols="20" rows="2" class="form-control" name="bookComment" placeholder="Enter comment" autocomplete="off" id="bookComment">
+                            @entry.comment
+                            </textarea>*@
+                            <input type="hidden" name="studentId" id="studentId">
+
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default">Save
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

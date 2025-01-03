@@ -1,0 +1,308 @@
+@(comp: Component, q: String, lect: Lecture)
+@import scala.Predef;var a = 0;var b = 0;var c = 0;var d = 0;var seq = true;var inc = 0;
+<div style="min-height: 946px;" class="shadinga">
+    <section class="content-header">
+        <h1>
+            @comp.compName
+            <small>@comp.compStudents2(lect.id).size() students</small>
+        </h1>
+        <ol class="breadcrumb breadOne">
+
+        </ol>
+    </section>
+    <div class="modal" id="addGroupModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fa fa-plus"></i> New student group</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="saveGroupForm" action="@routes.Registration.saveGroup(comp.id)" method="POST" class="form-horizontal" onsubmit="return saveAndReload(this,event)" autocomplete="off">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="messages box-body"></div>
+                            <div class="form-group">
+                                <div style="margin-left: 2%;" class="col-md-7">
+                                    <input required  type="text" name="groupName" id="groupName" class="form-control radius groupTrain" placeholder="Name of group">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-7">
+                                    <div class="data-stu-list"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="trainingId" class="trainVal">
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="btnCreateGroup">Save group</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="addGroupModal2">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fa fa-plus"></i> Add students in group</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="saveGroupForm2" action="@routes.Registration.saveGroupExist()" method="POST" class="form-horizontal" onsubmit="return saveAndReload(this,event)" autocomplete="off">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="messages box-body"></div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="control-label-important col-md-4">Group members:</label>
+                                <div class="col-md-7">
+                                    <div class="data-stu-list-s"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="trainingId" class="trainVals">
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="btnCreateGroup2">Add members</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="div-result"></div>
+            </div>
+            <div class="col-md-3">
+                <a href="@routes.Application.getStudentBy(0,comp.id)" onclick="return getStudent(this)"
+                class="mod-click btn btn-primary btn-block margin-bottom">
+                    <i class="fa fa-plus"></i> New Group</a>
+                <form onsubmit="saveAndReload(this,event)" action="@routes.Registration.saveGroup(comp.id)" method="POST" class="groupForm" style="display: none;">
+                    <div class="form-group has-feedback">
+                        <label for="groupName" class="control-label-important">Group name</label>
+                        <input type="text" name="groupName" id="groupName" class="form-control radius groupTrain" placeholder="Group name">
+                    </div>
+                    <button type="submit" class="btn btn-success btn-sm btn-block">
+                        <i class="fa fa-plus"></i> Create group
+                    </button>
+                </form>
+                <script>
+                        var cls = I(".cls");
+                        if (cls) hodClicks(cls, true);
+                        window.onresize = function () {
+                            var x = I(".breadOne").lastChild;
+                            if (x) x.click();
+                        }
+                </script>
+                <div class="box box-solid parent">
+                    <div class="box-header with-border">
+                        <script>
+                            function myFunction() {
+                                var x = document.getElementById("myDIV");
+                                if (x.style.display === "none") {
+                                    x.style.display = "block";
+                                } else {
+                                    x.style.display = "none";
+                                }
+                            }
+                            </script>
+                        <h3 class="box-title m-title">... period</h3>
+                       <button onclick="sortOptions(this);" type="button" class="btn btn-primary btn-block" data-toggle="dropdown" >
+                             Select Intake <i class="fa fa-sort pull-right"></i>
+                        </button>
+                        <input type="text" class="live-search-box form-control" data-escape="1" id="searchIntake" placeholder="search intake here ..." data-escape="1">
+                        <ul class="myMenu dropdown-menu percent live-search-list" role="menu">
+                        @for(i: Schedule <- lect.myTraining(comp)) {
+                            @if(d.equals(0)) {
+                                <script>
+                                        $(function () {
+                                            $(".trainVal").val("@i.training.id");
+                                            $(".m-title").html("@i.training.tNames() period");
+                                            $(".groupTrain").attr("placeholder", "group in @i.training.tNames() period");
+                                        });
+
+                                </script>
+                            }
+                            <script>
+                                        $(function () {
+                                            $(".trainVals").val("@i.training.id");
+                                            $(".m-title").html("@i.training.tNames() period");
+                                            $(".groupTrain").attr("placeholder", "group in @i.training.tNames() period");
+                                        });
+
+                                </script>
+                            <li @if(d.equals(0)) {
+                                class="active"}>
+                                <a href="@i.training.id"><i class="fa fa-level-up"></i>
+                                    @i.training.tNames()</a>
+
+                            </li>
+                            @(d = d + 1)
+                        }
+                        </ul>
+                    </div>
+                    <div class="box-body no-padding buchi">
+                        @for(i: Schedule <- lect.myTraining(comp)) {
+                            <ul class="nav nav-pills nav-stacked compList @if(!a.equals(0)) {hide}">
+                            @for(ip: Groups <- Groups.trainGroups(comp.id, i.training.id)) {
+                                @(seq = false)
+                                <li @if(a.equals(0)) {
+                                    class="active"}>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <a class="fetch-students cls" href="@routes.Application.studentList(ip.id)" id="@ip.id">
+                                                <i class="fa fa-circle"></i>
+                                                @ip.groupName
+                                                <span class="label label-success pull-right">@ip.memberN()</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <a class="mod-click btn btn-primary btn-block margin-bottom" href="@routes.Application.getStudentExistsGroupBy(0, ip.id)" onclick="return getStudent2(this)">
+                                                <i style="color: green;" class="fa fa-plus pull-right"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    @if(ip.memberN() <= 0) {
+                                        <button type="button"
+                                        class="btn btn-block btn-warning btn-sm btn-flat"
+                                        onclick="removeGroupFunc('@routes.Application.updateAll(ip.id,"removeGroup")')">
+                                            Remove Group
+                                        </button>
+                                    }
+                                </li>
+                                @(a = a + 1)
+                            }
+                            </ul>
+                            @(c = c + 1)
+                        }
+
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="boxing shadow">
+
+                    <div class="box box-primary signup-data">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-list-alt"></i> Students Lists</h3>
+
+                            <div class="box-tools pull-right">
+                                <div class="has-feedback">
+                                    <input type="text" class="form-control input-sm st-search" href="/lecture/search/student/" onkeyup="studentSearch(this, event)" placeholder="Search student" style="margin-top: -1.5px">
+                                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-body no-padding">
+                            <div class="table-responsive mailbox-messages heighted @if(!seq) {loading}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-primary signup-data">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-users"></i> Students info</h3>
+
+                            <div class="box-tools pull-right">
+                                <div class="has-feedback">
+                                    <input type="text" class="form-control input-sm" placeholder="Search information" style="margin-top: -1.5px">
+                                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-body no-padding">
+                            <div class="mailbox-controls">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive mailbox-messages heighted loading">
+
+
+                        </div>
+                    </div>
+                    <div class="box box-primary signup-data">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-users"></i> Module registration form</h3>
+
+                            <div class="box-tools pull-right">
+                                <div class="has-feedback">
+                                    <input type="text" class="form-control input-sm" placeholder="Search information" style="margin-top: -1.5px">
+                                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-body no-padding">
+                            <div class="mailbox-controls">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive mailbox-messages heighted loading">
+                        </div>
+                    </div>
+                    <div class="box box-primary signup-data">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-users"></i> Module claiming</h3>
+
+                            <div class="box-tools pull-right">
+                                <div class="has-feedback">
+                                    <input type="text" class="form-control input-sm" placeholder="Search information" style="margin-top: -1.5px">
+                                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-body no-padding">
+                            <div class="mailbox-controls">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive mailbox-messages heighted loading">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+        $('.validate-form').parsley();
+</script>
+<script>
+        let searchIntake = document.getElementById("searchIntake");
+        searchIntake.style.display ="none";
+        jQuery(document).ready(function($){
+            $('.live-search-list li').each(function(){
+                $(this).attr('data-search-term', $(this).text().toLowerCase());
+            });
+            $('.live-search-box').on('keyup', function(){
+                var searchTerm = $(this).val().toLowerCase();
+                $('.live-search-list li').each(function(){
+                    if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+</script>

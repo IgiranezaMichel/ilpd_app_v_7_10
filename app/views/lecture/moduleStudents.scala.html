@@ -1,0 +1,26 @@
+@( lect : Lecture, list : List[Module] , train: Training)
+
+<div>
+  <h4>&nbsp; @train.tNames()</h4>
+  <table class="table table-bordered">
+
+    <thead>
+
+      <tr>
+        <th></th>
+        <th>Modules</th>
+      </tr>
+    </thead>
+
+    <tbody>
+    @for( i <- list ) {
+      <tr class="fetch-students" href="@routes.Application.moduleStudentsM(i.id,lect.id,train.id)">
+        <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
+        <td>@i.moduleName</td>
+      </tr>
+    }
+    </tbody>
+
+  </table>
+
+</div>

@@ -1,0 +1,49 @@
+@(sub: Submission)
+<div class="user-block">
+
+    <span class="username">
+        <a href="#">@sub.student.regNo</a>
+        <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
+    </span>
+    <span class="description">@sub.student.status</span>
+</div>
+
+<br>
+<div class="box box-danger">
+    <div class="box-header with-border">
+        <div class="box-title">
+            <br><br>
+            <br>
+            <div>
+                ComponentS :
+                <b>[</b> <b>@sub.assignment.component.compName / out of: @sub.assignment.max</b>  <b>]</b>
+            </div>
+            <br>
+            <div>
+                Module:
+                <b>[</b><b>@sub.assignment.component.module.moduleName</b>  <b>]</b>
+            </div>
+
+        </div>
+    </div>
+    <form action="@routes.Registration.saveSubAssignmentMark(sub.id)" onsubmit="return saveAndReload(this,event)" autocomplete="off">
+        <input type="hidden" name="studentId" value="@sub.student.id">
+        <input type="hidden" name="assignmentId" value="@sub.assignment.id">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <input type="text" class="form-control" name="resultResult" placeholder="Enter mark" number="true">
+                </div>
+                <div class="col-md-12">
+                    <button class="btn btn-default btn-block">
+                        <i class="ion-android-checkmark-circle">
+
+                        </i> Submit marks </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+</div>

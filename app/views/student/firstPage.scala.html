@@ -1,0 +1,83 @@
+@(user: Users, list: List[Intake])
+@if(user.stating.equals("")) {
+    <script>
+            var sForm = I("#firstForm");
+            sForm.onsubmit = function () {
+                var slf = this;
+                validate(this, function (f, b) {
+                    var gld = hoss.dir(slf, "#userTab0", "parentNode");
+                    if (gld) {
+                        sendFile(slf.action, slf, "", function (res) {
+                            if (res === "0") {
+                                notFound("@Message.trainNotFound");
+                                return false;
+                            }
+                            hoss.htmlInside(res, gld);
+                        });
+                    }
+                });
+                return false;
+            }
+    </script>
+    <div class="firstPage">
+        <div class="small-icx">
+            <img src="@routes.Assets.at("images/logo.png")" style="margin: 10px;">
+            <div style="padding-top: 1.5%;">Welcome to the ILPD online application form;
+                ILPD currently has two campuses namely; Nyanza (Main Campus)
+                which is ninety five (95) Kilometers from Kigali City<br/>
+                <form action="@routes.Application.formRequest("under")" method="POST" id="firstForm">
+                <div class="line-one">
+                    <div class="form-group has-feedback">
+                        <select class="first-check form-control" name="legal" onchange="return changeCamp(this)">
+                            <option value="">-- Select Campus --</option>
+                            @for(i : Campus <- Campus.all()) {
+                                <option value="@i.id">@i.campusName.toUpperCase()</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <select class="first-check form-control" name="programID" id="prgm" onchange="return changeProgram(this)">
+                            <option value="">-- Select program --</option>
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <select class="first-check form-control" name="stMode" id="mood" onchange="return changeMode(this)">
+                            <option value="">-- Study mode --</option>
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <select class="first-check form-control" name="mySession" id="sess" onchange="return changeSession(this)">
+                            <option value="">-- Choose Session --</option>
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback" id="intakIng">
+                        <select class="first-check form-control" name="myIntake" id="intakeSelect" onchange="return changeIntake(this)">
+                            <option value="">--select intake--</option>
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <select name="training" id="trainingId" onchange="if(this.value){$('.btn-data').removeAttr('disabled')}else{$('.btn-data').attr('disabled','true')}" class="form-control" required>
+                            <option value="">--select training--</option>
+                        </select>
+                    </div>
+                    <div class="sm-heighted loading sm-loading hide sm-padd"></div>
+                    <button class="btn btn-primary pull-left btn-lg center-block btn-block btn-data" type="submit" disabled>
+                        Start application <i class="fa fa-arrow-circle-right"></i>
+                    </button>
+                </div>
+            </form>
+            </div>
+        </div>
+        <div class="bottom-leader">
+        </div>
+        <div class="underline"></div>
+    </div>
+} else {
+    <script>
+            hoss.ajax({page: "@routes.Application.formRequested()", o: I("#userTab0")}, 1, 2, function (res) {
+                var ixp = I(".positioned");
+                if (ixp) {
+                }
+            });
+    </script>
+}

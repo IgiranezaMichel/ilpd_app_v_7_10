@@ -1,0 +1,135 @@
+@(categories: List[EvCategory], br: Boolean, lec: Long, cId: Long, tr: Long, lecture: Lecture)
+@import scala.Predef;var tAVG=0.0;var perc = 0.0; var ev = 0;
+@views.html.subMain(br) {
+
+    <section class="invoice">
+
+        <section>
+
+
+            <div class="row">
+                <div class="row no-print">
+                    <div class="col-xs-12">
+                    @shared.printButton.render()
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                @shared.ildpHeader.render()
+                </div>
+            </div>
+
+            <h2 class="text-center">Lecturer evaluation report</h2>
+
+            <div class="margin-top padder">
+                <span>
+                    <h3>Lecturer name: @lecture.print()</h3>
+                    @if(Component.finderById(cId) != null) {
+                        <h4>Component: @Component.finderById(cId).compName</h4>
+                    }else{
+                        <h4>Component: All components</h4>
+                    }
+                </span>
+                <hr />
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <span><span class="text-bold">1</span> = Strongly Disagree</span>
+                    <span>,&nbsp;&nbsp;&nbsp;<span class="text-bold">2</span> = Disagree</span>
+                    <span>,&nbsp;&nbsp;&nbsp;<span class="text-bold">3</span> = Neutral</span>
+                    <span>,&nbsp;&nbsp;&nbsp;<span class="text-bold">4</span> = Agree</span>
+                    <span>,&nbsp;&nbsp;&nbsp;<span class="text-bold">5</span> = Strongly agree</span>
+                </div>
+            </div>
+
+
+            <div class="relative">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <tbody>
+
+                        @for(c <- categories) {
+                            <tr>
+                                <td colspan="8"> <h4>@c.content</h4></td>
+                            </tr>
+
+                            @for(q: EvQuestion <- c.questionList) {
+                                <tr>
+                                    <td>@q.question</td>
+                                    @if(q.textarea) {
+                                        <td colspan="7">
+
+                                            <table class="table table-striped">
+                                                <tbody>
+                                                @for(t: Evaluation <- Evaluation.list(q.id, lec, cId, tr)) {
+                                                    <tr>
+                                                        <td><span>@t.answer</span></td>
+                                                    </tr>
+                                                }
+                                                </tbody>
+                                            </table>
+
+                                        </td>
+                                    } else {
+                                        <td><div><span class="t-radio">
+                                            <input type="radio" title="" value="1" name="@q.id"/>
+                                            <label class="">1</label>
+                                        </span>
+                                        </div>
+                                            <div class="text-center text-bold">@Evaluation.count(q.id, lec, cId, tr, 1)</div>
+                                        </td>
+                                        <td><div><span class="t-radio">
+                                            <input type="radio" title="" value="2" name="@q.id"/>
+                                            <label class="">2</label>
+                                        </span>
+                                        </div>
+                                            <div class="text-center text-bold">@Evaluation.count(q.id, lec, cId, tr, 2)</div>
+                                        </td>
+                                        <td><div><span class="t-radio">
+                                            <input type="radio" title="" value="3" name="@q.id"/>
+                                            <label class="">3</label>
+                                        </span>
+                                        </div>
+                                            <div class="text-center text-bold">@Evaluation.count(q.id, lec, cId, tr, 3)</div>
+                                        </td>
+                                        <td><div><span class="t-radio">
+                                            <input type="radio" title="" value="4" name="@q.id"/>
+                                            <label class="">4</label>
+                                        </span>
+                                        </div>
+                                            <div class="text-center text-bold">@Evaluation.count(q.id, lec, cId, tr, 4)</div>
+                                        </td>
+                                        <td><div><span class="t-radio">
+                                            <input type="radio" title="" value="5" name="@q.id"/>
+                                            <label class="">5</label>
+                                        </span>
+                                        </div>
+                                            <div class="text-center text-bold">@Evaluation.count(q.id, lec, cId, tr, 5)</div>
+                                        </td>
+                                        <td><div>Sum</div>
+                                            <div class="text-center text-bold">@Evaluation.sum(q.id, lec, cId, tr)</div>
+                                        </td>
+                                        <td><div>Average</div>
+                                            <div class="text-center text-bold">@Evaluation.avg(q.id, lec, cId, tr)</div>
+                                        </td>
+                                        @(ev = Evaluation.count(q.id, lec, cId, tr, 1) + Evaluation.count(q.id, lec, cId, tr, 2) + Evaluation.count(q.id, lec, cId, tr, 3) + Evaluation.count(q.id, lec, cId, tr, 4) + Evaluation.count(q.id, lec, cId, tr, 5))
+                                    }
+                                    @(tAVG = tAVG + Evaluation.sum(q.id, lec, cId, tr))
+                                    @(perc = (tAVG*100)/(5 * 17 * ev ))
+                                </tr>
+                            }
+                        }
+                        </tbody>
+                        <tfoot>
+                        <tr style="background: #f1f1f1; font-size: 18px; font-weight: bold; color: black;">
+                            <td colspan="7">OVER ALL PERCENTAGE </td>
+                            <td colspan="2" style="color: green"><b><span class="pull-right">@Counts.formatAmount(perc) %</span> </b></td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+    </section>
+}

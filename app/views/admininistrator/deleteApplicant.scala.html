@@ -1,0 +1,75 @@
+@(applicantList : List[Applied])
+@import scala.Predef;var inc=1;
+@main("Delete uncompleted", "") {
+    <section class="content-header">
+        <h1>
+            Delete uncompleted
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Delete uncompleted</a></li>
+        </ol>
+    </section>
+    <div class="content" style="padding-left: 20px ">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-ilpd">
+                    <div class="box-body">
+                        <div class="panel-group" id="app-accordion">
+                            <div class="row">
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-danger">
+                                    Delete all (@applicantList.size())
+                                </button>
+                                <div class="modal modal-danger fade" id="modal-danger">
+                                    <form action="@routes.UpdateForm.deleteApplicantUncAll()" class="validate-form" method="POST" onsubmit="return allForms(this)">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title">Are you sure to delete all ?</h4>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-outline">Delete all</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </form>
+                                </div>
+
+
+                                <table class="table table table-hover table-striped table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Email address</th>
+                                            <th>Full names</th>
+                                            <th>Phone number</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    @for(app <- applicantList) {
+                                            <tr>
+                                                <td>@inc</td>
+                                                <td>@app.applicant.user.email</td>
+                                                <td>@app.applicant.firstName @app.applicant.familyName</td>
+                                                <td>@app.applicant.user.phone</td>
+                                                <td>
+                                                    <button class="btn btn-danger btn-sm btn-circle" onclick="createModal(this, self.event)" href="@routes.Application.updateAll(app.id, "delete-app")"><i class="fa fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            @(inc = inc + 1)
+                                      }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

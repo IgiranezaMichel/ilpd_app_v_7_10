@@ -1,0 +1,301 @@
+@(lect: Lecture, myAssign: List[Component])
+<script >
+    birthPicker = new Pikaday({
+        field: document.getElementById('date'),
+        minDate: new Date(1680, 12, 31),
+        maxDate: new Date(2020, 12, 31),
+        formatStrict: true,
+        yearRange: 200,
+        startDate: new Date(),
+        onSelect: function (e) {
+            startDate = this.getDate();
+        }
+    });
+    birthPicker = new Pikaday({
+        field: document.getElementById('start'),
+        minDate: new Date(1680, 12, 31),
+        maxDate: new Date(2020, 12, 31),
+        formatStrict: true,
+        yearRange: 200,
+        onSelect: function (e) {
+            startDate = this.getDate();
+        }
+    })
+</script>
+<div align="right" class="left-form">
+    <button id="meBut" class="btn btn-primary" onclick="addNew(this, event)"><i class="fa fa-plus-circle"></i>
+        New assignment/Research</button>
+    <div class="loginForm" id="form1" no-prop="true">
+        <div class="box box-info">
+            <div class="box-header text-left resp-width with-border">
+                <i class="fa fa-envelope"></i>
+                <h3 class="box-title">Add new assignment/ Research</h3>
+            </div>
+            <form action="@routes.Registration.saveAssignment()" method="POST" autocomplete="off" >
+                <div class="box-body">
+                    <input type="hidden" name="lecturerId" value="@lect.id">
+                            <div class="row">
+                            <div class="col-md-12">
+                            <div class="col-md-4">
+                                <span class="t-radio"><input type="radio" id="radioMale" name="types" value="assignment" checked>
+                                    <label for="radioMale">Assignment</label>
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+                                <span class="t-radio"><input type="radio" id="radioFemale" name="types" value="research">
+                                    <label for="radioFemale">Research</label>
+                                </span>
+                            </div>
+                                <div class="col-md-4">
+                                <span class="t-radio"><input type="radio" id="radioFemale" name="types" value="resitResearch">
+                                    <label for="radioFemale">Re-sit Research</label>
+                                </span>
+                                </div>
+                            </div>
+                            </div>
+                    <div style="text-align: left !important;" class="form-group has-feedback">
+                        <select style="width: 100%" id="iMode" class="form-control select2" name="trainings" onchange="return changeTrainingsComponent(this)">
+                            <option style="text-align: left !important;" value="">-- Choose period classX --</option>
+                            @for(i: Training <- lect.myTrainingsAll()) {
+                                <option value="@i.id">@i.tNames()</option>
+                            }
+                        </select>
+                    </div>
+                    <div style="text-align: left !important;" class="form-group has-feedback">
+                        <label style="text-align: left !important;" for="component">Choose component</label>
+                        <select style="width: 100% !important;" name="comp" id="componentId" class="form-control select2" required>
+                            <option style="text-align: left !important;" value="">--select component--</option>
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <select class="form-control" name="grouped" id="type">
+                            <option value="">-- Select assignment type --</option>
+                            <option value="false">Individual</option>
+                            <option value="true">Group work</option>
+                        </select>
+                    </div>
+                    <div id="row_dim">
+                    <div style="text-align: left !important;" class="form-group has-feedback">
+                        <label style="text-align: left !important;" for="component">Choose group</label>
+                        <select style="width: 100% !important;" name="groupId" id="groupIds" class="form-control select2">
+                            <option style="text-align: left !important;" value="0">--Same for all group--</option>
+                        </select>
+                    </div>
+                    </div>
+                    <script>
+                            $(function() {
+                                $('#row_dim').hide();
+                                $('#type').change(function(){
+                                    if($('#type').val() == 'true') {
+                                        $('#row_dim').show();
+                                    } else {
+                                        $('#row_dim').hide();
+                                    }
+                                });
+                            });
+                    </script>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" name="assignmentTitle" placeholder="Enter assignmentTitle"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <textarea class="form-control" name="description" placeholder="Enter description"></textarea>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control datepicker" name="startDate" placeholder="Enter start date" autocomplete="off" />
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control datepicker" name="endDate" placeholder="Enter endDate" autocomplete="off" />
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" name="max" id="max" class="form-control" placeholder="Assignment max marks">
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default">Save
+                        <i class="fa fa-arrow-circle-right"></i> </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-success">
+    @if(session.get("Coordinator") != null) {
+        <div class="panel-heading">Assignments set by <span class="text-bold ">@lect.fName @lect.lName</span></div>
+    } else {
+        <div class="panel-heading">Assignments</div>
+    }
+<div class="panel-body">
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Assignment title</th>
+                    <th>Start-end date</th>
+                    <th>Component</th>
+                    <th>Assignment type</th>
+                    <th>Period class</th>
+                    <th>duration</th>
+                    <th>Max</th>
+                    <th>Attachment</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+            @for(i <- myAssign) {
+                @for(ix:Assignment <- i.compAssignments(lect)) {
+                    <tr>
+                        <td>@ix.assignmentTitle
+                            @if(ix.types.equalsIgnoreCase("assignment")) {
+                                <span class="label bg-blue"> @ix.types </span>
+                            }
+                            @if(ix.types.equalsIgnoreCase("resitResearch")) {
+                                <span class="label bg-blue"> Re-sit Research </span>
+                            }
+                            @if(ix.types.equalsIgnoreCase("research")) {
+                                <span class="label bg-orange"> @ix.types </span>
+                            }
+                        </td>
+                        <td>@if(ix.startDate != null && ix.endDate != null){
+                            @ix.startDate.format("dd/MM/yyyy") - @ix.endDate.format("dd/MM/yyyy")
+                        }</td>
+                        <td>@i.compName</td>
+                        <td>
+                        @if(ix.grouped) {
+                            <span class="label label-success"> Group</span>
+                        } else {
+                            <span class="label label-primary"> Individual</span>
+                        }
+                        </td>
+                        <td>@ix.training.tNames()</td>
+                        <td>@Counts.daysBetween(ix.startDate, ix.endDate) Days,
+                        <span class="label label-info">Left @Counts.daysLeft(ix.endDate)</span>
+                        </td>
+                        <td>@ix.max</td>
+                        <td>
+                            @if(ix.attachment != null && !ix.attachment.equalsIgnoreCase("") && !ix.attachment.equalsIgnoreCase(" ")){
+                                <button class="btn btn-default btn-sm" onclick="createModal(this, event)" href="@routes.Application.uploadAssignment(ix.id, lect.id)">
+                                Upload</button> ||
+                                <a href="@routes.Application.downloadAssign(ix.id, true)" class="btn btn-block btn-link text-green">Download</a>
+                            }else{
+                                <button class="btn btn-default btn-sm" onclick="createModal(this, event)" href="@routes.Application.uploadAssignment(ix.id, lect.id)">
+                                    Upload</button>
+                            }
+                            </td>
+                        <td>
+                            <div class="btn-group btn-group-sm flat">
+                                <button class="btn btn-info btn-sm flat" onclick="createModal(this, self.event)" href="@routes.Application.getAssignmentUpdatePage(ix.id, lect.id)">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm flat">
+                                <button class="btn btn-danger btn-sm flat" onclick="createModal(this, self.event)" href="@routes.Application.deleteAssignmentPage(ix.id, lect.id)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+<script >
+        $("#assignmentType").change(function () {
+            if($(this).val()==="true"){
+                $("#groupId").removeAttr("escape");
+                var componentId = $("#componentId").val();
+                var trainingId = $("#trainingsID").val();
+                if (componentId != "" && trainingId != "") {
+                    $.ajax({
+                        url: "/assignment/groups/" + trainingId + "/" + componentId,
+                        method: "GET",
+                        success: function (data) {
+                            var groups = "<option value=\"\" selected disabled=''>-- Choose group --</option> <option value=\"-1\">All</option>";
+                            $.each(data, function (index, element) {
+                                groups += "<option value=\"" + element.id + "\">" + element.name + "</option>";
+                            })
+                            $("#groupId").html(groups);
+                            $("#groupId").show();
+                        },
+                        error: function (error) {
+                            alert(error.responseText);
+                        }
+                    });
+                }
+            }else{
+                $("#groupId").attr("escape","1");
+                $("#groupId").hide();
+            }
+
+        });
+</script>
+
+<script>
+        //Date picker
+        $('.datepicker').datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            format: 'yyyy-mm-dd'
+        });
+</script>
+<script>
+        $(function () {
+            $('.select2').select2()
+        })
+</script>
+<script>
+        $(function () {
+            $(document).on('change', '#iMode', function () {
+                var self = $(this);
+                $.ajax({
+                    url: '/report/iMode/' + self.val() + "/",
+                    method: 'get',
+                    dataType: 'json'
+                }).done(function (response) {
+                    var comp = $('#component');
+                    comp.html('');
+                    comp.append($('<option>', {
+                        value: '',
+                        text: '--select--'
+                    }));
+
+                    $.each(response, function (index, item) {
+                        comp.append($('<option>', {
+                            value: item.id,
+                            text:item.comp_name +" ( "+ item.program_acronym+" )"
+                        }));
+                        console.log("Index:" + index + " ,Value:" + item.comp_name)
+                    });
+                })
+            });
+            $(document).on('change', '#component', function () {
+                var self = $(this);
+                $.ajax({
+                    url: '/assignment/groups/' + self.val() + "/",
+                    method: 'get',
+                    dataType: 'json'
+                }).done(function (response) {
+                    var comp = $('#groupId');
+                    comp.html('');
+                    comp.append($('<option>', {
+                        value: '0',
+                        text: '--All group--'
+                    }));
+
+                    $.each(response, function (index, item) {
+                        comp.append($('<option>', {
+                            value: item.id,
+                            text:item.group_name
+                        }));
+                        console.log("Index:" + index + " ,Value:" + item.group_name)
+                    });
+                })
+            });
+        })
+</script>

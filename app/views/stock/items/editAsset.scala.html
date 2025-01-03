@@ -1,0 +1,75 @@
+@(item: models.stock.Item, categories: List[models.stock.Category])
+<div class="loginForm" id="form1" no-prop="true">
+    <div class="box box-ilpd">
+        <div class="box-header with-border text-left resp-width">
+            <i class="ion-compose"></i>
+            <h3 class="box-title">Edit item</h3>
+        </div>
+        <form action="@routes.ItemsController.update(item.id)" method="POST" onsubmit="return allForms(this)" >
+            <div class="box-body width-100">
+                <div class="form-group width-100">
+                    <input type="text" value="@item.name" class="form-control" id="name" name="name" placeholder="Item 's name">
+                </div>
+                <div class="form-group width-100">
+                    <select class="form-control" id="category" name="category">
+                        <option value="">--select--</option>
+                        @for(category <- categories) {
+                            @if(category.id == item.category.id) {
+                                <option value="@category.id" selected>@item.category.name</option>
+                            } else {
+                                <option value="@category.id">@category.name</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <br>
+                <br>
+                <input type="hidden" name="type" value="Non-consumable">
+                <div class="form-group width-100">
+                    <label for=""></label>
+                    <input type="text" value="@item.unitMeasure" class="form-control" id="unitMeasure" name="unitMeasure" placeholder="Unit measure">
+                </div>
+
+                <div class="form-group width-100">
+                    <label for="">Unit price</label>
+                    <input type="text" value="@item.unitPrice" class="form-control" id="unitPrice" name="unitPrice" placeholder="Unit price">
+                </div>
+                <div class="form-group width-100">
+                    <label for="">Minimum stock</label>
+                    <input type="number" min="0" value="@item.min" class="form-control" id="min" name="min" placeholder="Minimum">
+                </div>
+                <div class="form-group width-100">
+                    <label for="">Maximum stock</label>
+                    <input type="number" min="0" value="@item.max" class="form-control" id="max" name="max" placeholder="Maximum">
+                </div>
+                <div class="form-group width-100">
+                    <label for="">Enter balance quantity</label>
+                    <input type="number" min="0" value="@item.balanceQty" class="form-control" id="beginingQty" name="balanceQty" placeholder="Begining quantity">
+                </div>
+                <div class="form-group width-100">
+                    <div class="form-group width-100">
+                        <label for=""> Enter depreciation rate (%)</label>
+                        <input type="text" value="@item.depleciationMinMonths" class="form-control" id="depleciationMinMonths" name="depleciationMinMonths" placeholder="depreciation rate (%)">
+                    </div>
+                </div>
+
+            </div>
+            <div class="box-footer clearfix">
+                <button type="submit" class="pull-right btn btn-ilpd">Save changes
+                    <i class="fa fa-arrow-circle-right"></i></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+        $(function () {
+            $(document).on('change', '.selecType', function (e) {
+                if ($(this).val() === "Consumable") {
+                    $(".hideItemsYear").removeClass('div-hide');
+                } else {
+                    $(".hideItemsYear").addClass('div-hide');
+                }
+            });
+        });
+</script>

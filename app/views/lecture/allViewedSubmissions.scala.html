@@ -1,0 +1,28 @@
+@( lst : List[Submission] )
+<div>
+    <div class="box-body" style="padding-left:1%;">
+        <table class="table table-condensed">
+            <tbody>
+                <tr>
+                    <th style="width: 10px">#</th>
+                    <th>Reg No</th>
+                    <th>Assignment</th>
+                    <th>Change marks</th>
+                </tr>
+                @import scala.Predef;var counter=1;
+                @for( i <- lst ) {
+                        <tr class="fetcher-x">
+                            <td>@(counter) @(counter=counter+1)</td>
+                            <td>@i.student.toString2()</td>
+                            <td>@i.assignment.assignmentTitle</td>
+                            <td>@AssignmentResult.studentAssignmentResult(i.student.id, i.assignment.id) / @i.assignment.max</td>
+                            <td>
+                                <a href="@routes.LectureController.changeMarks(i.id)" onclick="viewSubmit(this, event)" class="btn btn-default"><i class="fa fa-plus-circle"></i>
+                                    Change marks</a>
+                            </td>
+                        </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

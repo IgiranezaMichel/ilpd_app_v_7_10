@@ -1,0 +1,40 @@
+@( lst : List[Submission] )
+<div>
+  <div class="box-body" style="padding-left: 1%;">
+    <table class="table table-condensed">
+      <tbody><tr>
+        <th style="width: 10px">#</th>
+        <th>RegNo</th>
+        <th>Assignment</th>
+        <th>Download</th>
+        <th>Record marks</th>
+        <th>Return</th>
+      </tr>
+        @import scala.Predef;var counter=1;
+        @for( i <- lst ) {
+          @if(!Counts.isSubmitted(i.assignment.id,i.student.id)){
+            <tr class="fetcher-x">
+              <td>@(counter) @(counter=counter+1)</td>
+              <td>@i.student.toString2()
+                @if(i.student.status.equalsIgnoreCase("RETAKE-MODULES")){
+                  <span class="label bg-red">R</span>
+                }
+              </td>
+              <td>@i.assignment.assignmentTitle</td>
+              <td>
+                @i.attachment
+                <a href="@routes.Application.downloadAssign(i.id,false)" onclick="event.stopPropagation()" class="btn btn-link">
+                <i class="fa fa-download"></i> Download</a>
+              </td>
+              <td>
+                <a href="@routes.LectureController.viewSubmitted(i.id)" onclick="viewSubmit(this, event)" class="btn btn-link"><i class="fa fa-eye-slash"></i>
+                  Record marks</a>
+              </td>
+              <td><button class="btn btn-info btn-sm btn-circle" onclick="createModal(this, self.event)" href="@routes.Application.updateAll(i.id, "returnBack")"><i class="fa fa-refresh"></i></button></td>
+            </tr>
+          }
+        }
+      </tbody></table>
+  </div>
+    <!-- /.box-body -->
+</div>

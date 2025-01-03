@@ -1,0 +1,106 @@
+@import scala.Predef;var code = 0;var selected = false;
+<form action="@routes.Registration.saveStudent()" method="POST" onsubmit="return validate(this,function(res,f){saveStudent(f)});" autocomplete="off">
+        <div class="box-header with-border text-left resp-width">
+            <i class="fa fa-pencil"></i>
+            <h3 class="box-title">Student registration form</h3>
+        </div>
+          <div class="box-body max-height-for-min">
+              <div class="signup-logo hidden-xs">
+                <img src="@routes.Assets.at("images/logo.png")" alt="ILPD" style="max-width:100%;"/>
+              </div>
+              <div class="form-group has-feedback others">
+                  <label>Country <em>*</em></label>
+                  <select class="form-control" name="country"  onchange="changeCountry(this)">
+                      <option value=""></option>
+                      @for(i : Country <- Country.all()) {
+                          @( selected = false )
+                          @if( i.nicename.equals("Rwanda") ){
+                              @( selected = true )
+                              @( code = i.phonecode )
+                          }
+                          <option value="@i.id" code="@i.phonecode" @if(selected){ selected="selected" }>@i.nicename</option>
+                      }
+                  </select>
+              </div>
+              <div class="form-group has-feedback">
+                <input type="email" email="true" class="form-control" name="email" autocomplete="off" placeholder="Enter your email">
+                  <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+              </div>
+              <div class="form-group has-feedback">
+                <input type="text" class="form-control left-pad" name="phone" placeholder="Enter phone number" number="true">
+                  <span class="glyphicon glyphicon-phone form-control-feedback"></span>
+                  <span class="phone-label">+@code</span>
+              </div>
+              <div class="form-group has-feedback">
+                <input type="password" class="form-control" name="password" id="regPassword" placeholder="Enter password">
+                  <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                  <span id="password_strength" class="btn btn-block center-block btn-xs"></span>
+              </div>
+              @captchacode()
+          </div>
+          <div class="box-footer clearfix">
+              <a href="@routes.Registration.studentRegForm()" onclick="return runSignUp(this,0);" class="btn btn-link pull-left text-left btn-flat no-padding"><i class="fa fa-reply"></i> Already have account?</a>
+            <img src="@routes.Assets.at("images/loader.gif")" height="40" class="regLoader"><button type="submit" class="pull-right btn btn-default">Register
+              <i class="fa fa-arrow-circle-right"></i></button>
+          </div>
+</form>
+<script type="text/javascript">
+    $(function () {
+        $("#regPassword").bind("keyup", function () {
+            //TextBox left blank.
+            if ($(this).val().length == 0) {
+                $("#password_strength").html("");
+                return;
+            }
+
+            //Regular Expressions.
+            var regex = new Array();
+            regex.push("[A-Z]"); //Uppercase Alphabet.
+            regex.push("[a-z]"); //Lowercase Alphabet.
+            regex.push("[0-9]"); //Digit.
+            regex.push("[$@@$!%*#?&]"); //Special Character.
+
+            var passed = 0;
+
+            //Validate for each Regular Expression.
+            for (var i = 0; i < regex.length; i++) {
+                if (new RegExp(regex[i]).test($(this).val())) {
+                    passed++;
+                }
+            }
+
+
+            //Validate for length of Password.
+            if (passed > 2 && $(this).val().length > 8) {
+                passed++;
+            }
+
+            //Display status.
+            var color = "";
+            var strength = "";
+            switch (passed) {
+                case 0:
+                case 1:
+                    strength = "Weak";
+                    color = "red";
+                    break;
+                case 2:
+                    strength = "Good";
+                    color = "darkorange";
+                    break;
+                case 3:
+                case 4:
+                    strength = "Strong";
+                    color = "green";
+                    break;
+                case 5:
+                    strength = "Very Strong";
+                    color = "darkgreen";
+                    break;
+            }
+            $("#password_strength").html(strength);
+            $("#password_strength").css("color", "white");
+            $("#password_strength").css("background-color", color);
+        });
+    });
+</script>

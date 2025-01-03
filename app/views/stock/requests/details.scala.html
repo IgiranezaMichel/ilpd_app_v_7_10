@@ -1,0 +1,88 @@
+@(request:models.stock.Request,locations:List[models.stock.Location])
+@import scala.Predef;var inc = 0;var itemType="";var status="";
+
+
+<div class="row">
+    <div class="col-md-12">
+        @if(request.status.equalsIgnoreCase("Rejected")){
+            <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Rejected !</strong> This request has been rejected.
+            </div>
+
+        }
+        <h4>
+            Details for request No: <b>@request.id</b> of  <b>@request.employee.print()</b> , Unit of <b>@request.employee.unit.acronym</b>
+        </h4>
+        <form action="@routes.HUnitController.employeeEnfirmation(request.id)" method="post" id="employeeConfirmationForm">
+            <table class="table table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Item [type]</th>
+                        <th>Qty</th>
+                        <th>Approved qty</th>
+                        <th>Item source</th>
+                        <th>Location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @(inc=1)
+                    @if(!request.status.equalsIgnoreCase("Approved")){
+                        @(status="disabled")
+                    }
+                    @for(item <-request.stockMovements){
+                        <tr>
+                            <td>@inc</td>
+                            @(itemType=(item.item.iType))
+                            <td>@item.item.name <span class="text-aqua">[ @itemType]</span></td>
+                            <td>@item.proposedQty</td>
+                            <td>@item.confirmedQty</td>
+                            <td>
+                            @if(itemType.equalsIgnoreCase("Stock")){
+                                <span class="label label-info">From stock</span>
+                            }else{
+                                @if(itemType.equalsIgnoreCase("Movement")){
+                                    <span class="label label-default">Movement</span>
+                                }else{
+                                    <span class="label label-warning">Not available</span>
+                                }
+                            }
+                            </td>
+                            <td>
+                                <input type="hidden" name="movements[]" value="@item.id">
+                                @if(request.status.equalsIgnoreCase("Rejected")){
+                                    <span class="label label-danger">Not available</span>
+                                }else{
+                                    <select class="form-control" name="toLocation@item.id" id="location" required>
+                                        <option value="">--select location --</option>
+                                        <option value="">No location</option>
+                                        @for(l<-models.stock.Location.all()){
+                                            <option value="@l.id">@l.block.name - @l.name</option>
+                                        }
+                                    </select>
+                                }
+
+                            </td>
+                        </tr>
+                        @(inc=inc+1)
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="6">
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-success btn-flat confirmBtn" @status>
+                                    Confirm my request <i class="fa fa-check-circle"></i>
+                                </button>
+                            </div>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </form>
+    </div>
+</div>
+

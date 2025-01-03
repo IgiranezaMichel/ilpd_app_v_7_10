@@ -1,0 +1,42 @@
+@( schedules : List[Schedule], title : String )
+@import scala.Predef; var inc = 1
+@views.html.main("Time table report",""){
+    <section class="invoice">
+        <div class="row">
+            <div class="row no-print">
+                <div class="col-xs-12">
+                @shared.printButton.render()
+                </div>
+            </div>
+            <div class="col-xs-12">
+            @shared.ildpHeader.render()
+            </div>
+        </div>
+        <h3 class="text-blue">@title</h3>
+        <table class="table table table-bordered table-hover table-striped table-condensed manageTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date Hour</th>
+                    <th>component</th>
+                    <th>module name</th>
+                    <th>lecture</th>
+                    <th>Date range</th>
+                </tr>
+            </thead>
+            <tbody>
+            @for(i <- schedules) {
+                <tr>
+                    <td>@inc</td>
+                    <td>@i.date.format("dd/MM/yyyy") , @i.date.format("EEE") , @i.getHour</td>
+                    <td width="500">@i.component.compName</td>
+                    <td>@i.component.module.moduleName</td>
+                    <td>@i.lecture.hisNames()</td>
+                    <td>@i.dateRange.toString </td>
+                </tr>
+                @(inc = inc + 1)
+            }
+            </tbody>
+        </table>
+    </section>
+}

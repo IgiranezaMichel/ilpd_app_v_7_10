@@ -1,0 +1,94 @@
+@( fees : List[SchoolFees] , progs : List[Program] )
+<div align="right" class="left-form">
+  <button id="meBut" class="btn btn-primary" onclick="addNew(this,event)"><i class="fa fa-plus"></i> New Fees Input</button>
+  <div class="loginForm" id="form1" no-prop="true">
+    <form action="@routes.Registration.saveFees()"method="POST"onsubmit="return allForms(this)" enctype="multipart/form-data">
+      <div class="box box-info">
+        <div class="box-header text-left resp-width">
+          <i class="fa fa-envelope"></i>
+
+          <h3 class="box-title">Add new School Fess</h3>
+        </div>
+        <div class="box-body">
+      <div class="form-group has-feedback">
+        <select type="text" class="form-control" name="intaker"  id="MAPENDO" max="3000">
+          <option value="">-- Choose Intake For Fees --</option>
+          @for( i <- Intake.all() ){
+            <option value="@i.id">@i.intakeName</option>
+          }
+        </select>
+      </div>
+      <div class="form-group has-feedback">
+        <select type="text" class="form-control" name="fFees"  id="MUGANDA" onchange="targeting(this,'#studyModeId','modeName','mode')" href="/admin/getStudyMode/">
+          <option value="">-- Choose program For fees --</option>
+          @for( i <- progs ){
+            <option value="@i.id">@i.programName</option>
+          }
+        </select>
+      </div>
+      <div class="form-group has-feedback">
+        <select type="text" class="form-control" name="studyModeId"  id="studyModeId" onchange="targeting(this,'#sessionId','sessionName','session')" href="/admin/getSession/">
+          <option value="">-- Choose study modde --</option>
+        </select>
+      </div>
+      <div class="form-group has-feedback">
+        <select type="text" class="form-control" name="sessionId"  id="sessionId">
+          <option value="">-- Choose session --</option>
+        </select>
+      </div>
+
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" name="feesAmount" autocomplete="off"  id="MANONO" max="3000" number="true" placeholder="Enter Fees Amount"/>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" name="feesDetails" autocomplete="off"  id="MISAYA" max="3000" placeholder="Enter Fees Details"/>
+      </div>
+        </div>
+        <div class="box-footer clearfix">
+          <button type="submit" class="pull-right btn btn-default">Save
+            <i class="fa fa-arrow-circle-right"></i></button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="panel panel-success">
+  <div class="panel-heading">Available School Fees Settings</div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>School Fees</th>
+            <th>Registration Fees</th>
+            <th>Tution Fees</th>
+            <th>Intake</th>
+            <th>Program</th>
+            <th>Study Mode</th>
+            <th>Session</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+        @for( i <- fees ){
+          <tr>
+            <td>@i.feesAmount</td>
+            <td>@i.intake.registrationFees</td>
+            <td>@(i.feesAmount+i.intake.registrationFees) Rwf</td>
+            <td>@i.intake.intakeName (@i.intake.year.yearName)</td>
+            <td>@i.programMode.campusProgram.program.programName</td>
+            <td>@i.programMode.mode.modeName</td>
+            <td>@i.sessionMode.session.sessionName</td>
+            <td><button class="btn btn-info btn-sm" href="@routes.Application.updateAll(i.id,"fees")" onclick="return createModal(this ,event);"><i class="fa fa-pencil"></i></button></td>
+            <td><button class="btn btn-danger btn-sm" onclick="createDel(this)" value="@routes.Application.deleteAll(i.id,"fees")"><i class="fa fa-bitbucket"></i></button></td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+

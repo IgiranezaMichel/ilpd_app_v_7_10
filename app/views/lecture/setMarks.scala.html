@@ -1,0 +1,89 @@
+@(trains : List[Training] , lId : Long)
+
+@import scala.Predef;var a=0;
+
+<div class="shadinga">
+  <ol class="breadcrumb breadOne">
+
+  </ol>
+  <div class="col-md-3">
+    <a href="#" class="mod-click btn btn-primary btn-block margin-bottom"><i class="fa fa-gears"></i> Archive marks</a>
+
+    <div class="box box-solid parent">
+      <div class="box-header with-border">
+        <h3 class="box-title m-title">Periods</h3>
+      </div>
+      <div class="box-body no-padding">
+
+        <ul class="nav nav-pills nav-stacked compList">
+        @for( i <- trains ) {
+          <li @if(a.equals(0)) {
+            class="active clicking"}><a class="fetch-students cls" href="@routes.Application.marksPage(i.id,lId)"><i class="fa fa-inbox"></i>
+            @i.tNames()
+            <span class="label label-primary pull-right">@i.tStudents()</span></a>
+          </li>
+          @( a = a + 1 )
+        }
+        </ul>
+<script>
+  $(".clicking").find("a").click();
+</script>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9">
+
+    <div class="boxing shadow">
+
+      <div class="box box-primary signup-data">
+        <div class="box-header with-border">
+          <h3 class="box-title"><i class="fa fa-users"></i> Components list</h3>
+
+          <div class="box-tools pull-right">
+            <div class="has-feedback">
+              <input type="text" class="form-control input-sm" href="/lecture/search/student/" placeholder="Search Component" style="margin-top:-1.5px">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+          </div>
+        </div>
+        <div class="box-body no-padding">
+          <div class="table-responsive mailbox-messages heighted loading">
+
+
+          </div>
+        </div>
+      </div>
+      <div class="box box-primary signup-data">
+        <div class="box-header with-border">
+          <h3 class="box-title"><i class="fa fa-users"></i> Students Lists</h3>
+
+          <div class="box-tools pull-right">
+            <div class="has-feedback">
+              <input type="text" class="form-control input-sm" href="/lecture/search/student/" onkeyup="studentSearch(this,event)" placeholder="Search student" style="margin-top:-1.5px">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+          </div>
+            <!-- /.box-tools -->
+        </div>
+          <!-- /.box-header -->
+        <div class="box-body no-padding">
+          <div class="table-responsive mailbox-messages heighted loading">
+
+
+          </div>
+            <!-- /.mail-box-messages -->
+        </div>
+          <!-- /.box-body -->
+      </div>
+      <!-- /.box-body -->
+
+
+        <!-- /.btn-group -->
+
+        <!-- /.col -->
+    </div>
+
+
+
+  </div>
+</div>

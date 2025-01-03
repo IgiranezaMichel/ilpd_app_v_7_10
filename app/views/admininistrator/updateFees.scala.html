@@ -1,0 +1,39 @@
+@( fees : SchoolFees )
+@if( fees != null ){
+  <div class="loginForm">
+    <form action="@routes.UpdateForm.updateFees(fees.id)"metfees="POST"onsubmit="return allForms(this)">
+      <div class="box box-info">
+        <div class="box-header text-left resp-width">
+          <i class="fa fa-envelope"></i>
+
+          <h3 class="box-title">Update School Fees</h3>
+        </div>
+        <div class="box-body">
+      <div class="form-group has-feedback">
+        <p>School Fess Amount</p>
+        <input type="text" number="true" class="form-control" name="feesAmount" autocomplete="off" placeholder="Update School Fess Amount" value="@fees.feesAmount"/>
+      </div>
+      <div class="form-group has-feedback">
+        <p>School Fees Details</p>
+        <input type="text" name="feesDetails" value="@fees.feesDetails" class="form-control" placeholder="Update School Fees Details">
+      </div>
+      <div class="form-group has-feedback">
+        <p>School Fees Intake</p>
+        <select class="form-control" id="AXAPOLOPOLO@fees.id" name="intaker">
+          <option value="">-- Update School Fees Intake --</option>
+          @for( i <- Intake.all() ){
+            <option value="@i.id" @if(fees.id.equals(i.id)){selected="true"}>@i.intakeName </option>
+          }
+          </select>
+      </div>
+  </div>
+  <div class="box-footer clearfix">
+    <button type="submit" class="pull-right btn btn-default">Update
+      <i class="fa fa-arrow-circle-right"></i></button>
+  </div>
+  </div>
+    </form>
+  </div>
+}else{
+  <div>Error With Reference</div>
+}

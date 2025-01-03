@@ -1,0 +1,19 @@
+@( assignment: Assignment , myAssign : List[Component] , trains : List[Training])
+
+
+<div class="loginForm">
+    <form action="@routes.Registration.deleteAssignment(assignment.id)"method="POST" onsubmit="return allForms(this)">
+        <div class="box box-info">
+            <div class="box-header text-left resp-width">
+                <i class="fa fa-envelope"></i>
+                <h3 class="box-title">Are you sure to delete this assignment ??</h3>
+            </div>
+            <div class="box-body">
+            </div>
+            <div class="box-footer clearfix">
+                <button type="submit" class="pull-right btn btn-default"> Delete assignment
+                    <i class="fa fa-arrow-circle-right"></i></button>
+            </div>
+        </div>
+    </form>
+</div>

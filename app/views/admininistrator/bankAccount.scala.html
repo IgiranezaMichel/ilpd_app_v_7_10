@@ -1,0 +1,76 @@
+@( banks : List[BankAccount] )
+@import scala.Predef; var x = 0;var p = 0;var xp = 0;var m=0;
+<div align="right" class="left-form">
+    <button id="meBut" class="btn btn-primary" onclick="addNew(this, event)"><i class="fa fa-plus"></i>
+        New bank account</button>
+    <div class="loginForm" id="form1" no-prop="true">
+
+        <div class="box box-info">
+            <div class="box-header text-left resp-width">
+                <i class="fa fa-envelope"></i>
+
+                <h3 class="box-title">Add new bank account ...</h3>
+            </div>
+            <form action="@routes.Registration.saveBank()" method="POST" onsubmit="return allForms(this)">
+                <div class="box-body text-left">
+
+                    <div class="form-group has-feedback">
+                        <p>Enter bank name</p>
+                        <input class="form-control" name="bankName" placeholder="Enter bank name"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <p>Enter bank acronym</p>
+                        <input class="form-control" name="bankAcronym" placeholder="Enter bank acronym"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <p>Enter account number</p>
+                        <input class="form-control" name="accountNumber" placeholder="Enter account number"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <p>Enter opening branch</p>
+                        <input class="form-control" name="openBranch" placeholder="Enter opening branch"/>
+                    </div>
+
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default">Save
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-success">
+    <div class="panel-heading">Currently registered bank accounts</div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Bank name</th>
+                        <th>Bank acronym</th>
+                        <th>Account open branch</th>
+                        <th>Account number</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for( bank <- banks ) {
+                    <tr>
+                    <td>@bank.bankName</td>
+                    <td>@bank.bankAcronym</td>
+                    <td>@bank.openBranch</td>
+                    <td>@bank.accountNumber</td>
+                    <td><button class="btn btn-info btn-sm btn-circle" onclick="createModal(this, self.event)" href="@routes.Application.updateAll(bank.id, "bank")"><i class="fa fa-pencil"></i></button></td>
+                    <td><button class="btn btn-danger btn-sm btn-circle" onclick="createDel(this)" value="@routes.Application.deleteAll(bank.id, "bank")"><i class="fa fa-bitbucket"></i></button></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

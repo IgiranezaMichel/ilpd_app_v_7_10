@@ -1,0 +1,36 @@
+@(hourSession: HourSession,sessions : List[models.Session],hours :List[Hours])
+
+<div class="loginForm" id="form1" no-prop="true">
+
+    <div class="box box-info">
+        <div class="box-header text-left resp-width">
+            <i class="glyphicon glyphicon-edit"></i>
+            <h3 class="box-title">Edit Assign day to session </h3>
+        </div>
+        <form action="@routes.UpdateForm.updateHoursSession(hourSession.id)" method="POST" onsubmit="return allForms(this)">
+            <div class="box-body">
+                <div class="form-group has-feedback">
+                    <select name="mySession" class="form-control">
+                        <option value="">-- Choose session --</option>
+                        @for( ip <- sessions ){
+                            <option value="@ip.id" @if(hourSession.session.id.equals(ip.id)){selected}>@ip.sessionName</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group has-feedback">
+                    <select name="myHour" class="form-control" id="program">
+                        <option value="">-- Choose hour name --</option>
+                        <option value="@hourSession.hour.id" selected>@hourSession.hour.hourName</option>
+                        @for( ip <- hours ){
+                            <option value="@ip.id" @if(hourSession.hour.id.equals(ip.id)){selected}>@ip.hourName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="box-footer clearfix">
+                <button type="submit" class="pull-right btn btn-default">Update
+                    <i class="fa fa-arrow-circle-right"></i></button>
+            </div>
+        </form>
+    </div>
+</div>

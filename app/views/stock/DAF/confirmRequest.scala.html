@@ -1,0 +1,100 @@
+@(request: models.stock.Request, locations: List[models.stock.Location])
+@import scala.Predef;var inc = 0;var itemType = ""; var remain = 0.0;
+
+
+<div class="row">
+  <div class="col-md-12">
+    <h4>Details for request No: <b>@request.id</b> of  <b>@request.employee.print()</b>
+      , Unit of <b>@request.employee.unit.acronym</b></h4>
+
+    <form action="@routes.DAFController.approveRequest(request.id)" class="submitIndividualRequest" id="" method="post">
+      <table class="table table-condensed table-hover table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Item [type]</th>
+            <th>Stock qty</th>
+            <th>Request qty</th>
+            <th>HOU qty</th>
+            <th>Approved qty</th>
+            <th>Item source</th>
+          </tr>
+        </thead>
+        <tbody>
+          @(inc = 1)
+          @for(item:models.stock.StockMovement <- request.stockMovements) {
+            @(remain = item.item.getBeginningStockQty(Counts.getTomorrow().toDate.format("yyyy-MM-dd")))
+            <tr>
+              <td>
+                <div class="form-group"> @inc</div>
+              </td>
+              @(itemType = item.item.iType)
+              <td>
+                <div class="form-group">
+                  @item.item.name <span class="label bg-orange">The remaining quantity is: @remain @item.item.unitMeasure</span>
+                </div>
+              </td>
+              <td>
+                <div class="form-group">
+                @item.item.balanceQty
+                </div>
+              </td>
+              <td>
+                <div class="form-group">
+                @item.proposedQty
+                </div>
+              </td>
+              <td>
+                <div class="form-group">
+                @item.confirmedQty
+                </div>
+              </td>
+              <td>
+                <div class="form-group">
+                  <input type="number" value="@item.confirmedQty" min="0" name="confirmedQty@item.id" id="confirmedQty" class="form-control">
+                  <input type="hidden" value="@item.item.getBeginningStockQty(Counts.getTomorrow().toDate.format("yyyy-MM-dd"))" min="0" name="remainQty@item.id" class="form-control">
+                  <input type="hidden" name="stocks[]" value="@item.id">
+                </div>
+              </td>
+              <td>
+                <div class="form-group">
+                  <select name="type@item.id" id="movementType@inc" onchange="changeMovementType('@inc')" class="form-control">
+                    <option value="Stock" selected>Stock</option>
+                    @if(itemType.equalsIgnoreCase("Non-consumable")) {
+                      <option value="Movement">Movement</option>
+                    }
+                  </select>
+                </div>
+                <div class="form-group div-hide movementLocation" id="">
+                  <select name="fromLocation@item.id" id="location" class="form-control">
+                    <option value="">--select location--</option>
+                    @for(l <- Counts.stockMovementsLocations(item.item.id)) {
+                      <option value="@l.getLong("id")">@l.getString("locationName") ( @l.getString("blockName") ) </option>
+                    }
+                  </select>
+                </div>
+              </td>
+            </tr>
+            @(inc = inc + 1)
+          }
+          <tr>
+            <td colspan="6">
+              <div class="form-group pull-right">
+                <button type="submit" class="btn btn-success btnConfirmIndividual"> Confirm request <i class="ion ion-android-checkmark-circle"></i></button>
+
+                <button type="button" class="btn btn-danger btnRejectIndividual">
+                  Reject request <i class="ion ion-android-cancel"></i>
+                </button>
+
+                <button class="btn btn-default"  data-dismiss="modal">Close</button>
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </form>
+
+    <input type="hidden" id="rejReq" value="@routes.DAFController.rejectRequest(request.id)">
+  </div>
+</div>

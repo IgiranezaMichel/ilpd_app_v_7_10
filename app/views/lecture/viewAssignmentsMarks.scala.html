@@ -1,0 +1,121 @@
+@( lect : Lecture , myComp : List[Component] , boolean: Boolean)
+
+@import scala.Predef; var ab = 0;var a=0;
+
+<div class="row shadinga">
+    <div class="col-md-3">
+        <a href="#" class="btn btn-default btn-block margin-bottom">Instructor</a>
+
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title"><b>@lect.print()</b> 's Components</h3>
+
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <script>
+                    $(".auto-click").click();
+            </script>
+            <div class="box-body no-padding">
+                <ul class="nav nav-pills nav-stacked">
+                @for( i <- myComp ) {
+                    <li><a href="@routes.Application.unsubmitedAssignment(i.id,boolean)" class="fetch-students @if(ab.equals(0)){auto-click}"
+                    ><i class="fa fa-inbox"></i> @i.compName
+                        <span class="label label-primary pull-right">@i.compAssignInt(boolean)</span></a>
+                    </li>
+                    @( ab = ab + 1 )
+                }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <ol class="breadcrumb breadOne">
+
+        </ol>
+        <div class="boxing shadow">
+
+            <div class="box box-primary signup-data">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-users"></i> Assignments</h3>
+
+                    <div class="box-tools pull-right">
+                        <div class="has-feedback">
+                            <input type="text" class="form-control input-sm" href="/lecture/search/student/" onkeyup="studentSearch(this,event)" placeholder="Search student" style="margin-top:-1.5px">
+                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body no-padding">
+                    <div class="table-responsive mailbox-messages heighted loading">
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="box box-primary signup-data">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-users"></i> Students who did not submitted assignments</h3>
+
+                    <div class="box-tools pull-right">
+                        <div class="has-feedback">
+                            <input type="text" class="form-control input-sm" placeholder="Search information" style="margin-top:-1.5px">
+                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body no-padding">
+                    <div class="mailbox-controls">
+                    </div>
+                </div>
+                <div class="table-responsive mailbox-messages heighted loading">
+                </div>
+            </div>
+            <div class="box box-primary signup-data">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-users"></i> Module registration form</h3>
+
+                    <div class="box-tools pull-right">
+                        <div class="has-feedback">
+                            <input type="text" class="form-control input-sm" placeholder="Search information" style="margin-top:-1.5px">
+                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body no-padding">
+                    <div class="mailbox-controls">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive mailbox-messages heighted loading">
+
+
+                </div>
+            </div>
+            <div class="box box-primary signup-data">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-users"></i> Module claiming</h3>
+                    <div class="box-tools pull-right">
+                        <div class="has-feedback">
+                            <input type="text" class="form-control input-sm" placeholder="Search information" style="margin-top:-1.5px">
+                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body no-padding">
+                    <div class="mailbox-controls">
+                    </div>
+                </div>
+                <div class="table-responsive mailbox-messages heighted loading">
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+@(anounceRoles : List[AnounceRole], userType : String, user : Users , anns : List[Announce] )
+@main("Finance page","admin.css"){
+    @header(anounceRoles, userType, true , user )
+    @leftMenu("Finance",user)
+    <div class="content-wrapper">
+    @financeContent.render(user)
+
+        @communication.render(anns)
+    </div>
+    @footer(user)
+}

@@ -1,0 +1,11 @@
+@(anounceRoles : List[AnounceRole], userType : String, user : Users ,anns : List[Announce] )
+@main(user.email,"register.css"){
+    @( user.role = "Staff" )
+    @leftMenu("Staff",user)
+    @header(anounceRoles, userType, true, user)
+
+    <div class="content-wrapper">
+        @mainContent(user)
+        @communication.render(anns)
+    </div>
+}

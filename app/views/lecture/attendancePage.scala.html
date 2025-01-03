@@ -1,0 +1,57 @@
+@( lect : Lecture , trains : List[Training] , view : Html )
+@import scala.Predef;var a=0;
+
+<div class="shadinga">
+  <ol class="breadcrumb breadOne">
+
+  </ol>
+  <div class="col-md-3">
+    <a href="#" class="mod-click btn btn-primary btn-block margin-bottom"><i class="fa fa-list"></i> Attendance page</a>
+
+    <div class="box box-solid parent">
+      <div class="box-header with-border">
+        <h3 class="box-title m-title">Periods</h3>
+      </div>
+      <div class="box-body no-padding">
+
+        <ul class="nav nav-pills nav-stacked compList">
+          @for( i <- trains ) {
+            <li><a class="fetch-students cls @if(a == 0){active}" href="@routes.Application.fetchTable(i.id,lect.id)"><i class="fa fa-inbox"></i>
+              @i.tNames() Xs.
+            </a>
+            </li>
+            @( a = a + 1 )
+          }
+        </ul>
+      </div>
+        <!-- /.box-body -->
+    </div>
+      <!-- /. box -->
+      <!-- /.box -->
+  </div>
+    <!-- /.col -->
+  <div class="col-md-9 relatively">
+
+    <div class="boxing shadow">
+
+      <div class="box box-primary signup-data">
+        <div class="box-header with-border">
+          <h3 class="box-title"><i class="fa fa-calendar"></i> Student attendance</h3>
+          <button type="button" onclick='expander(false,this);' class="close in-expand" data-dismiss="alert" aria-hidden="true"><i class="fa fa-expand"></i></button>
+        </div>
+        <div class="box-body no-padding">
+          <div class="mailbox-messages heighted loading">
+
+
+
+          </div>
+            <!-- /.mail-box-messages -->
+        </div>
+          <!-- /.box-body -->
+      </div>
+       </div>
+
+
+
+  </div>
+</div>

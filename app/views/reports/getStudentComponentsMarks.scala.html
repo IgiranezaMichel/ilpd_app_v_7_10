@@ -1,0 +1,395 @@
+@( list : List[SubMark] , student: Student, module: Module, training: Training)
+@import scala.Predef; var catMarks=0.0;var reMarks=0.0;var inc = 1;var incs = 1; var averageOneMarks=0.0; var examMarks=0.0;var tot1 = 0.0;var tot2 = 0.0;var tot2s = 0.0;var tot3 = 0.0;var tot3s = 0.0;var tot4 = 0.0;var ass = 0.0;var ress = 0.0;var Exams = 0.0; var percentage = 0.0
+@main("Student components marks",""){
+    <div class="container">
+    <div class="invoice">
+        <div class="row">
+            <div class="row no-print">
+                <div class="col-xs-12">
+                    <a href="#" target="_blank" class="btn btn-primary btn-flat pull-right" style="margin-right: 10px;">
+                        <i class="fa fa-print"></i> Print
+                    </a>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div style="border-bottom: 1px solid silver;margin-bottom: 10px;">
+                    <table class="table" style="border: none;">
+                        <thead>
+                            <tr>
+                                <td style="border-right: 2px solid #E200E2;vertical-align: middle">
+                                    <span>
+                                        <i class="fa fa-circle"></i>
+                                        <i class="fa fa-circle" style="color: #E200E2;"></i>
+                                        <i class="fa fa-circle" style="color: #E200E2;"></i>
+                                    </span>
+                                </td>
+                                <td style="vertical-align: top">
+                                    <span>
+                                        Institute of Legal Practice <br>
+                                        and Development
+                                    </span>
+                                </td>
+                                <td style="vertical-align: bottom">
+                                    <small>
+                                        <em class="text-left">Excellence in Legal Practice</em>
+                                    </small>
+                                </td>
+                                <td>
+                                    <img src="@routes.Assets.at("images/smLogo.png")"  alt="" class="img-responsive pull-right" style="width: 50px">
+                                </td>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 table-responsive">
+                <h4 class="text-blue"> Components results for @module.moduleName module   <small class="pull-right">Date: @(new Date().format("dd-MM-yyyy"))</small></h4>
+
+                @if(!student.inResit) {
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>&nbsp#</th>
+                                <th>Component</th>
+                                <th>CAT / @module.catMax</th>
+                                <th>Re-Exs  / @module.reMax</th>
+                                <th>EXAM / @module.examMax</th>
+                                <th class="hidden-print">Claim</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for(s <- list) {
+                                @(averageOneMarks = s.component.module.allModuleAverage(student.id))
+                                <tr @if(averageOneMarks < ProfileInfo.unique().scoreThree) {
+                                    style="color: red !important;" }>
+                                    <td>&nbsp;@inc </td>
+                                    <td>@s.component.compName </td>
+                                    <td>
+                                    @if(AssignmentResult.numberAssignmentDoneComponent(student.id, s.component.id, training.id) > 0.0) {
+                                        @Student.rounding(Counts.getStudentCatMarksComponent(student.id, s.component.id))
+                                    } else {
+                                        N/A
+                                    }
+                                    </td>
+                                    @if(AssignmentResult.numberResearchDoneComp(student.id, s.component.id, training.id) > 0) {
+                                        <td>@Student.rounding(Counts.getStudentResearchMarks(student.id, s.component.id))</td>
+                                    } else {
+                                        <td>N/A</td>
+                                    }
+                                    @if(Counts.getExamMaxTrainingComponent(student.training.id, s.component.id) > 0) {
+                                        @(Exams = Exams + 1)
+                                        <td>@Student.rounding(SubMark.componetExamResult(student.id, s.component.id))</td>
+                                    } else {
+                                        <td>N/A</td>
+                                    }
+                                    @if(averageOneMarks < ProfileInfo.unique().scoreThree) {
+                                        <td class="hidden-print"><button class="btn btn-info btn-sm btn-circle" href="@routes.Application.updateAll(s.id, "claim-marks")" onclick="return createModal(this, self.event);"><i class="fa fa-plus-circle"></i></button></td>
+                                    } else {
+                                        <td>
+                                            <span class="label bg-green">Passed!</span>
+                                        </td>
+                                    }
+                                </tr>
+                                @(tot1 = tot1 + Counts.getStudentCatMarksComponent(student.id, s.component.id))
+                                @if(AssignmentResult.numberResearchDone(student.id, s.component.module.id, training.id) > 0) {
+                                    @(tot2 = tot2 + (Counts.getStudentResearchMarks(student.id, s.component.id) / AssignmentResult.numberResearchDone(student.id, s.component.module.id, training.id)))
+                                } else {
+                                    @(tot2 = tot2)
+                                }
+                                @(tot3 = tot3 + SubMark.componetExamResult(student.id, s.component.id))
+                                @(inc = inc + 1)
+                                @(ass = AssignmentResult.numberAssignmentDone(student.id, s.component.module.id, training.id))
+                                @(ress = AssignmentResult.numberResearchDone(student.id, s.component.module.id, training.id))
+                            }
+                            <tfooter>
+                            @if(inc > 1) {
+                                <tr>
+                                    <td colspan="2">Total</td>
+                                    <td>
+                                    @if(ass >= 0.0) {
+                                        @Student.rounding(tot1/(inc -1 ))
+                                    } else {
+                                        N/A
+                                    }</td>
+                                    @if(ress <= 0.0) {
+                                        <td>N/A</td>
+                                    } else {
+                                        <td>@Student.rounding(tot2)</td>
+                                    }
+                                    @if(Exams > 0.0) {
+                                        <td>@Student.rounding(tot3 / Exams) </td>
+                                    } else {
+                                        <td>N/A</td>
+                                    }
+                                    <td>
+                                    @Student.rounding((tot1/(inc -1 )) + tot2 + (tot3 / Exams))
+                                    </td>
+                                </tr>
+                            }
+                            </tfooter>
+                        </tbody>
+                    </table>
+                }else{
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>&nbsp#</th>
+                                <th>Component</th>
+                                <th>Re-Ex  / @module.reMax</th>
+                                <th>EXAM / @module.minMarks</th>
+                                <th class="hidden-print">Claim</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for(s <- list) {
+                                @(averageOneMarks = s.component.module.alllyModuleAverageResit(student.id))
+                                <tr @if(averageOneMarks < ProfileInfo.unique().scoreThree) { style="color: red !important;" }>
+                                    <td>&nbsp;@incs </td>
+                                    <td>@s.component.compName </td>
+                                    @if(AssignmentResult.numberResearchDoneCompResearch(student.id, s.component.id, training.id) > 0) {
+                                        <td>@Student.rounding(Counts.getStudentResearchMarksResearch(student.id, s.component.id))</td>
+                                    } else {
+                                        <td>N/A</td>
+                                    }
+                                    <td>@Student.rounding(SubMark.componetExamResultResearch(student.id, s.component.id))</td>
+                                    @if(averageOneMarks < ProfileInfo.unique().scoreThree) {
+                                        <td class="hidden-print"><button class="btn btn-info btn-sm btn-circle" href="@routes.Application.updateAll(s.id, "claim-marks")" onclick="return createModal(this, self.event);"><i class="fa fa-plus-circle"></i></button></td>
+                                    } else {
+                                        <td>
+                                            <span class="label bg-green">Passed!</span>
+                                        </td>
+                                    }
+                                </tr>
+                                @(tot1 = Counts.getStudentCatMarks(student.id, s.component.module.id))
+                                @if(AssignmentResult.numberResearchDoneResit(student.id, s.component.module.id, training.id) > 0) {
+                                    @(tot2s = tot2s + (Counts.getStudentResearchMarksResearch(student.id, s.component.id) / AssignmentResult.numberResearchDoneResit(student.id, s.component.module.id, training.id)))
+                                } else {
+                                    @(tot2s = tot2)
+                                }
+                                @(incs = incs + 1)
+                                @(tot3s = tot3s + SubMark.componetExamResultResearch(student.id, s.component.id))
+                                @(ress = AssignmentResult.numberResearchDoneResit(student.id, s.component.module.id, training.id))
+                            }
+                            @if(incs > 1) {
+                                <tr>
+                                    <td colspan="2">Total</td>
+                                    @if(ress <= 0.0) {
+                                        <td>N/A</td>
+                                    } else {
+                                        <td>@Student.rounding(tot2s)</td>
+                                    }
+                                    <td>@Student.rounding(tot3s/(incs - 1))</td>
+                                    @if(tot3s < ProfileInfo.unique().maximumResit) {
+                                        <td style="color: #9c079c !important;">@Student.rounding(tot2s + (tot3s/(incs - 1))) </td>
+                                    }else{
+                                        <td style="color: #9c079c !important;">@Student.rounding(60) %</td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                @*
+                @if(!student.inResit) {
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>&nbsp#</th>
+                                <th>Component</th>
+                                <th>CAT / @module.catMax</th>
+                                <th>Re-ExXX  / @module.reMax</th>
+                                <th>EXAM / @module.examMax</th>
+                                <th class="hidden-print">Claim</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for(s <- list) {
+                            <tr>
+                                <td>&nbsp;
+                                    @inc </td>
+                                <td>@s.component.compName </td>
+                                <td>
+                                @if(AssignmentResult.numberAssignmentDoneComponent(student.id, s.component.id, training.id) > 0.0) {
+                                    @Student.rounding(Counts.getStudentCatMarksComponent(student.id, s.component.id))
+                                } else {
+                                    N/A
+                                }
+                                </td>
+                                @if(SubMark.byDualInResit(student.id, s.component.id) == null) {
+                                    @if(AssignmentResult.numberResearchDoneComp(student.id, s.component.id, student.training.id) > 0) {
+                                        <td>@Student.rounding(Counts.getStudentResearchMarks(student.id, s.component.id))</td>
+                                    } else {
+                                        <td>N/A</td>
+                                    }
+                                } else {
+                                    <td>RE-SIT</td>
+                                }
+                                @if(SubMark.byDualInResit(student.id, s.component.id) == null) {
+                                    @if(Counts.getExamMaxTrainingComponent(student.training.id, s.component.id) > 0) {
+                                        @(Exams = Exams + 1)
+                                        <td>@Student.rounding(SubMark.componetExamResult(student.id, s.component.id))</td>
+                                    } else {
+                                        <td>N/A</td>
+                                    }
+                                } else {
+                                    <td>RE-SIT</td>
+                                }
+                                <td class="hidden-print"><button class="btn btn-info btn-sm btn-circle" href="@routes.Application.updateAll(s.id, "claim-marks")" onclick="return createModal(this, self.event);"><i class="fa fa-plus-circle"></i></button></td>
+                            </tr>
+                            @(tot1 = Counts.getStudentCatMarks(student.id, s.component.module.id))
+                            @if(AssignmentResult.numberResearchDone(student.id, s.component.module.id, student.training.id) > 0) {
+                                @(tot2 = tot2 + (Counts.getStudentResearchMarks(student.id, s.component.id) / AssignmentResult.numberResearchDone(student.id, s.component.module.id, student.training.id)))
+                            } else {
+                                @(tot2 = tot2)
+                            }
+                            @(tot3 = tot3 + SubMark.componetExamResult(student.id, s.component.id))
+                            @(inc = inc + 1)
+                            @(ass = AssignmentResult.numberAssignmentDone(student.id, s.component.module.id, student.training.id))
+                            @(ress = AssignmentResult.numberResearchDone(student.id, s.component.module.id, student.training.id))
+                        }
+                        </tbody>
+                        <tfooter>
+                        @if(inc > 1) {
+                            <tr>
+                                <td colspan="2">Total</td>
+                                <td>
+                                @if(ass >= 0.0) {
+                                    @Student.rounding(tot1)
+                                } else {
+                                    N/A
+                                }</td>
+                                @if(ress <= 0.0) {
+                                    <td>N/A</td>
+                                } else {
+                                    <td>@Student.rounding(tot2)</td>
+                                }
+                                @if(Exams > 0.0) {
+                                    <td>@Student.rounding(tot3 / Exams) </td>
+                                } else {
+                                    <td>N/A</td>
+                                }
+                                <td>
+                                    @if(ass > 0.0 && ress > 0.0 && Exams > 0.0) {
+                                        @if(Exams > 0) {
+                                            @Student.rounding(tot1 + tot2 + (tot3 / Exams)) %
+                                        } else {
+                                            @Student.rounding(tot1 + tot2 + tot3) %
+                                        }
+                                    }
+                                    @if(ass <= 0.0 && ress > 0.0 && Exams > 0.0) {
+                                        @if(Exams > 0) {
+                                            @Student.rounding(((tot2 + (tot3 / Exams)) * 100) / (module.reMax + module.examMax)) %
+                                        } else {
+                                            @Student.rounding(((tot2 + tot3) * 100) / (module.reMax + module.examMax)) %
+                                        }
+                                    }
+                                    @if(ass <= 0.0 && ress <= 0.0 && Exams > 0.0) {
+                                        @if(Exams > 0) {
+                                            @Student.rounding(((tot3 / Exams) * 100) / module.examMax) %
+                                        } else {
+                                            @Student.rounding((tot3 * 100) / module.examMax) %
+                                        }
+                                    }
+                                    @if(ass > 0.0 && ress <= 0.0 && Exams <= 0.0) {
+                                        @Student.rounding((tot1 * 100) / module.catMax) %
+                                    }
+                                    @if(ass <= 0.0 && ress > 0.0 && Exams <= 0.0) {
+                                        @Student.rounding((tot1 * 100) / module.reMax) %
+                                    }
+                                    @if(ass > 0.0 && ress > 0.0 && Exams <= 0.0) {
+                                        @Student.rounding(((tot1 + tot2) * 100) / (module.catMax + module.reMax)) %
+                                    }
+                                    @if(ass > 0.0 && ress <= 0.0 && Exams > 0.0) {
+                                        @if(Exams > 0) {
+                                            @Student.rounding(((tot1 + (tot3 / Exams)) * 100) / (module.catMax + module.examMax)) %
+                                        } else {
+                                            @Student.rounding(((tot1 + tot3) * 100) / (module.catMax + module.examMax)) %
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        </tfooter>
+                    </table>
+                }else{
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>&nbsp#</th>
+                                <th>Component</th>
+                                <th>Re-Ex  / @module.reMax</th>
+                                <th>EXAM / @module.minMarks</th>
+                                <th class="hidden-print">Claim</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for(s <- list) {
+                                @(averageOneMarks = s.component.module.alllyModuleAverageResit(student.id))
+                                <tr @if(averageOneMarks < ProfileInfo.unique().scoreThree) { style="color: red !important;" }>
+                                    <td>&nbsp;@incs </td>
+                                    <td>@s.component.compName </td>
+                                    @if(AssignmentResult.numberResearchDoneCompResearch(student.id, s.component.id, training.id) > 0) {
+                                        <td>@Student.rounding(Counts.getStudentResearchMarksResearch(student.id, s.component.id))</td>
+                                    } else {
+                                        <td>N/A</td>
+                                    }
+                                    <td>@Student.rounding(SubMark.componetExamResultResearch(student.id, s.component.id))</td>
+                                    @if(averageOneMarks < ProfileInfo.unique().scoreThree) {
+                                        <td class="hidden-print"><button class="btn btn-info btn-sm btn-circle" href="@routes.Application.updateAll(s.id, "claim-marks")" onclick="return createModal(this, self.event);"><i class="fa fa-plus-circle"></i></button></td>
+                                    } else {
+                                        <td>
+                                            <span class="label bg-green">Passed!</span>
+                                        </td>
+                                    }
+                                </tr>
+                                @(tot1 = Counts.getStudentCatMarks(student.id, s.component.module.id))
+                                @if(AssignmentResult.numberResearchDoneResit(student.id, s.component.module.id, training.id) > 0) {
+                                    @(tot2s = tot2s + (Counts.getStudentResearchMarksResearch(student.id, s.component.id) / AssignmentResult.numberResearchDoneResit(student.id, s.component.module.id, training.id)))
+                                } else {
+                                    @(tot2s = tot2)
+                                }
+                                @(incs = incs + 1)
+                                @(tot3s = tot3s + SubMark.componetExamResultResearch(student.id, s.component.id))
+                                @(ress = AssignmentResult.numberResearchDoneResit(student.id, s.component.module.id, training.id))
+                            }
+                            @if(incs > 1) {
+                                <tr>
+                                    <td colspan="2">Total</td>
+                                    @if(ress <= 0.0) {
+                                        <td>N/A</td>
+                                    } else {
+                                        <td>@Student.rounding(tot2s)</td>
+                                    }
+                                    <td>@Student.rounding(tot3s/(incs - 1))</td>
+                                    @if(tot3s < ProfileInfo.unique().maximumResit) {
+                                        <td style="color: #9c079c !important;">@Student.rounding(tot2s + (tot3s/(incs - 1))) </td>
+                                    }else{
+                                        <td style="color: #9c079c !important;">@Student.rounding(60) %</td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                } *@
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <h6 class="text-red text-center">
+                    <i class="fa fa-info-circle"></i>
+                    This marks results has generated by ILPD MIS, there is no need of stamp or signature
+                </h6>
+            </div>
+            <div class="col-xs-12">
+                <p class="main-footer text-center">
+                    <small>P.O. Box 49, Avenue des Sports, Nyanza, Southern Province, Rwanda
+                        <br>
+                        E: info@@ilpd.ac.rw / W: www.ilpd.ac.rw</small>
+                </p>
+            </div>
+        </div>
+    </div>
+    </div>
+}

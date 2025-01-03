@@ -1,0 +1,78 @@
+@(sources: List[Source])
+<div align="right" class="left-form">
+    <button id="meBut" class="btn btn-ilpd" onclick="addNew(this, event)">
+        <i class="fa fa-plus"></i>
+        Add new source of fund
+    </button>
+    <div class="loginForm" id="form1" no-prop="true">
+        <div class="box box-ilpd">
+            <div class="box-header with-border text-left resp-width">
+                <i class="fa fa-plus"></i>
+                <h3 class="box-title">Add new source of fund</h3>
+            </div>
+            <form  action="@routes.GroupController.saveSource()"  method="POST" onsubmit="return allForms(this)" autocomplete="off">
+                <div class="box-body">
+                    <div class="form-group">
+                        <input type="text" required class="form-control" id="name" name="name" placeholder="Source of fund name">
+                    </div>
+                    <div class="form-group">
+                        <textarea name="description" id="description" required class="form-control" placeholder="Decription"></textarea>
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-ilpd">Save
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-ilpd">
+            <div class="box-header with-border">
+                <h3 class="box-title">Source of funds
+                </h3>
+            </div>
+            <div class="box-body">
+                <div class="">
+                    <table class="table table table-hover table-striped table-condensed manageTable">
+                        <thead>
+                            <tr>
+                                <th>Source of fund</th>
+                                <th>Description</th>
+                                <th>Update</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for(s <- sources) {
+                            <tr>
+                                <td> @s.name</td>
+                                <td>@s.description</td>
+                                <td>
+                                    <button href="@routes.GroupController.updateSource(s.id)"  onclick="createModal(this, self.event)" class="btn btn-link " title="Edit this record">
+                                        <i class="ion-compose"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button onclick="createDel(this)" value="@routes.GroupController.deleteSource(s.id)" class="btn btn-link text-red" title="Delete this record">
+                                        <i class="ion-android-delete"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+        table = $('.manageTable').DataTable();
+
+</script>

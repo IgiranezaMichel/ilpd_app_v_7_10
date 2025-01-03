@@ -1,0 +1,124 @@
+@(user: Employee)
+@import scala.Predef;var code = 0;var selected = false;var phone="";
+@if(user != null) {
+    <div class="loginForm">
+        <form action="@routes.UpdateForm.updateUsers(user.id)" method="POST" onsubmit="return allForms(this)">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-pencil"></i>
+                    <h3 class="box-title">Update employee</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group has-feedback">
+                        <input class="form-control" value="@user.employeeFirstName" name="employeeFirstName" placeholder="Enter first name"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" value="@user.employeeLastName" name="employeeLastName" placeholder="Enter last name"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        @if(user.getUser!=null){
+                            @(phone=user.getUser.phone.trim)
+                        }else{
+                            @(phone="")
+                        }
+                        <input type="text" value="@phone" class="form-control" name="phone" max="13" placeholder="Enter phone number"/>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <select class="form-control" name="gender" id="gender">
+                            <option value="">--select gender--</option>
+                            @if(user.gender.equalsIgnoreCase("MALE")) {
+                                <option value="MALE" selected>MALE</option>
+                                <option value="FEMALE">FEMALE</option>
+                            } else {
+                                @if(user.gender.equalsIgnoreCase("FEMALE")) {
+                                    <option value="MALE">MALE</option>
+                                    <option value="FEMALE" selected>FEMALE</option>
+                                } else {
+                                    <option value="MALE">MALE</option>
+                                    <option value="FEMALE">FEMALE</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <select class="form-control" name="position" id="position">
+                            <option value="">--select position--</option>
+                            @for(i <- models.stock.Position.all()) {
+                                @if(user.position == null) {
+                                    <option value="@i.id">@i.name</option>
+                                } else {
+                                    @if(user.position.id == i.id) {
+                                        <option value="@user.position.id" selected>@user.position.name</option>
+                                    } else {
+                                        <option value="@i.id" >@i.name</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <select class="form-control" name="unit" id="unit">
+                            <option value="">--select unit--</option>
+                            @for(i <- models.stock.Unit.all()) {
+                                @if(user.unit == null) {
+                                    <option value="@i.id">@i.name</option>
+                                } else {
+                                    @if(user.unit.id == i.id) {
+                                        <option value="@user.unit.id" selected>@user.unit.name</option>
+                                    } else {
+                                        <option value="@i.id">@i.name</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group has-feedback">
+
+                    @if(user.isHeadOfUnit) {
+                        <input type="checkbox" class="checkbox" name="isHeadOfUnit" checked id="isHeadOfUnit">
+                        Is Head of unit.
+                    } else {
+                        <input type="checkbox" class="checkbox" name="isHeadOfUnit" id="isHeadOfUnit">
+                        Is Head of unit.
+                    }
+                    </div>
+
+                    <div class="toggable">
+                        <div class="form-group has-feedback">
+                            <select class="form-control" name="isUser" onchange="didChange(this)">
+                                <option value="">-- Say whether user or not --</option>
+                                @if(user.isUser) {
+                                    <option value="true" selected>Yes, he is</option>
+                                    <option value="false">No, he is not</option>
+                                } else {
+                                    <option value="true">Yes, he is</option>
+                                    <option value="false" selected>No, he is not</option>
+                                }
+
+                            </select>
+                        </div>
+                        <div class="didHide">
+                            <div class="form-group has-feedback">
+                                <input type="email" value="@if(user.getUser!=null){ @user.getUser.email.trim }" class="form-control" name="email" max="3000" email="true" placeholder="Enter user email"/>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <input type="password" value="@if(user.getUser!=null){ @user.getUser.password }" class="form-control" name="password" max="3000" placeholder="Password"/>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default">Save changes
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+} else {
+    <div>Error with reference</div>
+}

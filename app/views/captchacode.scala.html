@@ -1,0 +1,17 @@
+
+<div class="form-group has-feedback col-md-6 padder">
+    <button type="button" onclick="DrawCaptcha();" class="cap-but"><i class="fa fa-refresh"></i></button>
+    <input type="text" id="txtCaptcha" class="form-control cap-label" readonly/>
+</div>
+                    <div class="form-group has-feedback col-md-6 padder">
+                        <input type="text" id="txtInput" class="form-control" placeholder="Please enter captcha code here!!!" captcha="true"/>
+                        <button id="Button1" class="cap-but" type="button" value="Check" onclick="alert(ValidCaptcha());">
+                            <i class="fa fa-send-o"></i>
+                        </button>
+                    </div>
+
+
+
+ <script>
+     DrawCaptcha();
+ </script>

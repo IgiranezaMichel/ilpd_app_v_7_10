@@ -1,0 +1,70 @@
+@(payments: List[Payment],applicant: Applicant)
+
+<div class="table-responsive">
+    <h5><b>Reg No: </b>
+        @if(applicant.student==null){
+            Not available
+        }else{
+            @applicant.student.regNo
+        }
+       </h5>
+    <h5><b>Name: </b>@applicant.toString
+        @*<button class="btn btn-xs btn-primary no-print" onclick="window.print();">
+        <i class="ion-ios-printer-outline"></i> Print history</button>*@
+    </h5>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Payment type</th>
+                <th>Accommodation</th>
+                <th>Restoration</th>
+                <th>Tuition fees</th>
+                <th>Total</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Date</th>
+                <th>Payment type</th>
+                <th>Accommodation</th>
+                <th>Restoration</th>
+                <th>Tuition fees</th>
+                <th>Total</th>
+                <th>Status</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            @for(payment <- payments) {
+                <tr>
+                    <td>@payment.date.format("dd/MM/yyy - hh:mm:ss")</td>
+                    <td>
+                    @if(payment.paymentType=="bank slip"){
+                        <span class="label label-primary">@payment.paymentType</span>
+                    }else{
+                        <span class="label label-info">@payment.paymentType</span>
+                    }
+
+                    </td>
+                    <td>@Counts.formatAmount(payment.accomodationAmount) </td>
+                    <td>@Counts.formatAmount(payment.restaurantAmount)</td>
+                    <td>@Counts.formatAmount(payment.feesAmount)</td>
+                    <td>@Counts.formatAmount(payment.feesAmount+payment.restaurantAmount+payment.accomodationAmount)</td>
+                    <td>
+                    @if(payment.status.equalsIgnoreCase("rejected")){
+                        <span class="label label-danger"><i class="ion-close-round"></i> @payment.status</span>
+                    }else {
+                        @if(payment.status.equalsIgnoreCase("pending")) {
+                            <span class="label label-info"><i class="ion-android-sync"></i> @payment.status</span>
+                        } else {
+                            <span class="label label-success"><i class="ion-android-done-all"></i> @payment.status</span>
+                        }
+                    }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

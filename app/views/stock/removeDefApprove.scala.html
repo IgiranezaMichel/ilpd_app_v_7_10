@@ -1,0 +1,25 @@
+@( item : models.stock.Item )
+@import scala.Predef; var remain = 0;
+@if( item != null ) {
+    <div class="loginForm">
+        <form action="@routes.UpdateForm.removeDefecApprove(item.id)" class="validate-form" method="POST" onsubmit="return allForms(this)">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-envelope"></i>
+
+                    <h3 class="box-title">Are you sure to remove this expired item ?</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group has-feedback">
+                        <label for="">This will remove expired item from stock</label>
+                    </div>
+                    <input type="text" value="@item.defQnty" name="quantity" class="form-control">
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default">Confirm removal
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+}

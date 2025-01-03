@@ -1,0 +1,63 @@
+@( anounceRoles : List[AnounceRole])
+@import scala.Predef; var x = 0;
+    @main("","") {
+    <div class="panel panel-success">
+        <div class="panel-heading">All posted Announcements</div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Announcement title</th>
+                            <th>Announcement body</th>
+                            <th>Attachment</th>
+                            <th></th>
+                            <th>Update</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    @for(i <- anounceRoles) {
+                        <tr>
+                            <td>@i.announce.title</td>
+                            <td>@i.announce.content</td>
+                            <td>
+                                <button class="btn btn-info btn-sm btn-circle" onclick="createModal(this, self.event)" href="@routes.Application.updateAll(i.announce.id, "viewImage")"><i class="fa fa-cloud-upload"></i></button>
+                            </td>
+                            <td>
+                            @if(i.announce.attachment != "") {
+                                <a title="Download" href="@routes.Application.downloadAnnounce(i.announce.id)" data-id="@i.announce.id" class="btn btn-default btn-flat"><i class="fa fa-download"></i>
+                                </a>
+                            } else {
+                                No file
+                            }
+                            </td>
+                            <td>
+                                <button class="btn btn-info btn-sm btn-circle" onclick="createModal(this, self.event)" href="@routes.Application.updateAll(i.announce.id, "ann")"><i class="fa fa-pencil"></i></button>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-sm btn-circle" onclick="createDel(this)" value="@routes.Application.deleteAll(i.announce.id, "ann")"><i class="fa fa-bitbucket"></i></button>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+<script>
+        $(document).ready(function () {
+            $('#selectall').click(function () {
+                $('.selectedId').prop('checked', this.checked);
+            });
+
+            $('.selectedId').change(function () {
+                var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
+                $('#selectall').prop("checked", check);
+            });
+        });
+</script>
+

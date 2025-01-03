@@ -1,0 +1,23 @@
+@(assignment : Assignment)
+<div class="user-block">
+    <span class="username">
+        <a href="#">Are you sure to cancel this submission ??</a>
+        <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
+    </span>
+</div>
+<br>
+<div class="box box-danger">
+    <form action="@routes.Registration.cancelSubmissionPost(assignment.id)" onsubmit="return allForms(this)">
+        <input type="hidden" name="assignmentId" value="@assignment.id">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-default btn-block">
+                        <i class="ion-android-checkmark-circle">
+
+                        </i> Confirm </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

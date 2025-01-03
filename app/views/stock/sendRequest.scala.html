@@ -1,0 +1,43 @@
+@( items : List[models.stock.Item] , employee: Employee )
+@import scala.Predef;var i=1;
+<div class="box box-ilpd">
+    <div class="box-header with-border">
+        <h4 class="box-title">
+            <i class="fa fa-database text-blue"></i> List of selected items @employee.id
+        </h4>
+    </div>
+    <form action="@routes.Application.saveRequest()" method="POST"  id="requestForm">
+    <div class="box-boxy">
+        <input type="hidden" name="employeeId" value="@employee.id">
+        <table class="table table-hover table-striped">
+            <tbody>
+            @for( item <- items ){
+                <tr>
+                    <td class="mailbox-star"><a href="#">@i)</a></td>
+                    <td class="mailbox-name">
+                        <a href="#">@item.name </a>
+                    </td>
+                    <td>
+                        <label class="relative">
+                        <input placeholder="Qty" type="number" min="0" number="true" name="qty@item.id"
+                        max="@item.remainQty()" class="form-control">
+                        <input type="hidden" name="items[]" value="@item.id">
+                        </label>
+                    </td>
+                </tr>
+                @(i=i+1)
+            }
+            </tbody>
+        </table>
+    </div>
+    <div class="box-footer">
+        <div class="auto-pad">
+            <button type="submit" class="btn btn-ilpd btn-sm btn-block">
+                <i class="fa fa-database"></i> Send request</button>
+        </div>
+    </div>
+    </form>
+</div>
+<h3 class="auto-pad"></h3>
+
+

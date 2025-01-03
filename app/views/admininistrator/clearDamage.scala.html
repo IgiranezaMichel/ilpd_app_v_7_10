@@ -1,0 +1,21 @@
+@( damage : Damage )
+@if( damage != null ) {
+    <div class="loginForm">
+        <form action="@routes.Application.clearStudentDamage(damage.id)" class="validate-form" method="POST" onsubmit="return allForms(this)">
+            <div class="box box-info">
+                <div class="box-header text-left resp-width">
+                    <i class="fa fa-envelope"></i>
+
+                    <h3 class="box-title">Are you sure to clear this damage ?</h3>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default"> Confirm clear damage
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+}
+<script >
+        $('.validate-form').parsley();
+</script>

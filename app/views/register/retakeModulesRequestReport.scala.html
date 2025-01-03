@@ -1,0 +1,91 @@
+@(students: List[Student], title: String, decision: String)
+@import scala.Predef;var inc = 1;
+@main(title, "") {
+    <div class="invoice">
+        <div class="row">
+            <div class="row no-print">
+                <div class="col-xs-12">
+                @shared.printButton.render()
+                </div>
+            </div>
+            <div class="col-xs-12">
+            @shared.ildpHeader.render()
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 table-responsive">
+                <h4 class="text-blue"><i class="fa fa-calendar-o"></i>
+                    @title     <small class="pull-right">
+                        Date: @(new Date().format("dd-MM-yyyy"))</small></h4>
+                <table class="table  table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Reg Number</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Dote of birth</th>
+                            <th>Phone</th>
+                            <th>Gender</th>
+                            <th>Request status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @for(student <- students) {
+                        @if(ReSitReTakeRequest.retakeModulesPerStudent(student.id) != null && decision.equalsIgnoreCase("all")) {
+                            <tr>
+                                <td>@inc</td>
+                                <td>@student.regNo</td>
+                                <td> @student.toString</td>
+                                <td>@student.applicant.user.email</td>
+                                <td>@student.applicant.birthDate</td>
+                                <td>@student.applicant.user.phone</td>
+                                <td>@student.applicant.gender</td>
+                                <td>
+                                    @if(ReSitReTakeRequest.retakeModulesPerStudent(student.id) != null && ReSitReTakeRequest.retakeModulesPerStudent(student.id).status.equalsIgnoreCase("pending")) {
+                                        <span class="label bg-blue">Pending</span>
+                                    }
+                                    @if(ReSitReTakeRequest.retakeModulesPerStudent(student.id) != null && ReSitReTakeRequest.retakeModulesPerStudent(student.id).status.equalsIgnoreCase("approved")) {
+                                        <span class="label bg-green">Approved</span>
+                                    }
+                                    @if(ReSitReTakeRequest.retakeModulesPerStudent(student.id) != null && ReSitReTakeRequest.retakeModulesPerStudent(student.id).status.equalsIgnoreCase("rejected")) {
+                                        <span class="label bg-red">Rejected</span>
+                                    }
+                                </td>
+                            </tr>
+                            @(inc = inc + 1)
+                        }
+                        @if(ReSitReTakeRequest.retakeModulesPerStudent(student.id) != null && ReSitReTakeRequest.retakeModulesPerStudent(student.id).status.equalsIgnoreCase(decision)) {
+                            <tr>
+                                <td>@inc</td>
+                                <td>@student.regNo</td>
+                                <td> @student.toString</td>
+                                <td>@student.applicant.user.email</td>
+                                <td>@student.applicant.birthDate</td>
+                                <td>@student.applicant.user.phone</td>
+                                <td>@student.applicant.gender</td>
+                                <td>
+                                    @if(ReSitReTakeRequest.retakeModulesPerStudent(student.id) != null && ReSitReTakeRequest.retakeModulesPerStudent(student.id).status.equalsIgnoreCase("pending")) {
+                                        <span class="label bg-blue">Pending</span>
+                                    }
+                                    @if(ReSitReTakeRequest.retakeModulesPerStudent(student.id) != null && ReSitReTakeRequest.retakeModulesPerStudent(student.id).status.equalsIgnoreCase("approved")) {
+                                        <span class="label bg-green">Approved</span>
+                                    }
+                                    @if(ReSitReTakeRequest.retakeModulesPerStudent(student.id) != null && ReSitReTakeRequest.retakeModulesPerStudent(student.id).status.equalsIgnoreCase("rejected")) {
+                                        <span class="label bg-red">Rejected</span>
+                                    }
+                                </td>
+                            </tr>
+                            @(inc = inc + 1)
+                        }
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+        @shared.reportFooter.render()
+        </div>
+    </div>
+}
+

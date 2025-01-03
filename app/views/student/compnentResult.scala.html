@@ -1,0 +1,49 @@
+@(componentList : List[SubMark], title: String)
+@import scala.Predef;var inc=1; var totalAmount = 0.0
+<section class="relative height-large new-form">
+    <div class="form-widget didHide">
+        <div class="col-md-0 white-bundle percentHeight" no-prop="true">
+
+        </div>
+    </div>
+    <h4> <i class="fa fa-edit text-blue"></i>
+        <span class="text-green" style="margin-left: 2%;">@title</span></h4>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Component name</th>
+                    <th>CAT</th>
+                    <th>RE-EX</th>
+                    <th>EXAM</th>
+                    <th>TOTAL</th>
+                </tr>
+            </thead>
+            <tbody>
+            @for(c <- componentList) {
+                <tr>
+                    <td>@inc</td>
+                    <td>
+                        <a href="#">@c.component.compName</a>
+                    </td>
+                    <td>
+                        <a href="#">@c.catResult</a>
+                    </td>
+                    <td>
+                        <a href="#">@c.reResult</a>
+                    </td>
+                    <td>
+                        <a href="#">@c.examResult</a>
+                    </td>
+                    <td>
+                        <a href="#">@(c.catResult + c.reResult + c.examResult)</a>
+                    </td>
+                </tr>
+            @(inc = inc + 1)
+            }
+            </tbody>
+        </table>
+    </div>
+</section>
