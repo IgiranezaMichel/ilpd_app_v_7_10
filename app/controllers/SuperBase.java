@@ -293,8 +293,12 @@ public class SuperBase extends Controller {
             return true;
     }
 
-    public static String getDef() {
-        File testExist = new File(defaultFolder());
+    public static String getDef(String fileDestinationPath) {
+        String path=defaultFolder();
+        if(fileDestinationPath.length()!=0){
+            path.concat(fileDestinationPath);
+        }
+        File testExist = new File(path);
         if (!testExist.exists()) {
             boolean mkDir = testExist.mkdir();
         }
@@ -309,12 +313,13 @@ public class SuperBase extends Controller {
         return defaultFolderExcel();
     }
 
-    public static File getFileExt(String fileName) {
-        return new File(defaultFolder() + fileName);
+    public static File getFileExt(String fileDestinationPath,String fileName) {
+        String filePath=defaultFolder().concat(fileDestinationPath);
+        return new File(filePath.concat(fileName));
     }
 
-    static Boolean hasImage(String fileName) {
-        File file = getFileExt(fileName);
+    static Boolean hasImage(String fileDestinationPath,String fileName) {
+        File file = getFileExt(fileDestinationPath,fileName);
 
         return hasImage(file);
 
@@ -338,9 +343,9 @@ public class SuperBase extends Controller {
         return String.valueOf(object);
     }
 
-    private static Boolean newFolder(String folderName) {
+    private static Boolean newFolder(String folderDestinationPath,String folderName) {
         try {
-            File dir = new File(getDef() + folderName);
+            File dir = new File(getDef(folderDestinationPath).concat(folderName));
             return dir.mkdir();
         } catch (Exception e) {
             return false;
@@ -375,7 +380,7 @@ public class SuperBase extends Controller {
 
 
 
-    static String uploadImage(String dflt) {
+    static String uploadImage(String imageDestinationPath,String dflt) {
         Http.MultipartFormData body = request().body().asMultipartFormData();
         Http.MultipartFormData.FilePart picture = body.getFile("photo");
         if (picture != null) {
@@ -386,7 +391,7 @@ public class SuperBase extends Controller {
                 String contentType = picture.getContentType();
                 File file = picture.getFile();
                 String text = (new Date().getTime()) + fileName;
-                file.renameTo(new File(getDef(), text));
+                file.renameTo(new File(getDef(imageDestinationPath).concat(imageDestinationPath), text));
 
                 return text;
             } catch (IOException e) {
@@ -398,23 +403,23 @@ public class SuperBase extends Controller {
         }
     }
 
-    static String singleFile(Http.MultipartFormData.FilePart file, String dft) {
+    static String singleFile(Http.MultipartFormData.FilePart file,String fileDestinationPath, String dft) {
         if (file != null) {
             String fileName = file.getFilename();
             String cType = file.getContentType();
             File newFile = file.getFile();
             String text = (new Date().getTime()) + randomString() + fileName;
-            final boolean b = newFile.renameTo(new File(getDef(), text));
+            final boolean b = newFile.renameTo(new File(getDef(fileDestinationPath), text));
             return text;
         } else {
             return dft;
         }
     }
 
-    static String uploadFile(String dft, String fName) {
+    static String uploadFile(String dft, String fName,String fileDestinationPath) {
         Http.MultipartFormData body = request().body().asMultipartFormData();
         Http.MultipartFormData.FilePart picture = body.getFile(fName);
-        return singleFile(picture, dft);
+        return singleFile(picture,fileDestinationPath, dft);
     }
 
     static JsonNode parseJson(String json) {
@@ -431,7 +436,7 @@ public class SuperBase extends Controller {
 
 
 
-    static File uploadRealFile(String fName, String path) {
+    static File uploadRealFile(String fName, String fileDestinationPath) {
         Http.MultipartFormData body = request().body().asMultipartFormData();
         Http.MultipartFormData.FilePart file = body.getFile(fName);
         if (file != null) {
@@ -439,7 +444,7 @@ public class SuperBase extends Controller {
             String cType = file.getContentType();
             File newFile = file.getFile();
             String text = (new Date().getTime()) + fileName;
-            File laterFile = new File(path, text);
+            File laterFile = new File(fileDestinationPath, text);
             final boolean b = newFile.renameTo(laterFile);
             return laterFile;
         } else {
@@ -447,12 +452,12 @@ public class SuperBase extends Controller {
         }
     }
 
-    static File uploadExcelFile(String f) {
-        return uploadRealFile(f, getDefExcel());
+    static File uploadExcelFile(String file,String destinationFolderPath) {
+        return uploadRealFile(file, getDefExcel().concat(destinationFolderPath));
     }
 
-    static File uploadDefaultFile(String f) {
-        return uploadRealFile(f, getDef());
+    static File uploadDefaultFile(String file,String destinationPath) {
+        return uploadRealFile(file, getDef(destinationPath));
     }
 
 
@@ -620,8 +625,8 @@ public class SuperBase extends Controller {
         return node;
     }
 
-    static long getSize(String name) {
-        File file = getFileExt(name);
+    static long getSize(String fileDestinationPath,String fileName) {
+        File file = getFileExt(fileDestinationPath,fileName);
         if (file.exists()) {
             return file.length();
         }

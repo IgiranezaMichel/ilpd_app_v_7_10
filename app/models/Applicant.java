@@ -203,6 +203,7 @@ public class Applicant extends Model {
 
     public double getAmountToPayByTraining() {
         Applied applied = this.applied;
+
         double amountToPay = applied.training.schoolFees + applied.training.iMode.intake.registrationFees + applied.training.otherFees + ILDPLibrary.amountRefunded(this.id);
         if (this.needAccomodation) {
             amountToPay += applied.training.accomodationFees;
@@ -221,6 +222,17 @@ public class Applicant extends Model {
                 }
             }
             amountToPay += totalAmount;
+        }
+//        check eac and non eac student
+        if(applied.training.eacStudentTuitionFees==0&&applied.training.nonEacStudentTuitionFees==0  ){
+            amountToPay+=applied.training.schoolFees ;
+        }else {
+
+            if(applied.applicant.isEacInhabitant()){
+                amountToPay+=applied.training.eacStudentTuitionFees;
+            }else{
+                amountToPay+=applied.training.nonEacStudentTuitionFees;
+            }
         }
         return amountToPay;
     }

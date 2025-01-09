@@ -396,7 +396,7 @@ public class UpdateForm extends React
         if( form.hasErrors() ) return ok(form.errorsAsJson());
         Announce announce = form.get();
         Announce announce1 = Announce.finderById(id);
-        announce1.attachment = uploadFile(new Date().toString(), "attachment");
+        announce1.attachment = uploadFile(new Date().toString(), "attachment","announcement/attachments/");
         announce1.update();
         return redirect("/%2Fregister%2FgetAnnounceMentPage%2F#");
     }
@@ -523,7 +523,7 @@ public class UpdateForm extends React
             InternshipAppeal appeal1 = new InternshipAppeal();
             appeal1.reason = appeal.reason;
             appeal1.appType = appeal.appType;
-            appeal1.attachment = uploadFile(appeal.attachment, "attachment");
+            appeal1.attachment = uploadFile(appeal.attachment, "attachment","class_files/internship/appeal/");
             appeal1.applicant = applicant;
             appeal1.save();
             return ok("1");
@@ -542,7 +542,7 @@ public class UpdateForm extends React
             InternshipAppeal appeal1 = new InternshipAppeal();
             appeal1.reason = appeal.reason;
             appeal1.appType = appeal.appType;
-            appeal1.attachment = uploadFile(appeal.attachment, "attachment");
+            appeal1.attachment = uploadFile(appeal.attachment, "attachment","class_files/internship/appeal/");
             appeal1.applicant = applicant;
             appeal1.save();
             return ok("1");
@@ -1584,15 +1584,15 @@ public class UpdateForm extends React
         ProfileInfo info1 = ProfileInfo.unique();
         if (s.equalsIgnoreCase("registrar"))
         {
-            info1.registrarSignature = uploadImage(info1.registrarSignature);
+            info1.registrarSignature = uploadImage("institute/profile-information-files/",info1.registrarSignature);
         }
         else if (s.equalsIgnoreCase("rector"))
         {
-            info1.rector = uploadImage(info1.rector);
+            info1.rector = uploadImage("institute/profile-information-files/",info1.rector);
         }
         else if (s.equalsIgnoreCase("stamp"))
         {
-            info1.stamp = uploadImage(info1.stamp);
+            info1.stamp = uploadImage("institute/profile-information-files/",info1.stamp);
         }
         info1.update();
         return ok("1");

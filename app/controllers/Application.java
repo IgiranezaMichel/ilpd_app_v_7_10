@@ -89,7 +89,7 @@ public class Application extends React {
         Payment payment = f.get();
         Payment payment1 = Payment.finderById(id);
         if(payment.attachment != null) {
-            payment1.attachment = uploadFile(new Date().toString(), "attachment");
+            payment1.attachment = uploadFile(new Date().toString(), "attachment","payment_transaction_records/");
         }
         payment1.update(id);
         return redirect("/%2Fstudent%2Fpayments%2F#");
@@ -2305,7 +2305,7 @@ public class Application extends React {
                     n.student = stu;
                     String regN = stu.regNo;
                     n.forGroup = isGroup;
-                    n.attachment = uploadFile(n.attachment, "attachment");
+                    n.attachment = uploadFile(n.attachment, "attachment","class_files/assignment/submission/");
                     if (n != null) {
                         n.status = "submitted";
                         n.update();
@@ -2347,7 +2347,7 @@ public class Application extends React {
                       g.assignment = assignment;
                       g.groups = Groups.finderById(gid);
                       g.status = "submitted";
-                      g.attachment = uploadFile(g.attachment, "attachment");
+                      g.attachment = uploadFile(g.attachment, "attachment","class_files/assignment/group_submission");
                       g.update();
             }
             return ok("1");
@@ -3355,7 +3355,7 @@ public class Application extends React {
             ProfileInfo proInfo = ProfileInfo.finderById(id);
             proInfo.aboutInfo = pF.aboutInfo;
             proInfo.email = pF.email;
-            proInfo.profileLogo = uploadImage(proInfo.profileLogo);
+            proInfo.profileLogo = uploadImage("personal_detail/profile_information/",proInfo.profileLogo);
             proInfo.profileName = pF.profileName;
             proInfo.profileAcronym = pF.profileAcronym;
             proInfo.address = pF.address;

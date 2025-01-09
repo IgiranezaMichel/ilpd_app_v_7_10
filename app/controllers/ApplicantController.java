@@ -4,6 +4,7 @@ import com.avaje.ebean.Expression;
 import com.avaje.ebean.Page;
 import models.*;
 import models.Utility.Contracts;
+import models.Utility.SendMailer;
 import play.data.Form;
 import play.mvc.Result;
 import views.html.applicant._applicantPage;
@@ -50,7 +51,7 @@ public class ApplicantController extends React {
         Form<Applicant> form = Form.form(Applicant.class).bindFromRequest();
         Applicant applicant = form.get();
         Applicant applicant1 = Applicant.finderById(id);
-        applicant1.profile = uploadProfile(applicant.profile);
+        applicant1.profile = uploadProfile(applicant.profile,applicant.profile);
         applicant1.update();
         return ok("1");
     }
@@ -134,7 +135,7 @@ public class ApplicantController extends React {
         applicant.applied.contactPerson = form.field("contactPerson").value();
         applicant.applied.contactEmail = form.field("contactEmail").value();
         applicant.applied.contactPhone = form.field("contactPhone").value();
-        applicant.profile = uploadProfile(applicant1.profile);
+        applicant.profile = uploadProfile(applicant1.profile,applicant1.profile);
         applicant.update();
 
         Applied applied = Applied.byApp(applicant.id);
@@ -151,7 +152,7 @@ public class ApplicantController extends React {
                                              vf.update();
                                          }
                                      }
-                                     n.attachName = uploadFile(n.attachName, i.uniqueName);
+                                     n.attachName = uploadFile(n.attachName, i.uniqueName,"personal_and_academic_records/attachment/");
                                      n.app = applicant;
                                      n.file = i;
                                      n.save();
@@ -219,4 +220,5 @@ public class ApplicantController extends React {
 
         return redirect("/applicants/"+id);
     }
+
 }

@@ -272,12 +272,12 @@
                                 <div class="radio_place">
                                     <div class="myRadio">
                                         <span class="t-radio">
-                                            <input type="radio" id="falseDisabled" onchange="unchecker(this,'#disableText')" name="d" value="myself" @if(aps != null && aps.feespayment.equals("sponsor")) {
+                                            <input type="radio" id="falseDisabled" onchange="unchecker(this,'#disableText')" name="d" value="false" @if(aps != null && !aps.disability) {
                                                 checked="checked"}>
                                             <label for="falseDisabled">No </label>
                                         </span>
                                         <span class="t-radio">
-                                            <input type="radio" id="trueDisabled" onchange="checker(this,'#disableText')" name="d" value="sponsor" @if(aps != null && aps.feespayment.equals("myself")) {
+                                            <input type="radio" id="trueDisabled" onchange="checker(this,'#disableText')" name="d" value="true" @if(aps != null && aps.disability) {
                                                 checked="checked"}>
                                             <label for="trueDisabled">Yes </label>
                                         </span>

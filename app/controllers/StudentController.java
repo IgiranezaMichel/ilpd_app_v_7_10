@@ -75,7 +75,7 @@ public class StudentController extends React {
         Internship internship = new Internship();
         internship.description = form.field("description").value();
         internship.student = student;
-        internship.attachment = uploadFile(new Date().toString(), "attachment");
+        internship.attachment = uploadFile(new Date().toString(), "attachment","class_files/internship/internship_files");
         internship.save();
         return ok("1");
     }

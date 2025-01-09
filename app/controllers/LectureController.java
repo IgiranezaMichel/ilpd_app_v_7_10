@@ -109,7 +109,7 @@ public class LectureController extends React {
                 material.schedule = Schedule.finderById(s.id);
             }
         }
-        material.fileName = uploadFile(new Date().toString(), "fileName");
+        material.fileName = uploadFile(new Date().toString(), "fileName","class_files/course/material/");
         material.save();
         return ok("1");
     }
@@ -133,7 +133,7 @@ public class LectureController extends React {
                 vf.update();
             }
         }
-        attachment1.attachName = uploadFile(attachment1.attachName, academicFile.uniqueName);
+        attachment1.attachName = uploadFile(attachment1.attachName, academicFile.uniqueName,"person_and_academic_records/attachment");
         attachment1.app = applicant;
         attachment1.file = academicFile;
         attachment1.save();

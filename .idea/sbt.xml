@@ -2,5 +2,15 @@
 <project version="4">
   <component name="ScalaSbtSettings">
     <option name="customVMPath" />
+    <option name="linkedExternalProjectsSettings">
+      <SbtProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="resolveSbtClassifiers" value="true" />
+        <option name="sbtVersion" value="0.13.0" />
+        <option name="useQualifiedModuleNames" value="true" />
+        <option name="useSbtShellForBuild" value="true" />
+        <option name="useSbtShellForImport" value="true" />
+      </SbtProjectSettings>
+    </option>
   </component>
 </project>

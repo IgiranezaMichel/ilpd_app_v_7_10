@@ -2,6 +2,8 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 # Home page
+GET /send                                                            controllers.TestController.sendEmailDemo()
+GET /create-folder/:path                                                            controllers.TestController.CreateFolder(path:String)
 GET         /                                                        controllers.Application.index()
 GET         /:indexCustom                                            controllers.Application.HomeIndex(indexCustom:String)
 GET         /action/logout                                           controllers.Application.getOut

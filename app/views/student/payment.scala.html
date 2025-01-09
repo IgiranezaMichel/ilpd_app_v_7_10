@@ -64,6 +64,18 @@
                                                                         <span class="label label-info">
                                                                         @Counts.formatAmount(Applied.getAppliedByApplicant(applicant).training.schoolFees)
                                                                     Rwf</span>
+                                                                        <span class="label label-info">
+                                                                             @if(Applied.getAppliedByApplicant(applicant).training.schoolFees!=0){
+                                                                                <span> @Counts.formatAmount(Applied.getAppliedByApplicant(applicant).training.otherFees)</span>
+                                                                            }else{
+                                                                                @if(applicant.isEacInhabitant){
+                                                                                    <span>@Counts.formatAmount(Applied.getAppliedByApplicant(applicant).training.eacStudentTuitionFees)</span>
+                                                                                }else{
+                                                                                    <span>@Counts.formatAmount(Applied.getAppliedByApplicant(applicant).training.nonEacStudentTuitionFees)</span>
+                                                                                }
+                                                                            }
+                                                                            Rwf
+                                                                        </span>
                                                                 </label>
                                                             </label>
 

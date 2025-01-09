@@ -3,7 +3,7 @@ package controllers;
 import models.*;
 import play.mvc.Controller;
 import play.mvc.Http;
-
+import  play.Logger;
 import javax.imageio.ImageIO;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -35,14 +35,20 @@ public class React extends Controller
         }
         return trainings;
     }
-    public static String getRoot()
+    public static String getRoot(String fileDestinationPath)
     {
-        File testExist = new File(defaultFolder);
+        String path=defaultFolder;
+        if(!fileDestinationPath.equals(""))
+            path=path.concat(fileDestinationPath);
+        File testExist = new File(path);
         if (!testExist.exists())
         {
-            testExist.mkdir();
+            testExist.mkdirs();
         }
-        return defaultFolder;
+        Logger.info("{} path before {}",path,React.class.getName());
+        path=path.split("public/")[1];
+        Logger.info("{} path after {}",path,React.class.getName());
+        return path;
     }
 
     protected static boolean isInsurance(){
@@ -87,23 +93,35 @@ public class React extends Controller
         return true;
     }
 
-    static String uploadFile(String dft, String fName)
+    static String uploadFile(String dft, String fName,String destinationPath)
     {
         Http.MultipartFormData body = request().body().asMultipartFormData();
         Http.MultipartFormData.FilePart picture = body.getFile(fName);
+        String uploadPath=getRoot(destinationPath).concat(dft);
         if (picture != null)
         {
             String fileName = picture.getFilename();
             String cType = picture.getContentType();
             File file = picture.getFile();
             String text = (new Date().getTime()) + fileName;
-            file.renameTo(new File(getRoot(), text));
-            return text;
-        }
+            File uploadedFile=new File(getRoot(destinationPath));
+           try {
+               if(uploadedFile.exists())
+                   file.renameTo(new File(uploadedFile, text));
+               else{
+                   Logger.info("{} uploaded file ",uploadPath,React.class.getName());
+                   return uploadPath;
+               }
+           }catch(Exception e){
+               e.printStackTrace();
+               return null;
+           }
+           }
         else
         {
             return dft;
         }
+        return  null;
     }
     static List<UserRole> CheckUser(Users user)
     {
@@ -119,7 +137,7 @@ public class React extends Controller
         }
     }
 
-    static String uploadImage(String dflt)
+    static String uploadImage(String imageDestinationPath,String dflt)
     {
         Http.MultipartFormData body = request().body().asMultipartFormData();
         Http.MultipartFormData.FilePart picture = body.getFile("photo");
@@ -133,9 +151,9 @@ public class React extends Controller
                 String contentType = picture.getContentType();
                 File file = picture.getFile();
                 String text = (new Date().getTime()) + fileName;
-                file.renameTo(new File(getRoot(), text));
+                file.renameTo(new File(getRoot(imageDestinationPath), text));
 
-                return text;
+                return getRoot(imageDestinationPath).concat(text);
             }
             catch (Exception e)
             {
@@ -149,7 +167,7 @@ public class React extends Controller
         }
     }
 
-    static String uploadProfile(String dflt)
+    static String uploadProfile(String dflt,String profileDestinationPath)
     {
         Http.MultipartFormData body = request().body().asMultipartFormData();
         Http.MultipartFormData.FilePart picture = body.getFile("profile");
@@ -163,9 +181,9 @@ public class React extends Controller
                 String contentType = picture.getContentType();
                 File file = picture.getFile();
                 String text = (new Date().getTime()) + fileName;
-                file.renameTo(new File(getRoot(), text));
+                file.renameTo(new File(getRoot(profileDestinationPath), text));
 
-                return text;
+                return getRoot(profileDestinationPath).concat(text);
             }
             catch (Exception e)
             {
@@ -179,9 +197,9 @@ public class React extends Controller
         }
     }
 
-    static Boolean newFolder(String folderName)
+    static Boolean newFolder(String folderName,String destinationPath)
     {
-        File dir = new File(getRoot() + folderName);
+        File dir = new File(getRoot(destinationPath).concat(folderName));
         return dir.mkdir();
     }
 

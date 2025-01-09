@@ -19,11 +19,11 @@
                             <p class="bg-primary radius">Attach profile photo</p>
                             <div class="the-image has-feedback">
                                 <img src="@routes.Assets.at(if(me != null && !me.profile.equals("")) {
-                                    "uploads/" + me.profile
+                                     me.profile
                                 } else {
                                     "images/boys.jpg"
                                 })">
-                                <div class="upload-widget"><div class="up-data"><i class="fa fa-cloud-upload" onclick="reclick(this)"></i></div></div>
+                                 <div class="upload-widget"><div class="up-data"><i class="fa fa-cloud-upload" onclick="reclick(this)"></i></div></div>
                             </div>
                         </div> </div>
                     <div class="identity has-feedback">

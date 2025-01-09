@@ -17,9 +17,10 @@
                 @( name = Attachment.checker(me.id,i.id).attachName )
                 @( ext = name.substring(name.lastIndexOf('.') + 1) )
                 @if( ext.equalsIgnoreCase("pdf") ){
-                  <object data="@routes.Assets.at("uploads/" + name )" type="application/pdf" width="100%" height="290px">
-                    <embed src="http://yoursite.com/the.pdf" type="application/pdf">
-                    <p>This browser does not support PDFs. Please download the PDF to view it: <a href="http://yoursite.com/the.pdf">
+                  <object data="@routes.Assets.at(name)" type="application/pdf" width="100%" height="290px">
+                    @name
+                    <embed src="@routes.Assets.at(name)" type="application/pdf">
+                    <p>This browser does not support PDFs. Please download the PDF to view it: <a href="@routes.Assets.at(name )">
                       Download PDF</a>.</p>
                     </embed>
                   </object>

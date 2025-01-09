@@ -310,7 +310,6 @@
             <div class="box box-info">
                 <div class="box-header text-left resp-width">
                     <i class="fa fa-pencil"></i>
-
                     <h3 class="box-title">5.disability or medical</h3>
                 </div>
                 <div class="box-body">
@@ -318,12 +317,12 @@
                         <div class="radio_place">
                             <div class="myRadio">
                                 <span class="t-radio">
-                                    <input type="radio" id="falseDisabled" onchange="unchecker(this,'#disableText')" name="d" value="myself" @if(me != null && me.feespayment.equals("myself")) {
+                                    <input type="radio" id="falseDisabled" onchange="unchecker(this,'#disableText')" name="disability" value="false" @if(me != null && !me.disability) {
                                         checked="checked"}>
                                     <label for="falseDisabled">No </label>
                                 </span>
                                 <span class="t-radio">
-                                    <input type="radio" id="trueDisabled" onchange="checker(this,'#disableText')" name="d" value="sponsor" @if(me != null && me.feespayment.equals("sponsor")) {
+                                    <input type="radio" id="trueDisabled" onchange="checker(this,'#disableText')" name="disability" value="true" @if(me != null && me.disability) {
                                         checked="checked"}>
                                     <label for="trueDisabled">Yes </label>
                                 </span>

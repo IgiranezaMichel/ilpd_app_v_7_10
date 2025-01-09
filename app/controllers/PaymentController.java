@@ -103,7 +103,7 @@ public class PaymentController extends React {
             newRequest.account = account;
             newRequest.accountNumber = request.accountNumber;
             newRequest.accountUserName = request.accountUserName;
-            newRequest.attachment = uploadFile("null", "photo");
+            newRequest.attachment = uploadFile("null", "photo","payment_transaction_records/");
             newRequest.save();
         }
         return ok("1");
@@ -193,7 +193,7 @@ public class PaymentController extends React {
             payment.comment = paymentForm.field("comment").value();
             Long bankId = Long.parseLong(paymentForm.field("bankName").value());
             payment.bankAccount = BankAccount.find.ref(bankId);
-            payment.attachment = uploadFile("null", "photo");
+            payment.attachment = uploadFile("null", "photo","payment_transaction_records/");
             payment.remain = amountRemain;
             payment.account = applicant.account;
             payment.retakeAmount = getDouble(paymentForm.field("retakeAmount").value());

@@ -81,13 +81,14 @@
                                     (@Counts.formatAmount(app.training.iMode.intake.registrationFees) Rwf)</b> ,
                                     tuition fee <b>
                                     (
-                                @if(app.training.schoolFees==0){
+                                @if((app.training.eacStudentTuitionFees!=0)&&(app.training.nonEacStudentTuitionFees!=0)){
                                   @if(app.applicant.isEacInhabitant){
                                     <span>@app.training.eacStudentTuitionFees</span>
                                 }else{
                                   <span>@app.training.nonEacStudentTuitionFees</span>
-                                }}else{
-                                   <span>@app.training.schoolFees</span>
+                                }
+                                }else{
+                                   <span>@Counts.formatAmount(app.training.schoolFees)</span>
                                 }
                                 Rwf)
 

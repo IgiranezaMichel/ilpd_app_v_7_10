@@ -109,7 +109,7 @@ public class Registration extends React {
 
 
         if (user != null) {
-            user.profile = uploadImage(u.profile);
+            user.profile = uploadImage("personal_detail/profile_pictures/",u.profile);
             if( applicant != null ){
                 applicant.profile = user.profile;
                 applicant.update();
@@ -160,7 +160,7 @@ public class Registration extends React {
                 nUser.save();
             }
             String folderName = randomString() + "." + nUser.id;
-            if (!newFolder(folderName)) return null;
+            if (!newFolder(folderName,"personal_and_academic_records/profile-pictures/")) return null;
             nUser.resetCode = randomString() + randomString() + nUser.id;
             nUser.path = folderName;
             nUser.update();
@@ -187,7 +187,7 @@ public class Registration extends React {
                     vf.update();
                 }
             }
-            n.attachName = uploadFile(n.attachName, fp.uniqueName);
+            n.attachName = uploadFile(n.attachName, fp.uniqueName,"personal_and_academic_records/attachment/");
             n.app = applicant;
             n.file = fp;
             n.update();
@@ -430,7 +430,6 @@ public class Registration extends React {
         if (session("student") != null || session("registrar") != null) {
             Form<Applied> f = Form.form(Applied.class).bindFromRequest();
             Applied frm = f.get();
-
             Applicant check = null;
 
             if(session("student") != null ) {
@@ -446,7 +445,7 @@ public class Registration extends React {
                     for (AcademicFiles fp : AcademicFiles.byProgram(ap.training.iMode.campusProgram.program.id, ap.applicant.id)) {
                         Attachment n = Attachment.checker(check.id, fp.id);
                         n.file = fp;
-                        n.attachName = uploadFile(n.attachName, fp.uniqueName);
+                        n.attachName = uploadFile(n.attachName, fp.uniqueName,"personal_and_academic_records/attachment/");
                         n.update();
                     }
                     return ok("done");
@@ -559,6 +558,7 @@ public class Registration extends React {
                         payment.update();
                         break;
                 }
+                newAp.disability=Boolean.parseBoolean(f.field("disability").value());
                 newAp.save();
 
                 if (def.equals("9")) {
@@ -578,7 +578,7 @@ public class Registration extends React {
                             }
                         }
 
-                        n.attachName = uploadFile(n.attachName, fp.uniqueName);
+                        n.attachName = uploadFile(n.attachName, fp.uniqueName,"personal_and_academic_records/attachment/");
 
                         n.app = check;
                         n.file = fp;
@@ -691,7 +691,7 @@ public class Registration extends React {
 
             if (num.equals("1")) {
                 if(!neW.applied.training.iMode.campusProgram.program.cle){
-                    neW.profile = uploadImage(neW.profile);
+                    neW.profile = uploadImage("personal_detail/profile_pictures/",neW.profile);
                 }
                 neW.firstName = ap.firstName;
                 neW.familyName = ap.familyName;
@@ -1382,7 +1382,7 @@ public class Registration extends React {
             nAcc.description = acc.description;
             nAcc.max = acc.max;
             nAcc.lecture = lecture;
-            nAcc.attachment = uploadFile(acc.attachment, "attachment");
+            nAcc.attachment = uploadFile(acc.attachment, "attachment","class_files/assignment/assignment_files/");
             Long compnt = Long.parseLong(sForm.field("comp").value());
             nAcc.component = Component.finderById(compnt);
             Long trainId = Long.parseLong(sForm.field("trainings").value());
@@ -1407,7 +1407,7 @@ public class Registration extends React {
             nAcc.grouped = acc.grouped;
             nAcc.max = acc.max;
             nAcc.lecture = lecture;
-            nAcc.attachment = uploadFile(acc.attachment, "attachment");
+            nAcc.attachment = uploadFile(acc.attachment, "attachment","class_files/assignment/assignment_files/");
             Long compnt = Long.parseLong(sForm.field("comp").value());
             nAcc.component = Component.finderById(compnt);
             Long trainId = Long.parseLong(sForm.field("trainings").value());
@@ -1427,7 +1427,7 @@ public class Registration extends React {
             Assignment acc = sForm.get();
             Assignment nAcc = Assignment.finderById(id);
             nAcc.lecture = lecture;
-            nAcc.attachment = uploadFile(acc.attachment, "attachment");
+            nAcc.attachment = uploadFile(acc.attachment, "attachment","class_files/assignment/assignment_files/");
             nAcc.update();
             return ok("1");
         }
@@ -1438,7 +1438,7 @@ public class Registration extends React {
             Assignment acc = sForm.get();
             Assignment nAcc = Assignment.finderById(id);
             nAcc.lecture = lecture;
-            nAcc.attachment = uploadFile(acc.attachment, "attachment");
+            nAcc.attachment = uploadFile(acc.attachment, "attachment","class_files/assignment/assignment_files/");
             nAcc.update();
             return ok("1");
         } else {
@@ -2055,6 +2055,8 @@ public class Registration extends React {
             if(n.nonEacStudentTuitionFees<n.minNonEacStudentTuitionFees)
                 return ok("Minimum payment "+n.minNonEacStudentTuitionFees+" cant be greater than the maximum payment "+n.nonEacStudentTuitionFees);            n.accomodationFees = Double.valueOf(f.field("accomodationFees").value());
             n.restaurationFees = Double.valueOf(f.field("restaurationFees").value());
+            if(n.eacStudentTuitionFees<=0)return  ok("Eac Tuition fees is required");
+            if(n.nonEacStudentTuitionFees<=0)return  ok("Non Eac Tuition fees is required");
             n.otherFees = f.get().otherFees;
             n.otherFeesSpec = f.get().otherFeesSpec;
             n.minPayment = f.get().minPayment;
@@ -2097,7 +2099,7 @@ public class Registration extends React {
 
             Users users1 = Application.Ins(defaultSession);
             users1.names = users.names;
-            users1.profile = uploadImage(users1.profile);
+            users1.profile = uploadImage("personal_detail/profile_pictures/",users1.profile);
             if (!users.emailTaken()) {
                 users1.email = users.email;
             }
