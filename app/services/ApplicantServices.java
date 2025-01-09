@@ -6,6 +6,7 @@ import java.util.List;
 public class ApplicantServices {
     public static List<Applied> filterByTraining(long id, String status) {
         boolean b = status.equalsIgnoreCase("Paid");
+        
         List<Applied> appliedList = new ArrayList<>();
         for (Applied applied : appliedByTraining(id)) {
             if (applied.applicant.isRequiredPaidDone() == b) {
